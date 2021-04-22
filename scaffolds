@@ -1,0 +1,11 @@
+rails generate scaffold imagen fileName:string path:string origen:references{polymorphic}
+rails generate model documento_de_identidad persona:references tipo:string valor:string
+rails generate scaffold notificacion persona:references contenido:string estado:boolean activo:boolean tipo:string
+
+rails generate model dia descripcion:string
+rails generate model tanda persona:references dia:references hora_inicio:time hora_fin:time
+
+rails generate model vehiculo persona:references placa:string
+rails generate model permiso_vehicular persona:references vehiculo:references valor:string descripcion:string tipo:string activo:boolean estado:boolean
+rails generate model movimiento_vehiculo permiso_vehicular:references tipo:string Hora_fecha:datetime
+
