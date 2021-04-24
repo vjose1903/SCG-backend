@@ -11,17 +11,14 @@ module DeviseTokenAuth
     end
 
     def create
-      # Check
+      @res = Response.new
       # params[:usuario] = params[:email]
-
-      
-      persona = Persona.find_by_usuario(params[:usuario])
+      persona = Persona.find_by_usuario(params['usuario'])
     
       unless persona.nil?
         params[:email] = persona.email
       else
-        # return render json: { msg: "Usuario ingresado no existe" }, status: 401
-        return render_error(401, "Usuario ingresado no existe")
+        return render_error_login
       end
 
       field = (params.keys.map(&:to_sym) & resource_class.authentication_keys).first
@@ -41,7 +38,6 @@ module DeviseTokenAuth
         valid_password = @resource.valid_password?(resource_params[:password])
         if (@resource.respond_to?(:valid_for_authentication?) && !@resource.valid_for_authentication? { valid_password }) || !valid_password
           return render_create_error_bad_credentials
-          # return render json: {msg: "Los datos no son correctos P" }, status: 401
         end
         # @client_id,
         @token = @resource.create_token
@@ -59,8 +55,7 @@ module DeviseTokenAuth
         #   render_create_error_not_confirmed
         # end
       else
-        render_create_error_bad_credentials
-        # return render json: {msg: "Los datos no son correctos P" }, status: 401
+        return render_create_error_bad_credentials
       end
     end
 
@@ -113,13 +108,17 @@ module DeviseTokenAuth
       render_error(405, I18n.t("devise_token_auth.sessions.not_supported"))
     end
 
-    def render_create_success
-      datos = {
-        success: true,
-        data: resource_data(resource_json: @resource.token_validation_response),
-      }
+    def render_error_login
+      @res.setStatus(HTTP_STATUS_CODE[:unauthorized])
+      @res.add_msg("Los datos proporcionados no son correctos.")
+      @res.send_response self
+    end
 
-      render json: datos
+    def render_create_success
+      @res.setData(resource_data(resource_json: @resource.token_validation_response))
+      @res.add_msg("Te damos la bienvenida #{@resource.nombre} #{@resource.apellido}")
+
+      @res.send_response self
     end
 
     def render_create_error_not_confirmed
@@ -127,12 +126,11 @@ module DeviseTokenAuth
     end
 
     def render_create_error_account_locked
+      render_error_login
     end
-
+    
     def render_create_error_bad_credentials
-      # render_error(401, I18n.t('devise_token_auth.sessions.bad_credentials'))
-      return render_error(401, "Contraseña incorrecta")
-      # return render json: { msg: "Contraseña incorrecta" }, status: 401
+      render_error_login
     end
 
     def render_destroy_success

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::API
 
     def configure_permitted_parameters
         permits = [:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email,
-                :direccion, :es_estudiante, :es_invitado, :es_empleado ]
+                :direccion, :es_estudiante, :es_invitado, :es_empleado,:password, :password_confirmation ]
 
         devise_parameter_sanitizer.permit(:sign_up, keys: permits)
 

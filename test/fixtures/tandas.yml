@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  persona: one
+  dia: one
+  hora_inicio: 2021-04-24 16:32:27
+  hora_fin: 2021-04-24 16:32:27
+
+two:
+  persona: two
+  dia: two
+  hora_inicio: 2021-04-24 16:32:27
+  hora_fin: 2021-04-24 16:32:27
