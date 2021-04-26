@@ -6,6 +6,7 @@ class PersonaSerializer < ActiveModel::Serializer
 	# attribute :es_estudiante, if: Proc.new { object.es_estudiante }
 	
 	has_many :tandas, if: Proc.new { self.personalizar_parametros('tandas') }
+	has_many :documentos_de_identidad, if: Proc.new { self.personalizar_parametros('documentos_de_identidad') }
 
 	def personalizar_parametros(col)
 		return @instance_options[:"#{col}"]

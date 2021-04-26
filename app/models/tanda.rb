@@ -10,8 +10,7 @@ class Tanda < ApplicationRecord
 
   def otras_validaciones
     if !self.hora_fin.nil? && !self.hora_inicio && (self.hora_fin < self.hora_inicio )
-        # la hora de fin no puede ser menor a la hora de inicio 
-        @erros.add(:base, "La hora de fin no puede ser menor a la hora de inicio ")
+        @errors.add(:base, "La hora de fin no puede ser menor a la hora de inicio ")
     end
   end
 
@@ -27,8 +26,6 @@ class Tanda < ApplicationRecord
     tanda.dia_id = params["dia_id"]
     tanda.hora_inicio = params["hora_inicio"]
     tanda.hora_fin = params["hora_fin"]
-
-    puts "TANDA -->".black.on_white + "#{tanda.to_json}"
 
     tanda.valid?
 
@@ -46,21 +43,20 @@ class Tanda < ApplicationRecord
 
   def self.validate_tandas(tandas)
     res_valid = Response.new
-    tandas_valid=[]
+    array_valid=[]
 
     tandas.each do |tanda|
       res_temp = self.crear_actualizar_tanda(tanda)
       if res_temp.status_valid
-        tandas_valid.push(res_temp.get_data)
+        array_valid.push(res_temp.get_data)
       else
         return res_temp 
       end
     end
 
-    res_valid.set_data tandas_valid
+    res_valid.set_data array_valid
 
     return res_valid
-
   end
 
 end

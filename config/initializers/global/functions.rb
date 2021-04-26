@@ -38,6 +38,12 @@ class Response
 
 end
 # ---------------------------------------------------------------------------------------------------------
+class Array
+	def my_includes(str)
+		return  self.any? { |i| [str].include? i }
+	end
+end
+# ---------------------------------------------------------------------------------------------------------
 class String
 	def numeric?
 		return true if self =~ /\A\d+\Z/

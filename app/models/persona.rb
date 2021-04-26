@@ -9,6 +9,9 @@ class Persona < ActiveRecord::Base
   has_many :tandas, dependent: :destroy
   accepts_nested_attributes_for :tandas, :allow_destroy => true
 
+  has_many :documentos_de_identidad, dependent: :destroy
+  accepts_nested_attributes_for :documentos_de_identidad, :allow_destroy => true
+
   validates :nombre, presence: { :message => "Debe de especificar el nombre de la persona." }
   validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este usuario." }
   validates :email, presence: { :message => "Debe de especificar el email de la persona." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este email." }
@@ -25,7 +28,6 @@ class Persona < ActiveRecord::Base
 
   def validate_password(password)
     if self.id.nil? && (password.nil? || password.length == 0)
-      puts "PASSWORD NO ENCONTRADO".red.on_white
       self.errors.add(:base, "Debe de especificar una contraseña para la persona.")
     end
   end
@@ -73,16 +75,16 @@ class Persona < ActiveRecord::Base
         res = res_tandas
       end
       
-      # res_documentos_de_identidad = DocumentosDeIdentidad.validate_documentos params["documentos_de_identidad"]
-      # if res_documentos_de_identidad.status_valid
-      #   persona.res_documentos_de_identidad = res_documentos_de_identidad.get_data
-      # else
-      #   res = res_documentos_de_identidad
-      # end
+      res_documentos_de_identidad = DocumentoDeIdentidad.validate_documentos params["documentos_de_identidad"]
+      if res_documentos_de_identidad.status_valid
+        persona.documentos_de_identidad = res_documentos_de_identidad.get_data
+      else
+        res = res_documentos_de_identidad
+      end
       
       if res.status_valid && persona.save!
         res.set_data(persona)
-        
+
         action = params["id"] ? 'actualizada' : 'creada'
         res.add_msg(msg = "Persona #{action} correctamente.")
       end

@@ -4,12 +4,22 @@ class PersonasController < ApplicationController
   def crear_actualizar_persona
     parametros = persona_params
     parametros["id"] = params["id"] if params["id"] 
-    parametros["password"] = params["password"] 
-    parametros["tandas"] = params["tandas"] 
+
+    more_params=["password", "tandas", "documentos_de_identidad"]
+    parametros = agregar_parametros(parametros, more_params)
+
+    puts "parametros ==> ".red.on_white + "#{parametros.to_json}"
 
 
     resultado = Persona.crear_actualizar_persona(parametros)
     resultado.send_response(self)
+  end
+
+  def agregar_parametros(obj, aParametros)
+    aParametros.each do |parametro|
+      obj[parametro] = params[parametro]
+    end
+    return obj
   end
   
   def index
@@ -33,17 +43,18 @@ class PersonasController < ApplicationController
   def set_persona 
     @persona = Persona.find_by_id(params["id"])
     if @persona.nil?
-      return Response.new(HTTP_STATUS_CODE[:not_found], nil, 'Perona no existe.').send_response self
+      return Response.new(HTTP_STATUS_CODE[:not_found], nil, 'Persona no existe.').send_response self
     end
   end
 
   def get_parametros_opcionales 
     return {
-      tandas: params['tandas'] || false
+      tandas: params['tandas'] || false,
+      documentos_de_identidad: params['documentos_de_identidad'] || false
     }
   end
 
   def persona_params 
-    params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password, :tandas )
+    params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password, :tandas, :documentos_de_identidad )
   end
 end
