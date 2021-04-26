@@ -109,13 +109,13 @@ module DeviseTokenAuth
     end
 
     def render_error_login
-      @res.setStatus(HTTP_STATUS_CODE[:unauthorized])
+      @res.set_status(HTTP_STATUS_CODE[:unauthorized])
       @res.add_msg("Los datos proporcionados no son correctos.")
       @res.send_response self
     end
 
     def render_create_success
-      @res.setData(resource_data(resource_json: @resource.token_validation_response))
+      @res.set_data(resource_data(resource_json: @resource.token_validation_response))
       @res.add_msg("Te damos la bienvenida #{@resource.nombre} #{@resource.apellido}")
 
       @res.send_response self

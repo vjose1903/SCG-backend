@@ -1,32 +1,40 @@
 class Response
-	def initialize(status_=HTTP_STATUS_CODE[:ok], data=nil,  msg_=[])
+	def initialize(status_=HTTP_STATUS_CODE[:ok], data=nil,  msg_=[], parametros_opcionales=nil)
 		@res = {status:status_, data: data,  msg: msg_}
+		set_data(data, parametros_opcionales) if data && parametros_opcionales
 	end
 	
-	def setStatus(status)
-		puts "status--> ".yellow + "#{status.to_json}"
-
+	def set_status(status)
 		@res[:status] = status
 	end
-
-	def setData(data)
+	
+	def status_valid
+		@res[:status] == HTTP_STATUS_CODE[:ok]
+	end
+	
+	def set_data(data, parametros_opcionales=nil)
+		data = ActiveModelSerializers::SerializableResource.new(data, parametros_opcionales) unless parametros_opcionales.nil?
 		@res[:data] = data
 	end
-
+	
+	def get_data()
+		@res[:data]
+	end
+	
 	def add_msg(msg)
-		@res[:msg].push(msg)
+		@res[:msg].push(msg) if msg.length > 0 
 	end
-
+	
 	def add_msgs(msgs)
-		@res[:msg].concat(msgs)
+		msgs.each do |msg|
+			@res[:msg].push(msg) if msg.length > 0 
+		end
 	end
-
-	def send_response(controller)
-		puts "@res--> ".yellow + "#{@res.to_json}"
+	
+	def send_response(controller, parametros_opcionales=nil)
+		set_data(@res[:data], parametros_opcionales) if @res[:data] && parametros_opcionales
 		controller.render json: @res.except(:status) , status: @res[:status]
 	end
-
-
 
 end
 # ---------------------------------------------------------------------------------------------------------

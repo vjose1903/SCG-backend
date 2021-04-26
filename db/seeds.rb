@@ -24,3 +24,10 @@ personas.each do |user|
     Persona.create(user)
   end
 end 
+
+
+DIAS.each do |dia|
+  if Dia.find_by_descripcion(dia).nil?
+    Dia.create({descripcion: dia})
+  end
+end 

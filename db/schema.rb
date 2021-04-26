@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_22_204652) do
+ActiveRecord::Schema.define(version: 2021_04_24_203227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "dias", force: :cascade do |t|
+    t.string "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "personas", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -52,4 +58,17 @@ ActiveRecord::Schema.define(version: 2021_04_22_204652) do
     t.index ["uid", "provider"], name: "index_personas_on_uid_and_provider", unique: true
   end
 
+  create_table "tandas", force: :cascade do |t|
+    t.bigint "persona_id"
+    t.bigint "dia_id"
+    t.time "hora_inicio"
+    t.time "hora_fin"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dia_id"], name: "index_tandas_on_dia_id"
+    t.index ["persona_id"], name: "index_tandas_on_persona_id"
+  end
+
+  add_foreign_key "tandas", "dias"
+  add_foreign_key "tandas", "personas"
 end
