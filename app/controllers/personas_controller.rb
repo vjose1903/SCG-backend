@@ -8,8 +8,6 @@ class PersonasController < ApplicationController
     more_params=["password", "tandas", "documentos_de_identidad", "vehiculos"]
     parametros = agregar_dependencias(parametros, more_params)
 
-    puts "parametros ==> ".red.on_white + "#{parametros.to_json}"
-
     resultado = Persona.crear_actualizar_persona(parametros)
     resultado.send_response(self)
   end

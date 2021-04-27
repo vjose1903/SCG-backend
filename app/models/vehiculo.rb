@@ -48,7 +48,6 @@ class Vehiculo < ApplicationRecord
     res_valid = Response.new
 
     array_valid = persona.id.nil? ? [] : persona.vehiculos.where({estado: false}).to_a
-    puts "array_valid ==> ".red + "(#{array_valid.to_a})"
 
     vehiculos.each do |vehiculo|
       res_temp = self.crear_actualizar_vehiculo(vehiculo)

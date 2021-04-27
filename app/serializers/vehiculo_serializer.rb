@@ -5,6 +5,6 @@ class VehiculoSerializer < ActiveModel::Serializer
 	attribute :modelo, if: Proc.new { !object.modelo.nil? }
 
 	def modelo 
-		ActiveModelSerializers::SerializableResource.new(object.modelo)
+		ActiveModelSerializers::SerializableResource.new(object.modelo, { marca_descripcion: true, marca_id: true })
 	end
 end

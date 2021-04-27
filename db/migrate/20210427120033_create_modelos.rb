@@ -6,5 +6,7 @@ class CreateModelos < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    add_index :modelos, [:descripcion, :marca_id], unique: true
   end
 end

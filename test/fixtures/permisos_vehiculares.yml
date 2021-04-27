@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  persona: one
+  vehiculo: one
+  valor: MyString
+  descripcion: MyString
+  tipo: MyString
+  activo: false
+  estado: false
+
+two:
+  persona: two
+  vehiculo: two
+  valor: MyString
+  descripcion: MyString
+  tipo: MyString
+  activo: false
+  estado: false

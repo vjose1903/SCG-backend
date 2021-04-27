@@ -5,3 +5,10 @@ es:
       required: ""
       blank: "" #"it cant be empty"
       taken: "" #"it cant be empty"
+  activerecord:
+    errors:
+      models:
+        modelo:
+          attributes:
+            marca:
+              required: "Debe de especificar una marca."

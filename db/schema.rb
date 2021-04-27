@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_27_120043) do
+ActiveRecord::Schema.define(version: 2021_04_27_142653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,7 +41,22 @@ ActiveRecord::Schema.define(version: 2021_04_27_120043) do
     t.string "descripcion"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["descripcion", "marca_id"], name: "index_modelos_on_descripcion_and_marca_id", unique: true
     t.index ["marca_id"], name: "index_modelos_on_marca_id"
+  end
+
+  create_table "permisos_vehiculares", force: :cascade do |t|
+    t.bigint "persona_id"
+    t.bigint "vehiculo_id"
+    t.string "valor"
+    t.string "descripcion"
+    t.string "tipo"
+    t.boolean "activo"
+    t.boolean "estado"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["persona_id"], name: "index_permisos_vehiculares_on_persona_id"
+    t.index ["vehiculo_id"], name: "index_permisos_vehiculares_on_vehiculo_id"
   end
 
   create_table "personas", force: :cascade do |t|
@@ -108,6 +123,8 @@ ActiveRecord::Schema.define(version: 2021_04_27_120043) do
 
   add_foreign_key "documentos_de_identidad", "personas"
   add_foreign_key "modelos", "marcas"
+  add_foreign_key "permisos_vehiculares", "personas"
+  add_foreign_key "permisos_vehiculares", "vehiculos"
   add_foreign_key "tandas", "dias"
   add_foreign_key "tandas", "personas"
   add_foreign_key "vehiculos", "modelos"
