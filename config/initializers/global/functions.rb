@@ -17,6 +17,10 @@ class Response
 		@res[:data] = data
 	end
 	
+	def has_data
+		!@res[:data].nil?
+	end
+
 	def get_data()
 		@res[:data]
 	end
@@ -36,6 +40,13 @@ class Response
 		controller.render json: @res.except(:status) , status: @res[:status]
 	end
 
+end
+# ---------------------------------------------------------------------------------------------------------
+def agregar_dependencias(obj, aParametros)
+	aParametros.each do |parametro|
+		obj[parametro] = params[parametro]
+	end
+	return obj
 end
 # ---------------------------------------------------------------------------------------------------------
 class Array

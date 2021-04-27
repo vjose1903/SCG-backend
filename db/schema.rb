@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_26_222547) do
+ActiveRecord::Schema.define(version: 2021_04_27_120043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,20 @@ ActiveRecord::Schema.define(version: 2021_04_26_222547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["persona_id"], name: "index_documentos_de_identidad_on_persona_id"
+  end
+
+  create_table "marcas", force: :cascade do |t|
+    t.string "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "modelos", force: :cascade do |t|
+    t.bigint "marca_id"
+    t.string "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["marca_id"], name: "index_modelos_on_marca_id"
   end
 
   create_table "personas", force: :cascade do |t|
@@ -78,7 +92,24 @@ ActiveRecord::Schema.define(version: 2021_04_26_222547) do
     t.index ["persona_id"], name: "index_tandas_on_persona_id"
   end
 
+  create_table "vehiculos", force: :cascade do |t|
+    t.bigint "persona_id"
+    t.bigint "modelo_id"
+    t.string "placa"
+    t.string "comentario"
+    t.integer "anio"
+    t.string "color"
+    t.boolean "estado"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["modelo_id"], name: "index_vehiculos_on_modelo_id"
+    t.index ["persona_id"], name: "index_vehiculos_on_persona_id"
+  end
+
   add_foreign_key "documentos_de_identidad", "personas"
+  add_foreign_key "modelos", "marcas"
   add_foreign_key "tandas", "dias"
   add_foreign_key "tandas", "personas"
+  add_foreign_key "vehiculos", "modelos"
+  add_foreign_key "vehiculos", "personas"
 end

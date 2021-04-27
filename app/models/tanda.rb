@@ -41,7 +41,7 @@ class Tanda < ApplicationRecord
     return res
   end
 
-  def self.validate_tandas(tandas)
+  def self.validar_y_inicializar(tandas, persona)
     res_valid = Response.new
     array_valid=[]
 

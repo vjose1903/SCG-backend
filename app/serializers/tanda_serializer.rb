@@ -1,9 +1,12 @@
 class TandaSerializer < ActiveModel::Serializer
 	attributes :id, :hora_fin, :hora_inicio, :dia
-	has_one :dia
 
-	def personalizar_parametros(col)
-		return @instance_options[:"#{col}"]
+	def hora_inicio
+		return "#{object.hora_inicio.strftime("%H:%M:%S")}"
+	end
+
+	def hora_fin
+		return "#{object.hora_fin.strftime("%H:%M:%S")}"
 	end
 
 	def dia

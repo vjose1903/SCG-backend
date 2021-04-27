@@ -1,15 +1,9 @@
 class DocumentoDeIdentidad < ApplicationRecord
   belongs_to :persona
-  validates :tipo, presence: { :message => "Debe de especificar un tipo de documento de identidad." }
+
+  validates :tipo, presence: { :message => "Debe de especificar un tipo de documento de identidad." }, inclusion: { in: DOCUMENTOS_DE_IDENTIDAD_VALIDOS, message: "Tipo de documento de identidad no es permitido." }
   validates :valor, presence: { :message => "Debe de especificar el valor del documento de identidad." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este documento de identidad." }
 
-  before_validation :otras_validaciones
-
-  def otras_validaciones
-    unless DOCUMENTOS_DE_IDENTIDAD_VALIDOS.my_includes(self.tipo.downcase)
-        @errors.add(:base, "Tipo de documento de identidad no es permitido.")
-    end
-  end
 
   def self.crear_actualizar_documento(params, is_save=false)
     res = Response.new
@@ -37,7 +31,7 @@ class DocumentoDeIdentidad < ApplicationRecord
     return res
   end
 
-  def self.validate_documentos(documentos)
+  def self.validar_y_inicializar(documentos, persona)
     res_valid = Response.new
     array_valid=[]
 

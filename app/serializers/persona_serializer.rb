@@ -1,5 +1,5 @@
 class PersonaSerializer < ActiveModel::Serializer
-	attributes :id, :nombre, :apellido, :nombre_completo, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado
+	attributes :id, :nombre, :apellido, :nombre_completo, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :estado 
 
 	# attribute :es_invitado, if: Proc.new { object.es_invitado }
 	# attribute :es_empleado, if: Proc.new { object.es_empleado }
@@ -7,6 +7,7 @@ class PersonaSerializer < ActiveModel::Serializer
 	
 	has_many :tandas, if: Proc.new { self.personalizar_parametros('tandas') }
 	has_many :documentos_de_identidad, if: Proc.new { self.personalizar_parametros('documentos_de_identidad') }
+	has_many :vehiculos, if: Proc.new { self.personalizar_parametros('vehiculos') }
 
 	def personalizar_parametros(col)
 		return @instance_options[:"#{col}"]

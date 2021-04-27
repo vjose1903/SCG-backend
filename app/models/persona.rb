@@ -12,6 +12,9 @@ class Persona < ActiveRecord::Base
   has_many :documentos_de_identidad, dependent: :destroy
   accepts_nested_attributes_for :documentos_de_identidad, :allow_destroy => true
 
+  has_many :vehiculos, dependent: :destroy
+  accepts_nested_attributes_for :vehiculos, :allow_destroy => true
+
   validates :nombre, presence: { :message => "Debe de especificar el nombre de la persona." }
   validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este usuario." }
   validates :email, presence: { :message => "Debe de especificar el email de la persona." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este email." }
@@ -36,6 +39,7 @@ class Persona < ActiveRecord::Base
     self.es_estudiante = false if self.es_estudiante.nil?  
     self.es_invitado = false if self.es_invitado.nil?  
     self.es_empleado = false if self.es_empleado.nil?  
+    self.estado = true if self.id.nil?  
   end
 
   def self.crear_actualizar_persona(params)
@@ -67,20 +71,35 @@ class Persona < ActiveRecord::Base
     persona_is_valid = persona.errors.to_a.empty? && persona.valid?
     
     if persona_is_valid
-      res_tandas = Tanda.validate_tandas params["tandas"]
+      res = self.agregar_dependencias(params, persona) { |key_object, dependencia_data| 
+        
+        persona.tandas = dependencia_data if key_object == 'tandas'
+        persona.documentos_de_identidad = dependencia_data if key_object == 'documentos_de_identidad'
+        persona.vehiculos = dependencia_data if key_object == 'vehiculos'
+      } 
+
+
+
+      # res_tandas = Tanda.validate_tandas params["tandas"] || []
+      # if res_tandas.status_valid
+      #   persona.tandas = res_tandas.get_data 
+      # else
+      #   res = res_tandas
+      # end
       
-      if res_tandas.status_valid
-        persona.tandas = res_tandas.get_data
-      else
-        res = res_tandas
-      end
-      
-      res_documentos_de_identidad = DocumentoDeIdentidad.validate_documentos params["documentos_de_identidad"]
-      if res_documentos_de_identidad.status_valid
-        persona.documentos_de_identidad = res_documentos_de_identidad.get_data
-      else
-        res = res_documentos_de_identidad
-      end
+      # res_documentos_de_identidad = DocumentoDeIdentidad.validate_documentos params["documentos_de_identidad"] || []
+      # if res_documentos_de_identidad.status_valid
+      #   persona.documentos_de_identidad =  res_documentos_de_identidad.get_data
+      # else
+      #   res = res_documentos_de_identidad
+      # end
+
+      # res_vehiculos = Vehiculo.validate_vehiculos params["vehiculos"] || []
+      # if res_vehiculos.status_valid
+      #   persona.vehiculos = res_vehiculos.get_data 
+      # else
+      #   res = res_vehiculos
+      # end
       
       if res.status_valid && persona.save!
         res.set_data(persona)
@@ -97,5 +116,47 @@ class Persona < ActiveRecord::Base
 
     return res
   end
+
+
+  def self.agregar_dependencias(data, persona)
+    array_depend = [
+      {modelo: Tanda, key_object: 'tandas' },
+      {modelo: DocumentoDeIdentidad, key_object: 'documentos_de_identidad' },
+      {modelo: Vehiculo, key_object: 'vehiculos' }
+    ]
+
+    array_depend.each do |dependencia|
+
+      if !data[dependencia[:key_object]].nil? && data[dependencia[:key_object]].kind_of?(Array)
+        res_depend = dependencia[:modelo].validar_y_inicializar(data[dependencia[:key_object]], persona)
+
+        if res_depend.status_valid
+          # persona.dependencia[:key_object] = res_depend.get_data 
+          yield dependencia[:key_object], res_depend.get_data if block_given?
+
+        else
+          return res_depend
+        end
+
+      end
+    end
+
+    return Response.new
+  end
   
 end
+
+
+# dependencias.each do |dependencia|
+#   dependencia_items = []
+#   if !data[dependencia[:key_object]].nil? && data[dependencia[:key_object]].kind_of?(Array)
+#     custom_render = dependencia[:modelo].validar_y_inicializar(data["#{dependencia[:key_object]}"], self.empresa_id)
+#     if custom_render.status_is_ok
+#       dependencia_items = custom_render.data_response[:data]
+#     else
+#       return custom_render
+#     end
+#   end
+#   self.set_dependencias(dependencia[:modelo], dependencia_items)
+# end
+# return Render.new
