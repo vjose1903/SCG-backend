@@ -100,7 +100,3 @@ MARCAS_MODELOS = [
 {descripcion: "Volvo",           modelos:["XC40", "C30", "S60", "S80", "S90", "V40", "XC60", "XC90"] },
 {descripcion: "ZX",              modelos:["Terralord AT ESC", ] }
 ]
-
-
-
-
