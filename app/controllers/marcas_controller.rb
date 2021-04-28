@@ -1,6 +1,6 @@
 class MarcasController < ApplicationController
   before_action :set_parametros_opcionales, only: [:index, :show]
-  before_action :set_marca, only: [:update, :show]
+  before_action :set_marca, only: [:update, :show, :destroy]
 
   def crear_actualizar_marca
     parametros = marca_params
@@ -27,6 +27,11 @@ class MarcasController < ApplicationController
     crear_actualizar_marca
   end
 
+  def destroy
+    resultado = borrar_entidad(@marca, "marca")
+    return resultado.send_response self
+  end
+
 
   private
   def set_marca 
@@ -38,7 +43,7 @@ class MarcasController < ApplicationController
   
   
   def set_parametros_opcionales 
-    @parametros_opcionales = { modelos: params['modelos'] || false}
+    @parametros_opcionales = { modelos: params['modelos'] || false , estado: params['estado'] || false}
   end
 
   def marca_params 

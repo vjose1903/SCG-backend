@@ -5,6 +5,12 @@ class Marca < ApplicationRecord
 
   validates :descripcion, presence: { :message => "Debe de especificar una descripcion para la marca." }, uniqueness: { case_sensitive: false, :message => "Marca ya esta registrada." }
 
+	before_validation :init
+
+	def init
+    self.estado = true if self.id.nil?  
+  end
+
   def self.crear_actualizar_marca(params)
     res = Response.new
 

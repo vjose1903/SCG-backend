@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
 
   create_table "marcas", force: :cascade do |t|
     t.string "descripcion"
+    t.boolean "estado"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
   create_table "modelos", force: :cascade do |t|
     t.bigint "marca_id"
     t.string "descripcion"
+    t.boolean "estado"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["descripcion", "marca_id"], name: "index_modelos_on_descripcion_and_marca_id", unique: true

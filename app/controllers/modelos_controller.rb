@@ -1,12 +1,12 @@
 class ModelosController < ApplicationController
-  before_action :set_modelo, only: [:update,:show]
+  before_action :set_modelo, only: [:update, :show, :destroy]
 
   def crear_actualizar_modelo
     parametros = modelo_params
     parametros["id"] = params["id"] if params["id"]
 
     resultado = Modelo.crear_actualizar_modelo(parametros, true)
-    resultado.send_response(self)
+    resultado.send_response self
   end
   
   def index
@@ -25,6 +25,10 @@ class ModelosController < ApplicationController
     crear_actualizar_modelo
   end
 
+  def destroy
+    resultado = borrar_entidad(@modelo, "modelo")
+    return resultado.send_response self
+  end
 
   private
   def set_modelo 
@@ -38,6 +42,7 @@ class ModelosController < ApplicationController
     return {
       marca_id: params['marca_id'] || false,
       marca_descripcion: params['marca_descripcion'] || false,
+      estado: params['estado'] || false,
     }
   end
 

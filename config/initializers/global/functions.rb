@@ -39,8 +39,25 @@ class Response
 		set_data(@res[:data], parametros_opcionales) if @res[:data] && parametros_opcionales
 		controller.render json: @res.except(:status) , status: @res[:status]
 	end
-
 end
+# ---------------------------------------------------------------------------------------------------------
+def borrar_entidad(obj, entidad)
+	res = Response.new
+	begin
+		obj.destroy
+	rescue => exception
+		obj.estado = false
+		unless obj.save!
+			res.set_status(HTTP_STATUS_CODE[:conflict])
+			res.add_msg("Error borrando #{entidad}.")
+			return res
+		end
+	end
+	
+	res.add_msg("#{entidad.capitalize} borrado correctamente.")
+	return res
+end
+
 # ---------------------------------------------------------------------------------------------------------
 def agregar_dependencias(obj, aParametros)
 	aParametros.each do |parametro|

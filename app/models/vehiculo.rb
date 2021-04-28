@@ -8,7 +8,7 @@ class Vehiculo < ApplicationRecord
 
   def otras_validaciones
     if !self.modelo_id.nil? && Modelo.find_by_id(self.modelo_id).nil?
-        @errors.add(:base, "El modelo especificado no existe.")
+        @errors.add(:base, "El modelo de vehiculo especificado no existe.")
     end
   end
   

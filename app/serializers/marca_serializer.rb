@@ -1,5 +1,6 @@
 class MarcaSerializer < ActiveModel::Serializer
 	attributes :id, :descripcion
+	attribute :estado, if: Proc.new { self.personalizar_parametros('estado') }
 
 	attribute :modelos, if: Proc.new { self.personalizar_parametros('modelos') }
 

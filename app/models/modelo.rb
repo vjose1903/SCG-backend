@@ -3,7 +3,12 @@ class Modelo < ApplicationRecord
 
   validates :descripcion, presence: { :message => "Debe de especificar una descripcion para el modelo." }, 
                           uniqueness: { scope: :marca_id, case_sensitive: false, :message => "El modelo << %{value} >> ya esta registrado en esta marca." } 
+  before_validation :init
 
+	def init
+    self.estado = true if self.id.nil?  
+  end
+  
   def self.crear_actualizar_modelo(params, is_save=false)
     res = Response.new
 
