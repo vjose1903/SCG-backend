@@ -3,7 +3,7 @@ class Marca < ApplicationRecord
   has_many :modelos, dependent: :destroy
 	accepts_nested_attributes_for :modelos, :allow_destroy => true
 
-  validates :descripcion, presence: { :message => "Debe de especificar una descripcion para la marca." }, uniqueness: { case_sensitive: false, :message => "Marca ya esta registrada." }
+  validates :descripcion, presence: { :message => "Debe de especificar una descripcion para la marca." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.marca", campo: :descripcion, valor: "%{value}")} }
 
 	before_validation :init
 
@@ -23,7 +23,6 @@ class Marca < ApplicationRecord
     marca.descripcion = params["descripcion"]
 
 		res_modelos = Modelo.validar_y_inicializar(params["modelos"] || [], marca["id"])
-		puts "res_modelos ==> ".red + "#{res_modelos.to_json}"
 		if res_modelos.status_valid
 			marca.modelos = res_modelos.get_data
 		else

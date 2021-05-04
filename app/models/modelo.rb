@@ -2,7 +2,7 @@ class Modelo < ApplicationRecord
   belongs_to :marca
 
   validates :descripcion, presence: { :message => "Debe de especificar una descripcion para el modelo." }, 
-                          uniqueness: { scope: :marca_id, case_sensitive: false, :message => "El modelo << %{value} >> ya esta registrado en esta marca." } 
+                          uniqueness: { scope: :marca_id, case_sensitive: false, :message => Proc.new{traducir(:ya_existe_un, entidad: "modelo.modelo", campo: :descripcion, valor: "%{value}")} } 
   before_validation :init
 
 	def init

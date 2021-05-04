@@ -30,11 +30,14 @@ class PersonasController < ApplicationController
 
 
   private
-  def set_persona 
-    @persona = Persona.find_by_id(params["id"])
-    if @persona.nil?
-      return Response.new(HTTP_STATUS_CODE[:not_found], nil, 'Persona no existe.').send_response self
-    end
+  def set_persona
+
+    params[:id] = params[:persona_id] if params[:persona_id] 
+
+    respuesta = self.set_entidad(Persona, params)
+    @persona = respuesta.get_data
+
+    return respuesta.send_response self if @persona.nil?
   end
 
   def get_parametros_opcionales 

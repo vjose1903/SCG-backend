@@ -41,20 +41,40 @@ class Response
 	end
 end
 # ---------------------------------------------------------------------------------------------------------
-def borrar_entidad(obj, entidad)
+
+def traducir(key, others=nil)
+	others_tem = {}
+	unless others.nil?
+		others.keys.each do |key_|
+			others_tem[key_] = (:valor == key_ or :otro_valor == key_) ? others[key_] : I18n.t(others[key_])
+		end
+		texto_traducido = I18n.t(key, others_tem)
+	else
+		texto_traducido = I18n.t(key)
+	end
+	
+	texto_traducido = texto_traducido.kind_of?(Array)? texto_traducido : [texto_traducido]  
+
+	return texto_traducido.join(" ")
+end
+
+
+# ---------------------------------------------------------------------------------------------------------
+def borrar_entidad(obj)
 	res = Response.new
+
 	begin
 		obj.destroy
 	rescue => exception
 		obj.estado = false
 		unless obj.save!
 			res.set_status(HTTP_STATUS_CODE[:conflict])
-			res.add_msg("Error borrando #{entidad}.")
+			res.add_msg("Error borrando #{obj.model_name.element}.")
 			return res
 		end
 	end
 	
-	res.add_msg("#{entidad.capitalize} borrado correctamente.")
+	res.add_msg(traducir(:borrar_un, enitdad: "#{obj.model_name.element.capitalize}"))
 	return res
 end
 

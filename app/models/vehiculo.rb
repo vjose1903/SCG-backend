@@ -2,16 +2,21 @@ class Vehiculo < ApplicationRecord
   belongs_to :persona
   belongs_to :modelo, optional: true
 
-  validates :placa, presence: { :message => "Debe de especificar una placa para este vehiculo." }
+  validates :placa, presence: { :message => "Debe de especificar una placa para este vehiculo." }, uniqueness: { case_sensitive: false, :message => "Este vehiculo le pertenece a otro usuario." }
 
+  before_validation :init
   before_validation :otras_validaciones
 
+  
   def otras_validaciones
     if !self.modelo_id.nil? && Modelo.find_by_id(self.modelo_id).nil?
-        @errors.add(:base, "El modelo de vehiculo especificado no existe.")
+      @errors.add(:base, "El modelo de vehiculo especificado no existe.")
     end
   end
   
+  def init
+    self.estado = true if self.id.nil?  
+  end
 
   def self.crear_actualizar_vehiculo(params, is_save=false)
     res = Response.new
@@ -39,7 +44,7 @@ class Vehiculo < ApplicationRecord
       res.add_msgs(vehiculo.errors.to_a)
       res.set_status(HTTP_STATUS_CODE[:conflict])
     end
-
+    
     return res
   end
 
@@ -61,6 +66,12 @@ class Vehiculo < ApplicationRecord
     res_valid.set_data array_valid
 
     return res_valid
+  end
+
+
+
+  def self.verificar_propietario_vehiculo(vehiculo_id, persona_id)
+    
   end
 
 

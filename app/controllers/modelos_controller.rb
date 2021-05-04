@@ -26,16 +26,18 @@ class ModelosController < ApplicationController
   end
 
   def destroy
-    resultado = borrar_entidad(@modelo, "modelo")
+    resultado = borrar_entidad(@modelo)
     return resultado.send_response self
   end
 
   private
   def set_modelo 
-    @modelo = Modelo.find_by_id(params["id"])
-    if @modelo.nil?
-      return Response.new(HTTP_STATUS_CODE[:not_found], nil, 'Modelo no existe.').send_response self
-    end
+    params[:id] = params[:modelo_id] if params[:modelo_id] 
+
+    respuesta = self.set_entidad(Modelo, params)
+    @modelo = respuesta.get_data
+
+    return respuesta.send_response self if @modelo.nil?
   end
 
   def get_parametros_opcionales 

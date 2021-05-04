@@ -16,8 +16,8 @@ class Persona < ActiveRecord::Base
   accepts_nested_attributes_for :vehiculos, :allow_destroy => true
 
   validates :nombre, presence: { :message => "Debe de especificar el nombre de la persona." }
-  validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este usuario." }
-  validates :email, presence: { :message => "Debe de especificar el email de la persona." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este email." }
+  validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :usuario, valor: "%{value}")} }
+  validates :email, presence: { :message => "Debe de especificar el email de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :email, valor: "%{value}")} }
 
   
   before_validation :init
@@ -95,7 +95,7 @@ class Persona < ActiveRecord::Base
   end
 
 
-  def self.agregar_dependencias(data, persona)
+  def self.agregar_dependencias(parametros, persona)
     array_depend = [
       {modelo: Tanda, key_object: 'tandas' },
       {modelo: DocumentoDeIdentidad, key_object: 'documentos_de_identidad' },
@@ -104,20 +104,20 @@ class Persona < ActiveRecord::Base
 
     array_depend.each do |dependencia|
 
-      if !data[dependencia[:key_object]].nil? && data[dependencia[:key_object]].kind_of?(Array)
-        res_depend = dependencia[:modelo].validar_y_inicializar(data[dependencia[:key_object]], persona)
+      if !parametros[dependencia[:key_object]].nil? && parametros[dependencia[:key_object]].kind_of?(Array)
+        res_depend = dependencia[:modelo].validar_y_inicializar(parametros[dependencia[:key_object]], persona)
 
         if res_depend.status_valid
-          # persona.dependencia[:key_object] = res_depend.get_data 
           yield dependencia[:key_object], res_depend.get_data if block_given?
-
         else
           return res_depend
         end
-
       end
     end
 
     return Response.new
   end  
+  
 end
+
+'./tesis.sh -r ng -i'

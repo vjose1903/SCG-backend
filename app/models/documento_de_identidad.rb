@@ -2,7 +2,7 @@ class DocumentoDeIdentidad < ApplicationRecord
   belongs_to :persona
 
   validates :tipo, presence: { :message => "Debe de especificar un tipo de documento de identidad." }, inclusion: { in: DOCUMENTOS_DE_IDENTIDAD_VALIDOS, message: "Tipo de documento de identidad no es permitido." }
-  validates :valor, presence: { :message => "Debe de especificar el valor del documento de identidad." }, uniqueness: { case_sensitive: false, :message => "Ya existe una persona registrada con este documento de identidad." }
+  validates :valor, presence: { :message => "Debe de especificar el valor del documento de identidad." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: "modelo.documento_de_identidad", valor: "%{value}")} }
 
 
   def self.crear_actualizar_documento(params, is_save=false)

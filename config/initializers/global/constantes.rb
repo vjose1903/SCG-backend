@@ -2,6 +2,24 @@ HTTP_STATUS_CODE = Rack::Utils::SYMBOL_TO_STATUS_CODE
 
 DIAS = ['Lunes', 'Martes', 'Miercoles', 'Jueves',  'Viernes', 'Sabado', 'Domingo']
 
+module Activo
+	def self.activar
+		return true
+	end
+
+	def self.desactivar
+		return false
+	end
+	def self.get_accion(accion)
+		case accion
+		when "activar" 
+			return self.activar
+		when "desactivar" 
+			return self.desactivar
+		end
+	end
+end
+
 module Documentos
 	CEDULA = 'C'
 	MATRICULA = 'M'
@@ -15,6 +33,25 @@ module Documentos
 	end
 end
 DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula]
+
+module Permisos
+	UNICO = 'u'
+	ILIMITADO = 'l'
+	PROPIETARIO = 'p'
+
+	def self.unico
+		return UNICO
+	end
+	
+	def self.ilimitado
+		return ILIMITADO
+	end
+
+	def self.propietario
+		return PROPIETARIO
+	end
+end
+PERMISOS_VALIDOS = [Permisos.unico, Permisos.ilimitado, Permisos.propietario]
 
 MARCAS_MODELOS = [
 {descripcion: "Acura",           modelos:["Integra", "MDX", "RDX", "T L", "TLX", "TSX"] },

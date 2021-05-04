@@ -28,17 +28,19 @@ class MarcasController < ApplicationController
   end
 
   def destroy
-    resultado = borrar_entidad(@marca, "marca")
+    resultado = borrar_entidad(@marca)
     return resultado.send_response self
   end
 
 
   private
   def set_marca 
-    @marca = Marca.find_by_id(params["id"])
-    if @marca.nil?
-      return Response.new(HTTP_STATUS_CODE[:not_found], nil, 'Marca no existe.').send_response self
-    end
+    params[:id] = params[:marca_id] if params[:marca_id] 
+
+    respuesta = self.set_entidad(Marca, params)
+    @marca = respuesta.get_data
+
+    return respuesta.send_response self if @marca.nil?
   end
   
   
