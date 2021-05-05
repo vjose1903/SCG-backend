@@ -13,5 +13,6 @@ rails generate scaffold permiso_vehicular persona:references vehiculo:references
 rails generate model movimiento_vehiculo permiso_vehicular:references tipo:string Hora_fecha:datetime
 
 rails generate serializer permiso_vehicular
+rails generate serializer vehiculo
 
 

@@ -4,7 +4,8 @@ class CreatePermisosVehiculares < ActiveRecord::Migration[5.2]
       t.references :persona, foreign_key: true
       t.references :vehiculo, foreign_key: true
       t.string :valor
-      t.string :descripcion
+      t.boolean :es_entrada
+      t.boolean :es_salida
       t.string :tipo
       t.boolean :activo
       t.boolean :estado

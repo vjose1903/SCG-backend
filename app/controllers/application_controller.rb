@@ -25,19 +25,4 @@ class ApplicationController < ActionController::API
         devise_parameter_sanitizer.permit(:account_update, keys: permits)
     end
 
-    # ---------------------------------------------------------------------------------------------------------
-    def set_entidad(modelo, params)
-        res = Response.new
-
-        entidad = modelo.find_by_id(params[:id])
-        unless entidad.nil?
-            res.set_data(entidad)
-        else
-            res.set_status(HTTP_STATUS_CODE[:not_found])
-            res.add_msg(traducir(:no_existe, entidad: "modelo.#{modelo.new.model_name.element}"))
-        end
-
-        return res
-    end
-
 end

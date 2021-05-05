@@ -1,5 +1,4 @@
 class Vehiculo < ApplicationRecord
-  belongs_to :persona
   belongs_to :modelo, optional: true
 
   validates :placa, presence: { :message => "Debe de especificar una placa para este vehiculo." }, uniqueness: { case_sensitive: false, :message => "Este vehiculo le pertenece a otro usuario." }
@@ -22,21 +21,22 @@ class Vehiculo < ApplicationRecord
     res = Response.new
 
     unless params["id"]
-      vehiculo = Vehiculo.new
+      vehiculo = Vehiculo.find_by_placa(params["placa"])
+      vehiculo = Vehiculo.new if vehiculo.nil?
     else
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
 
     vehiculo.modelo_id = params["modelo_id"]
-    vehiculo.placa = params["placa"]
+    vehiculo.placa = params["placa"].upcase
     vehiculo.comentario = params["comentario"]
     vehiculo.anio = params["anio"]
     vehiculo.color = params["color"]
     vehiculo.estado = params["estado"]
 
+
     vehiculo.valid?
 
-    vehiculo.errors.delete(:persona) if !is_save
 
     if vehiculo.errors.to_a.empty? && (!is_save || (is_save && vehiculo.save!))
       res.set_data(vehiculo)
@@ -44,15 +44,15 @@ class Vehiculo < ApplicationRecord
       res.add_msgs(vehiculo.errors.to_a)
       res.set_status(HTTP_STATUS_CODE[:conflict])
     end
-    
+
     return res
   end
 
   
-  def self.validar_y_inicializar(vehiculos, persona)
+  def self.validar_y_inicializar(vehiculos)
     res_valid = Response.new
 
-    array_valid = persona.id.nil? ? [] : persona.vehiculos.where({estado: false}).to_a
+    # array_valid = persona.id.nil? ? [] : persona.vehiculos.where({estado: false}).to_a // para cuando tienes algo que esta inhabilitado
 
     vehiculos.each do |vehiculo|
       res_temp = self.crear_actualizar_vehiculo(vehiculo)
@@ -67,12 +67,5 @@ class Vehiculo < ApplicationRecord
 
     return res_valid
   end
-
-
-
-  def self.verificar_propietario_vehiculo(vehiculo_id, persona_id)
-    
-  end
-
 
 end

@@ -51,7 +51,8 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
     t.bigint "persona_id"
     t.bigint "vehiculo_id"
     t.string "valor"
-    t.string "descripcion"
+    t.boolean "es_entrada"
+    t.boolean "es_salida"
     t.string "tipo"
     t.boolean "activo"
     t.boolean "estado"
@@ -110,7 +111,6 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
   end
 
   create_table "vehiculos", force: :cascade do |t|
-    t.bigint "persona_id"
     t.bigint "modelo_id"
     t.string "placa"
     t.string "comentario"
@@ -120,7 +120,6 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["modelo_id"], name: "index_vehiculos_on_modelo_id"
-    t.index ["persona_id"], name: "index_vehiculos_on_persona_id"
   end
 
   add_foreign_key "documentos_de_identidad", "personas"
@@ -130,5 +129,4 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
   add_foreign_key "tandas", "dias"
   add_foreign_key "tandas", "personas"
   add_foreign_key "vehiculos", "modelos"
-  add_foreign_key "vehiculos", "personas"
 end

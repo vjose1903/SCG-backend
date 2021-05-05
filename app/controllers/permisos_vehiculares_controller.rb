@@ -52,7 +52,7 @@ class PermisosVehicularesController < ApplicationController
     def set_permiso_vehicular
       params[:id] = params[:permiso_vehicular_id] if params[:permiso_vehicular_id] 
 
-      respuesta = self.set_entidad(PermisoVehicular, params)
+      respuesta = set_entidad(PermisoVehicular, params)
       @permiso_vehicular = respuesta.get_data
 
       return respuesta.send_response self if @permiso_vehicular.nil?

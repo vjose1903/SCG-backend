@@ -34,7 +34,7 @@ class ModelosController < ApplicationController
   def set_modelo 
     params[:id] = params[:modelo_id] if params[:modelo_id] 
 
-    respuesta = self.set_entidad(Modelo, params)
+    respuesta = set_entidad(Modelo, params)
     @modelo = respuesta.get_data
 
     return respuesta.send_response self if @modelo.nil?

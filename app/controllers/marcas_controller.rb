@@ -37,7 +37,7 @@ class MarcasController < ApplicationController
   def set_marca 
     params[:id] = params[:marca_id] if params[:marca_id] 
 
-    respuesta = self.set_entidad(Marca, params)
+    respuesta = set_entidad(Marca, params)
     @marca = respuesta.get_data
 
     return respuesta.send_response self if @marca.nil?

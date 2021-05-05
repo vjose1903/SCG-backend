@@ -12,16 +12,34 @@ class Persona < ActiveRecord::Base
   has_many :documentos_de_identidad, dependent: :destroy
   accepts_nested_attributes_for :documentos_de_identidad, :allow_destroy => true
 
-  has_many :vehiculos, dependent: :destroy
-  accepts_nested_attributes_for :vehiculos, :allow_destroy => true
-
   validates :nombre, presence: { :message => "Debe de especificar el nombre de la persona." }
   validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :usuario, valor: "%{value}")} }
   validates :email, presence: { :message => "Debe de especificar el email de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :email, valor: "%{value}")} }
 
   
-  before_validation :init
+  before_save :init
   before_validation :otras_validaciones
+
+  def initialize(arg)
+    siguiente_id = my_query("SELECT nextval('personas_id_seq')")[0]["nextval"]
+    puts "siguiente_id ==> " + "#{siguiente_id}"
+
+    obj_persona = arg
+    if obj_persona.nil?
+      obj_persona = {}
+      obj_persona["id"]  = siguiente_id.to_i
+      obj_persona["nombre"]  = "Invitado_#{siguiente_id}"
+      obj_persona["usuario"] = obj_persona["nombre"].downcase
+      obj_persona["password"] = "".random_password
+      obj_persona["password_confirmation"] = obj_persona["password"]
+      obj_persona["es_invitado"] = true
+      
+      puts "obj_persona ==> " + "#{obj_persona.to_json}"
+    end
+
+    super(obj_persona)
+
+	end
 
   def otras_validaciones
     if !self.es_estudiante && !self.es_invitado && !self.es_empleado
@@ -35,11 +53,12 @@ class Persona < ActiveRecord::Base
     end
   end
 
+
   def init
-    self.es_estudiante = false if self.es_estudiante.nil?  
-    self.es_invitado = false if self.es_invitado.nil?  
-    self.es_empleado = false if self.es_empleado.nil?  
-    self.estado = true if self.id.nil?  
+    self.es_estudiante = false if self.es_estudiante.nil?
+    self.es_invitado = false if self.es_invitado.nil?
+    self.es_empleado = false if self.es_empleado.nil?
+    self.estado = true if self.id.nil? 
   end
 
   def self.crear_actualizar_persona(params)
@@ -75,7 +94,6 @@ class Persona < ActiveRecord::Base
         
         persona.tandas = dependencia_data if key_object == 'tandas'
         persona.documentos_de_identidad = dependencia_data if key_object == 'documentos_de_identidad'
-        persona.vehiculos = dependencia_data if key_object == 'vehiculos'
       } 
       
       if res.status_valid && persona.save!
@@ -99,14 +117,13 @@ class Persona < ActiveRecord::Base
     array_depend = [
       {modelo: Tanda, key_object: 'tandas' },
       {modelo: DocumentoDeIdentidad, key_object: 'documentos_de_identidad' },
-      {modelo: Vehiculo, key_object: 'vehiculos' }
     ]
-
+    
     array_depend.each do |dependencia|
-
+      
       if !parametros[dependencia[:key_object]].nil? && parametros[dependencia[:key_object]].kind_of?(Array)
         res_depend = dependencia[:modelo].validar_y_inicializar(parametros[dependencia[:key_object]], persona)
-
+        
         if res_depend.status_valid
           yield dependencia[:key_object], res_depend.get_data if block_given?
         else
@@ -114,10 +131,36 @@ class Persona < ActiveRecord::Base
         end
       end
     end
-
+    
     return Response.new
   end  
+
+
+
+  def self.verificar_movimiento(parametros)
+    res = Response.new
+    no_existe_id_persona = parametros["id"].nil?
+    
+    persona = Persona.find_by_id(parametros["id"]) unless no_existe_id_persona
+
+    if no_existe_id_persona || persona.nil?
+      puts "CREANDO PERSONA".yellow
+      persona = Persona.new
+      persona["id"] = parametros["id"] unless no_existe_id_persona
+      persona.save! 
+    end
+
+    vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
+    vehiculo = vehiculo_find.get_data
+
+    if vehiculo.nil?
+      Vehiculo.crear_actualizar_vehiculo({placa: parametros["placa"]}, true)
+    end
+
+    return res
+
+  end  
+
+
   
 end
-
-'./tesis.sh -r ng -i'

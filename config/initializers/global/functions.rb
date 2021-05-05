@@ -1,4 +1,5 @@
 class Response
+	
 	def initialize(status_=HTTP_STATUS_CODE[:ok], data=nil,  msg_=[], parametros_opcionales=nil)
 		@res = {status:status_, data: data,  msg: msg_}
 		set_data(data, parametros_opcionales) if data && parametros_opcionales
@@ -40,6 +41,30 @@ class Response
 		controller.render json: @res.except(:status) , status: @res[:status]
 	end
 end
+
+# ---------------------------------------------------------------------------------------------------------
+
+def set_entidad(modelo, params, key="id")
+	res = Response.new
+	where = { "#{key}": params[key]}
+	entidad = modelo.where(where) 
+
+	unless entidad.length == 0
+			res.set_data(entidad[0])
+	else
+			res.set_status(HTTP_STATUS_CODE[:not_found])
+			res.add_msg(traducir(:no_existe, entidad: "modelo.#{modelo.new.model_name.element}"))
+	end
+
+	return res
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
+def my_query(query)
+  return ActiveRecord::Base.connection.exec_query(query)
+end
+
 # ---------------------------------------------------------------------------------------------------------
 
 def traducir(key, others=nil)
@@ -101,5 +126,10 @@ class String
 	def to_boolean
 		ActiveRecord::Type::Boolean.new.cast(self)
 	end
+	
+	def random_password
+		return (0...8).map { (65 + rand(26)).chr }.join
+	end
+		
 end
 # ---------------------------------------------------------------------------------------------------------

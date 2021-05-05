@@ -3,11 +3,17 @@ Rails.application.routes.draw do
     scope :v1 do
       resources :marcas
       resources :modelos
+      resources :vehiculos
+
       resources :permisos_vehiculares do 
         post ":accion", :to => "permisos_vehiculares#activar_desactivar_permiso"
       end
-
-      resources :personas
+      
+      resources :personas do
+        collection do
+          post "verificar_movimiento/:tipo", :to => "personas#verificar_movimiento"
+        end
+      end
 
       
       mount_devise_token_auth_for 'Persona', at: "auth", controllers: { sessions: "devise_token_auth/sessions",
