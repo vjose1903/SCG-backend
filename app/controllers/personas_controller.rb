@@ -23,7 +23,8 @@ class PersonasController < ApplicationController
     parametros = params
     puts "parametros ==> ".green + "#{parametros.to_json}"
     resultado = Persona.verificar_movimiento(parametros)
-    resultado.send_response(self)
+    puts "resultado ==> ".red + "#{resultado.to_json}"
+    resultado.send_response self
 
     
   end

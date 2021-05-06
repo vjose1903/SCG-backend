@@ -5,6 +5,8 @@ personas = [
   {
     "nombre": "Administrador",
     "usuario": "admin",
+    "uid": "admin",
+    "provider": "usuario",
     "apellido": "",
     "telefono": "(809)879-0161",
     "email": "vjose1903@outlook.es",

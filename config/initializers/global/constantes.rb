@@ -51,7 +51,57 @@ module Permisos
 		return PROPIETARIO
 	end
 end
+
 PERMISOS_VALIDOS = [Permisos.unico, Permisos.ilimitado, Permisos.propietario]
+
+
+module Codigo
+	CORRECTO = 'C00001'
+	PERSONA_SIN_PERMISO = 'E00001'
+	PERSONA_NO_IDENTIFICADA = 'E00002'
+	VEHICULO_NO_IDENTIFICADO = 'E00003'
+
+	def self.correcto
+		return CORRECTO
+	end
+	
+	def self.persona_no_identificada
+		return PERSONA_NO_IDENTIFICADA
+	end
+
+	def self.vehiculo_no_identificado
+		return VEHICULO_NO_IDENTIFICADO
+	end
+
+	def self.persona_sin_permiso
+		return PERSONA_SIN_PERMISO
+	end
+
+end
+
+CODIGOS_VALIDOS = [Codigo.correcto, Codigo.persona_no_identificada, Codigo.vehiculo_no_identificado, Codigo.persona_sin_permiso]
+
+class Movimiento
+	def initialize(tipo="entrada")
+		@tipo = tipo
+	end
+
+	def is_salida?
+		return @tipo == "salida"
+	end
+
+	def is_entrada?
+		return @tipo == "entrada"
+	end
+
+	def tipo
+		return @tipo == "entrada" ? "es_entrada" : "es_salida"
+	end
+
+
+
+end
+
 
 MARCAS_MODELOS = [
 {descripcion: "Acura",           modelos:["Integra", "MDX", "RDX", "T L", "TLX", "TSX"] },

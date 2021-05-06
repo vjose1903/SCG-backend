@@ -61,6 +61,6 @@ class PermisosVehicularesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def permiso_vehicular_params
-      params.require(:permiso_vehicular).permit(:persona_id, :vehiculo_id, :valor, :descripcion, :tipo, :activo, :estado)
+      params.require(:permiso_vehicular).permit(:persona_id, :vehiculo_id, :valor, :es_entrada, :es_salida, :tipo, :activo, :estado)
     end
 end

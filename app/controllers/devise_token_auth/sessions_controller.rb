@@ -14,20 +14,26 @@ module DeviseTokenAuth
       @res = Response.new
       # params[:usuario] = params[:email]
       persona = Persona.find_by_usuario(params['usuario'])
+
+      puts "persona ==> ".red + "#{persona.to_json}"
+      puts "params.keys ==> ".red + "#{params.keys.to_json}"
+      puts "resource_class.authentication_keys ==> ".yellow + "#{resource_class.authentication_keys.to_json}"
+      
     
       unless persona.nil?
-        params[:email] = persona.email
+        @resource = persona
       else
         return render_error_login
       end
 
       field = (params.keys.map(&:to_sym) & resource_class.authentication_keys).first
 
-      @resource = nil
+      puts "field ==> ".red + "#{field}"
+      
+      # @resource = nil
       if field
         q_value = get_case_insensitive_field_from_resource_params(field)
-
-        @resource = find_resource(field, q_value)
+        puts "q_value ==> ".red + "#{q_value}"
       end
 
       if !@resource.nil? and @resource[:estado] == "I"

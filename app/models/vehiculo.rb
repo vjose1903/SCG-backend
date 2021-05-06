@@ -6,6 +6,8 @@ class Vehiculo < ApplicationRecord
   before_validation :init
   before_validation :otras_validaciones
 
+  has_many :permisos_vehiculares
+
   
   def otras_validaciones
     if !self.modelo_id.nil? && Modelo.find_by_id(self.modelo_id).nil?
@@ -20,15 +22,21 @@ class Vehiculo < ApplicationRecord
   def self.crear_actualizar_vehiculo(params, is_save=false)
     res = Response.new
 
+    puts "params ==> ".red + "#{params.to_json}"
+
     unless params["id"]
       vehiculo = Vehiculo.find_by_placa(params["placa"])
+      puts "vehiculo ==> ".blue + "#{vehiculo}"
       vehiculo = Vehiculo.new if vehiculo.nil?
+      puts "vehiculo ==> ".yellow + "#{vehiculo.to_json}"
     else
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
-
+    
+    puts "params[placa].to_s.upcase ==> ".green + "#{params["placa"].upcase}"
+    
     vehiculo.modelo_id = params["modelo_id"]
-    vehiculo.placa = params["placa"].upcase
+    vehiculo.placa = params["placa"].to_s.upcase
     vehiculo.comentario = params["comentario"]
     vehiculo.anio = params["anio"]
     vehiculo.color = params["color"]

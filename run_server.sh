@@ -2,12 +2,16 @@
 
 green=$(tput setaf 2)
 red=$(tput setaf 1)
+white=$(tput setaf 7)
+yellow=$(tput setaf 3)
+cyan=$(tput setaf 6)
 
 OPTIONS="lpscet:r:"
 PRODUCTION='no'
 
 setVariable() {
-  echo "setVariable ...  production (${PRODUCTION})"
+  echo "${yellow}setVariable ...  production (${PRODUCTION})"
+  echo "${white} "
 
   export BACKEND_PORT="5432"
   export BACKEND_HOST="localhost"
@@ -17,7 +21,9 @@ setVariable() {
 }
 
 setNivel() {
-  echo "setNivel ... production (${PRODUCTION})"
+  echo "${yellow}setNivel ... production (${PRODUCTION})"
+  echo "${white} "
+
   if [ "$PRODUCTION" == "yes" ]; then
     export RAILS_ENV=production
     export RAILS_SERVE_STATIC_FILES=true
@@ -29,9 +35,12 @@ setNivel() {
 
 setRake() {
   plat=$OPTARG
-  echo "setRake ... ${plat}"
+  echo "${cyan}setRake ... ${plat}"
+  echo "${white} "
+
   if [ "$plat" == "reset" -o "$plat" == "drop" -o "$plat" == "create" -o "$plat" == "migrate" -o "$plat" == "seed" ]; then
     echo "${green}setRake ... encontrado"
+    echo "${white} "
     rails db:environment:set
     if [ "${plat}" == "reset" ]; then
       rake db:drop db:create db:migrate db:seed
@@ -40,6 +49,7 @@ setRake() {
     fi
   else
     echo "${red}setRake ... no encontrado"
+    echo "${white} "
   fi
 }
 

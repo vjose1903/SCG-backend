@@ -7,6 +7,12 @@ class PermisoVehicular < ApplicationRecord
 
   before_validation :init
 
+  def init
+    self.estado = true if self.id.nil? 
+    self.activo = true if self.id.nil? 
+  end
+
+  
   def is_activo?
     return self.activo
   end
@@ -20,10 +26,20 @@ class PermisoVehicular < ApplicationRecord
   end
 
 
-	def init
-    self.estado = true if self.id.nil? 
-    self.activo = true if self.id.nil? 
-  end
+  def initialize(arg)
+    siguiente_id = my_query("SELECT nextval('permisos_vehiculares_id_seq')")[0]["nextval"]
+
+    obj_permiso = arg
+    if obj_permiso.nil?
+      obj_permiso = {}
+      obj_permiso["id"] = siguiente_id.to_i
+      obj_permiso["es_entrada"] = true
+      obj_permiso["es_salida"] = true
+      obj_permiso["tipo"] = Permisos.unico
+    end
+
+    super(obj_permiso)
+	end
 
 
   def self.crear_actualizar_permiso(params, is_save=false)
@@ -37,8 +53,8 @@ class PermisoVehicular < ApplicationRecord
 
     permiso.persona_id = params["persona_id"]
     permiso.vehiculo_id = params["vehiculo_id"]
-    permiso.valor = "#{DateTime.now.to_i}^#{params["persona_id"]}^#{params["vehiculo_id"]}"
-    permiso.descripcion = params["descripcion"]
+    permiso.es_entrada = params["es_entrada"]
+    permiso.es_salida = params["es_salida"]
     permiso.tipo = params["tipo"]
     permiso.activo = params["activo"]
     permiso.estado = params["estado"]
