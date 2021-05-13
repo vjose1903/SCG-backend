@@ -5,6 +5,7 @@ class MovimientoVehiculo < ApplicationRecord
 
 
   # def self.crear_actualizar_movimiento(params, is_save=false)
+
   def self.crear_movimiento(params, is_save=false)
     puts "params ==> ".red + "#{params}"
     res = Response.new
@@ -30,4 +31,21 @@ class MovimientoVehiculo < ApplicationRecord
 
     return res
   end
+
+  def self.get_historial(params)
+    res = Response.new
+    historial = []
+    query={}
+    query_join={}
+
+    desde = params["desde"]
+    hasta = params["hasta"]
+
+    query_join['id'] = params["persona_id"]
+
+    query['fecha_equivalente'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
+
+    temp = MovimientoVehiculo.where(query).select("movimiento_vehiculos.*").joins(:personas).where(personas: query_join).order('movimiento_vehiculos.id ASC')
+  end
+
 end

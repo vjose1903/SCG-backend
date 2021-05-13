@@ -198,7 +198,7 @@ class Persona < ActiveRecord::Base
       
       
       movimiento_resultado = self.registrar_movimiento_vehiculo(movimiento, permiso)
-
+      
       unless movimiento_resultado.status_valid
         return movimiento_resultado
       end
@@ -207,14 +207,17 @@ class Persona < ActiveRecord::Base
       msg = movimiento.is_entrada? ? "Bienvenido" : "Vuelva pronto"
       res.add_msg("#{msg}: #{persona.nombre.split("_").join(" ")} #{persona.apellido}.")
       return res
-
+      
     end  
   end  
-
+  # ============================================================================================
+  # VERIFICAR PERSONA
+  # ============================================================================================
+  
   def self.verificar_persona_movimiento(parametros, movimiento)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
     no_existe_id_persona = parametros["id"].nil? || parametros["id"].to_i == 0
-
+    
     puts "no_existe_id_persona ==> ".yellow + "#{no_existe_id_persona}"
     
     if movimiento.is_salida? && no_existe_id_persona
@@ -245,6 +248,9 @@ class Persona < ActiveRecord::Base
     res.set_data(persona)
     return res
   end
+  # ============================================================================================
+  # VERIFICAR VEHICULO
+  # ============================================================================================
   
   def self.verificar_vehiculo_movimiento(parametros, movimiento)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
@@ -264,13 +270,17 @@ class Persona < ActiveRecord::Base
       end
       
       return result_vehiculo unless result_vehiculo.status_valid
-
+      
       vehiculo = result_vehiculo.get_data
     end
     res.set_status(HTTP_STATUS_CODE[:ok])
     res.set_data(vehiculo)
     return res
   end
+
+  # ============================================================================================
+  # VERIFICAR PERMISO
+  # ============================================================================================
   
   def self.verificar_permiso_movimiento(movimiento, persona, vehiculo)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
@@ -304,6 +314,10 @@ class Persona < ActiveRecord::Base
     return res
   end
   
+  # ============================================================================================
+  # REGISTRAR MOVIMIENTO
+  # ============================================================================================
+  
   def self.registrar_movimiento_vehiculo(movimiento, permiso)
     puts "-------- registrando el movimiento -------- ".red
     res = Response.new(HTTP_STATUS_CODE[:conflict])
@@ -315,11 +329,16 @@ class Persona < ActiveRecord::Base
     end
     
     return result_movimiento unless result_movimiento.status_valid
-
+    
     movimiento = result_movimiento.get_data
     
     res.set_status(HTTP_STATUS_CODE[:ok])
     res.set_data(movimiento)
     return res
   end
+
+  # ============================================================================================
+  # BUSCAR HISTORIAL DE MOVIMIENTOS
+  # ============================================================================================
+  
 end
