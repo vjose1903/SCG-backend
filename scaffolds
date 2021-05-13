@@ -9,8 +9,8 @@ rails generate model marca descripcion:string ✅
 rails generate model modelo marca:references descripcion:string ✅
 
 rails generate model vehiculo persona:references marca:references modelo:references placa:string comentario:string anio:integer color:string estado:boolean  ✅
-rails generate scaffold permiso_vehicular persona:references vehiculo:references valor:string descripcion:string tipo:string activo:boolean estado:boolean
-rails generate model movimiento_vehiculo permiso_vehicular:references tipo:string Hora_fecha:datetime
+rails generate scaffold permiso_vehicular persona:references vehiculo:references valor:string descripcion:string tipo:string activo:boolean estado:boolean ✅
+rails generate model movimiento_vehiculo permiso_vehicular:references tipo:string fecha_hora:datetime
 
 rails generate serializer permiso_vehicular
 rails generate serializer vehiculo

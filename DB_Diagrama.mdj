@@ -39,7 +39,7 @@
 									"font": "Arial;13;1",
 									"left": 416,
 									"top": 333,
-									"width": 185.2890625,
+									"width": 193.26171875,
 									"height": 13,
 									"text": "Persona"
 								},
@@ -66,7 +66,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 356,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -82,7 +82,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 371,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -98,7 +98,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 386,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -114,7 +114,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 401,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -130,7 +130,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 416,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -146,7 +146,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 431,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -162,7 +162,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 446,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -178,7 +178,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 461,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -194,7 +194,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 476,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -210,7 +210,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 491,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -226,7 +226,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 506,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										},
 										{
@@ -242,7 +242,7 @@
 											"font": "Arial;13;0",
 											"left": 421,
 											"top": 521,
-											"width": 175.2890625,
+											"width": 183.26171875,
 											"height": 13
 										}
 									],
@@ -250,7 +250,7 @@
 									"font": "Arial;13;0",
 									"left": 416,
 									"top": 351,
-									"width": 185.2890625,
+									"width": 193.26171875,
 									"height": 188
 								}
 							],
@@ -258,7 +258,7 @@
 							"font": "Arial;13;0",
 							"left": 416,
 							"top": 328,
-							"width": 185.2890625,
+							"width": 193.26171875,
 							"height": 211,
 							"nameLabel": {
 								"$ref": "AAAAAAF3+SXVQmsAE/Q="
@@ -424,7 +424,7 @@
 									"font": "Arial;13;1",
 									"left": 1056,
 									"top": 357,
-									"width": 164.39892578125,
+									"width": 217.85888671875,
 									"height": 13,
 									"text": "Movimiento_vehiculos"
 								},
@@ -451,7 +451,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 380,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -468,7 +468,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 347,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -484,7 +484,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 395,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -500,7 +500,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 410,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -516,7 +516,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 425,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -533,7 +533,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 392,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -550,7 +550,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 392,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										},
 										{
@@ -567,7 +567,7 @@
 											"font": "Arial;13;0",
 											"left": 1061,
 											"top": 392,
-											"width": 154.39892578125,
+											"width": 207.85888671875,
 											"height": 13
 										}
 									],
@@ -575,7 +575,7 @@
 									"font": "Arial;13;0",
 									"left": 1056,
 									"top": 375,
-									"width": 164.39892578125,
+									"width": 217.85888671875,
 									"height": 68
 								}
 							],
@@ -583,7 +583,7 @@
 							"font": "Arial;13;0",
 							"left": 1056,
 							"top": 352,
-							"width": 164.39892578125,
+							"width": 217.85888671875,
 							"height": 91,
 							"nameLabel": {
 								"$ref": "AAAAAAF3+SldmWthyFE="
@@ -612,7 +612,7 @@
 									"font": "Arial;13;1",
 									"left": 120,
 									"top": 277,
-									"width": 100.79541015625,
+									"width": 144.13720703125,
 									"height": 13,
 									"text": "Tanda"
 								},
@@ -639,7 +639,7 @@
 											"font": "Arial;13;0",
 											"left": 125,
 											"top": 300,
-											"width": 90.79541015625,
+											"width": 134.13720703125,
 											"height": 13
 										},
 										{
@@ -655,7 +655,7 @@
 											"font": "Arial;13;0",
 											"left": 125,
 											"top": 315,
-											"width": 90.79541015625,
+											"width": 134.13720703125,
 											"height": 13
 										},
 										{
@@ -671,7 +671,7 @@
 											"font": "Arial;13;0",
 											"left": 125,
 											"top": 330,
-											"width": 90.79541015625,
+											"width": 134.13720703125,
 											"height": 13
 										},
 										{
@@ -687,7 +687,7 @@
 											"font": "Arial;13;0",
 											"left": 125,
 											"top": 345,
-											"width": 90.79541015625,
+											"width": 134.13720703125,
 											"height": 13
 										},
 										{
@@ -703,7 +703,7 @@
 											"font": "Arial;13;0",
 											"left": 125,
 											"top": 360,
-											"width": 90.79541015625,
+											"width": 134.13720703125,
 											"height": 13
 										}
 									],
@@ -711,7 +711,7 @@
 									"font": "Arial;13;0",
 									"left": 120,
 									"top": 295,
-									"width": 100.79541015625,
+									"width": 144.13720703125,
 									"height": 83
 								}
 							],
@@ -719,7 +719,7 @@
 							"font": "Arial;13;0",
 							"left": 120,
 							"top": 272,
-							"width": 100.79541015625,
+							"width": 144.13720703125,
 							"height": 106,
 							"nameLabel": {
 								"$ref": "AAAAAAF3+SnnK2tuxbQ="
@@ -748,7 +748,7 @@
 									"font": "Arial;13;1",
 									"left": 112,
 									"top": 453,
-									"width": 104.41357421875,
+									"width": 147.75537109375,
 									"height": 13,
 									"text": "Dia"
 								},
@@ -775,7 +775,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 476,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										},
 										{
@@ -791,7 +791,7 @@
 											"font": "Arial;13;0",
 											"left": 117,
 											"top": 491,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										}
 									],
@@ -799,7 +799,7 @@
 									"font": "Arial;13;0",
 									"left": 112,
 									"top": 471,
-									"width": 104.41357421875,
+									"width": 147.75537109375,
 									"height": 38
 								}
 							],
@@ -807,7 +807,7 @@
 							"font": "Arial;13;0",
 							"left": 112,
 							"top": 448,
-							"width": 104.41357421875,
+							"width": 147.75537109375,
 							"height": 61,
 							"nameLabel": {
 								"$ref": "AAAAAAF3+Sn5SGt7rdc="
@@ -949,7 +949,7 @@
 										"$ref": "AAAAAAF3+SumZ2vO4Es="
 									},
 									"font": "Arial;13;0",
-									"left": 245,
+									"left": 288,
 									"top": 320,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -967,7 +967,7 @@
 								"$ref": "AAAAAAF3+SXVQmr/c0w="
 							},
 							"lineStyle": 2,
-							"points": "416:392;336:392;336:312;220:312",
+							"points": "416:392;336:392;336:312;263:312",
 							"nameLabel": {
 								"$ref": "AAAAAAF3+SumZ2vPT1k="
 							},
@@ -1414,7 +1414,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 664,
+									"left": 668,
 									"top": 379,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -1431,7 +1431,7 @@
 										"$ref": "AAAAAAF3+VxpR23Krc4="
 									},
 									"font": "Arial;13;0",
-									"left": 625,
+									"left": 633,
 									"top": 379,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -1466,7 +1466,7 @@
 								"$ref": "AAAAAAF3+SXVQmr/c0w="
 							},
 							"lineStyle": 2,
-							"points": "600:400;728:400",
+							"points": "608:400;728:400",
 							"nameLabel": {
 								"$ref": "AAAAAAF3+VxpR23L1/c="
 							},
@@ -1840,7 +1840,7 @@
 									"font": "Arial;13;1",
 									"left": 512,
 									"top": 133,
-									"width": 99.3544921875,
+									"width": 149.18994140625,
 									"height": 13,
 									"text": "Notificacion"
 								},
@@ -1868,7 +1868,7 @@
 											"font": "Arial;13;0",
 											"left": 517,
 											"top": 148,
-											"width": 89.3544921875,
+											"width": 139.18994140625,
 											"height": 13
 										},
 										{
@@ -1884,7 +1884,7 @@
 											"font": "Arial;13;0",
 											"left": 517,
 											"top": 158,
-											"width": 89.3544921875,
+											"width": 139.18994140625,
 											"height": 13
 										},
 										{
@@ -1900,7 +1900,7 @@
 											"font": "Arial;13;0",
 											"left": 517,
 											"top": 173,
-											"width": 89.3544921875,
+											"width": 139.18994140625,
 											"height": 13
 										},
 										{
@@ -1916,7 +1916,7 @@
 											"font": "Arial;13;0",
 											"left": 517,
 											"top": 188,
-											"width": 89.3544921875,
+											"width": 139.18994140625,
 											"height": 13
 										},
 										{
@@ -1932,7 +1932,7 @@
 											"font": "Arial;13;0",
 											"left": 517,
 											"top": 203,
-											"width": 89.3544921875,
+											"width": 139.18994140625,
 											"height": 13
 										},
 										{
@@ -1948,7 +1948,7 @@
 											"font": "Arial;13;0",
 											"left": 517,
 											"top": 218,
-											"width": 89.3544921875,
+											"width": 139.18994140625,
 											"height": 13
 										}
 									],
@@ -1956,7 +1956,7 @@
 									"font": "Arial;13;0",
 									"left": 512,
 									"top": 151,
-									"width": 99.3544921875,
+									"width": 149.18994140625,
 									"height": 85
 								}
 							],
@@ -1964,7 +1964,7 @@
 							"font": "Arial;13;0",
 							"left": 512,
 							"top": 128,
-							"width": 99.3544921875,
+							"width": 149.18994140625,
 							"height": 108,
 							"nameLabel": {
 								"$ref": "AAAAAAF4qXGys9hHZLA="
@@ -2074,7 +2074,7 @@
 									"font": "Arial;13;1",
 									"left": 520,
 									"top": 661,
-									"width": 104.41357421875,
+									"width": 147.75537109375,
 									"height": 13,
 									"text": "Marca"
 								},
@@ -2101,7 +2101,7 @@
 											"font": "Arial;13;0",
 											"left": 525,
 											"top": 684,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										},
 										{
@@ -2117,7 +2117,7 @@
 											"font": "Arial;13;0",
 											"left": 525,
 											"top": 699,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										}
 									],
@@ -2125,7 +2125,7 @@
 									"font": "Arial;13;0",
 									"left": 520,
 									"top": 679,
-									"width": 104.41357421875,
+									"width": 147.75537109375,
 									"height": 38
 								}
 							],
@@ -2133,7 +2133,7 @@
 							"font": "Arial;13;0",
 							"left": 520,
 							"top": 656,
-							"width": 104.41357421875,
+							"width": 147.75537109375,
 							"height": 61,
 							"nameLabel": {
 								"$ref": "AAAAAAF5Ey39zv1Axs0="
@@ -2162,7 +2162,7 @@
 									"font": "Arial;13;1",
 									"left": 520,
 									"top": 805,
-									"width": 104.41357421875,
+									"width": 147.75537109375,
 									"height": 13,
 									"text": "Modelo"
 								},
@@ -2189,7 +2189,7 @@
 											"font": "Arial;13;0",
 											"left": 525,
 											"top": 828,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										},
 										{
@@ -2205,7 +2205,7 @@
 											"font": "Arial;13;0",
 											"left": 525,
 											"top": 843,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										},
 										{
@@ -2221,7 +2221,7 @@
 											"font": "Arial;13;0",
 											"left": 525,
 											"top": 858,
-											"width": 94.41357421875,
+											"width": 137.75537109375,
 											"height": 13
 										}
 									],
@@ -2229,7 +2229,7 @@
 									"font": "Arial;13;0",
 									"left": 520,
 									"top": 823,
-									"width": 104.41357421875,
+									"width": 147.75537109375,
 									"height": 53
 								}
 							],
@@ -2237,7 +2237,7 @@
 							"font": "Arial;13;0",
 							"left": 520,
 							"top": 800,
-							"width": 104.41357421875,
+							"width": 147.75537109375,
 							"height": 76,
 							"nameLabel": {
 								"$ref": "AAAAAAF5Ey4bO/1NxgA="
@@ -2362,7 +2362,7 @@
 										"$ref": "AAAAAAF5EzeBYv4teDo="
 									},
 									"font": "Arial;13;0",
-									"left": 648,
+									"left": 692,
 									"top": 824,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -2397,7 +2397,7 @@
 								"$ref": "AAAAAAF5Ey4bO/1Mzr0="
 							},
 							"lineStyle": 2,
-							"points": "623:845;824:845;824:752",
+							"points": "667:845;824:845;824:752",
 							"nameLabel": {
 								"$ref": "AAAAAAF5EzeBYv4uF4M="
 							},
@@ -2407,20 +2407,6 @@
 							"headNameLabel": {
 								"$ref": "AAAAAAF5EzeBY/4wnFo="
 							}
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAF5OVXhv8+xzmU=",
-							"_parent": {
-								"$ref": "AAAAAAF3+SVoUWroIrE="
-							},
-							"fillColor": "#ffd8d8",
-							"font": "Arial;13;0",
-							"left": 608,
-							"top": 920,
-							"width": 145,
-							"height": 103,
-							"text": "hacer que los vehiculos se unan a las personas mediante el permiso y quitar la relacion directa con persina de vehiculo"
 						}
 					]
 				},
@@ -2580,6 +2566,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -2589,6 +2576,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Nombre",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2598,6 +2586,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Apellido",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2607,6 +2596,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Fecha_nacimiento",
+							"type": "date",
 							"length": 0
 						},
 						{
@@ -2616,6 +2606,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Usuario",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2625,6 +2616,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Contrasena",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2634,6 +2626,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Telefono",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2643,6 +2636,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Email",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2652,6 +2646,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "Direccion",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2661,6 +2656,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "es_estudiante",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -2670,6 +2666,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "es_Invitado",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -2679,6 +2676,7 @@
 								"$ref": "AAAAAAF3+SXVQmr9m0o="
 							},
 							"name": "es_empleado",
+							"type": "boolean",
 							"length": 0
 						}
 					]
@@ -2766,6 +2764,7 @@
 								"$ref": "AAAAAAF3+Shvt2sqHXY="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -2775,6 +2774,7 @@
 								"$ref": "AAAAAAF3+Shvt2sqHXY="
 							},
 							"name": "FileName",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2784,6 +2784,7 @@
 								"$ref": "AAAAAAF3+Shvt2sqHXY="
 							},
 							"name": "path",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2852,6 +2853,7 @@
 								"$ref": "AAAAAAF3+SldmWteq0U="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -2870,6 +2872,7 @@
 								"$ref": "AAAAAAF3+SldmWteq0U="
 							},
 							"name": "Permiso_vehicular_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -2879,6 +2882,7 @@
 								"$ref": "AAAAAAF3+SldmWteq0U="
 							},
 							"name": "Tipo",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -2888,6 +2892,7 @@
 								"$ref": "AAAAAAF3+SldmWteq0U="
 							},
 							"name": "Hora_fecha",
+							"type": "datetime",
 							"length": 0
 						},
 						{
@@ -2934,6 +2939,7 @@
 								"$ref": "AAAAAAF3+SnnK2tr+Ek="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -2943,6 +2949,7 @@
 								"$ref": "AAAAAAF3+SnnK2tr+Ek="
 							},
 							"name": "persona_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -2952,6 +2959,7 @@
 								"$ref": "AAAAAAF3+SnnK2tr+Ek="
 							},
 							"name": "Hora_inicio",
+							"type": "time",
 							"length": 0
 						},
 						{
@@ -2961,6 +2969,7 @@
 								"$ref": "AAAAAAF3+SnnK2tr+Ek="
 							},
 							"name": "Hora_fin",
+							"type": "time",
 							"length": 0
 						},
 						{
@@ -2970,6 +2979,7 @@
 								"$ref": "AAAAAAF3+SnnK2tr+Ek="
 							},
 							"name": "Dia_id",
+							"type": "integer",
 							"length": 0
 						}
 					]
@@ -3019,6 +3029,7 @@
 								"$ref": "AAAAAAF3+Sn5SGt4pQg="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3028,6 +3039,7 @@
 								"$ref": "AAAAAAF3+Sn5SGt4pQg="
 							},
 							"name": "Descripcion",
+							"type": "string",
 							"length": 0
 						}
 					]
@@ -3047,6 +3059,7 @@
 								"$ref": "AAAAAAF3+UFKUWyYY1M="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3056,6 +3069,7 @@
 								"$ref": "AAAAAAF3+UFKUWyYY1M="
 							},
 							"name": "persona_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3065,6 +3079,7 @@
 								"$ref": "AAAAAAF3+UFKUWyYY1M="
 							},
 							"name": "Tipo",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3074,6 +3089,7 @@
 								"$ref": "AAAAAAF3+UFKUWyYY1M="
 							},
 							"name": "Valor",
+							"type": "string",
 							"length": 0
 						}
 					]
@@ -3177,6 +3193,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3195,6 +3212,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "Persona_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3204,6 +3222,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "Vehiculo_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3213,6 +3232,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "Valor",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3222,6 +3242,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "es_salida",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -3231,6 +3252,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "es_entrada",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -3240,6 +3262,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "Tipo",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3249,6 +3272,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "Activo",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -3258,6 +3282,7 @@
 								"$ref": "AAAAAAF3+VKxR21yMjQ="
 							},
 							"name": "Estado",
+							"type": "boolean",
 							"length": 0
 						}
 					]
@@ -3334,7 +3359,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
-							"name": "Id",
+							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3344,6 +3370,7 @@
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
 							"name": "Modelo_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3353,6 +3380,7 @@
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
 							"name": "Anio",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3362,6 +3390,7 @@
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
 							"name": "Placa",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3371,6 +3400,7 @@
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
 							"name": "Comentario",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3380,6 +3410,7 @@
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
 							"name": "Color",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3389,6 +3420,7 @@
 								"$ref": "AAAAAAF3/bZXScNWLP0="
 							},
 							"name": "estado",
+							"type": "boolean",
 							"length": 0
 						}
 					]
@@ -3417,6 +3449,7 @@
 								"$ref": "AAAAAAF4qXGysthEweA="
 							},
 							"name": "persona_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3426,6 +3459,7 @@
 								"$ref": "AAAAAAF4qXGysthEweA="
 							},
 							"name": "contenido",
+							"type": "string",
 							"length": 0
 						},
 						{
@@ -3435,6 +3469,7 @@
 								"$ref": "AAAAAAF4qXGysthEweA="
 							},
 							"name": "estado",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -3444,6 +3479,7 @@
 								"$ref": "AAAAAAF4qXGysthEweA="
 							},
 							"name": "activo",
+							"type": "boolean",
 							"length": 0
 						},
 						{
@@ -3453,6 +3489,7 @@
 								"$ref": "AAAAAAF4qXGysthEweA="
 							},
 							"name": "tipo",
+							"type": "string",
 							"length": 0
 						}
 					]
@@ -3536,7 +3573,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF5Ey39x/09oUc="
 							},
-							"name": "id",
+							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3546,6 +3584,7 @@
 								"$ref": "AAAAAAF5Ey39x/09oUc="
 							},
 							"name": "Descripcion",
+							"type": "string",
 							"length": 0
 						}
 					]
@@ -3593,7 +3632,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF5Ey4bO/1KII4="
 							},
-							"name": "id",
+							"name": "ID",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3603,6 +3643,7 @@
 								"$ref": "AAAAAAF5Ey4bO/1KII4="
 							},
 							"name": "Marca_id",
+							"type": "integer",
 							"length": 0
 						},
 						{
@@ -3612,6 +3653,7 @@
 								"$ref": "AAAAAAF5Ey4bO/1KII4="
 							},
 							"name": "Descripcion",
+							"type": "string",
 							"length": 0
 						}
 					]

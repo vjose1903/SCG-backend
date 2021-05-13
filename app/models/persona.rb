@@ -144,6 +144,8 @@ class Persona < ActiveRecord::Base
       
       movimiento = Movimiento.new(parametros["tipo"])
       
+      
+      # ----- viendo si la persona existe  -----------------------------------------------------
 
       persona_resultado = self.verificar_persona_movimiento(parametros, movimiento)
       unless persona_resultado.status_valid
@@ -151,21 +153,26 @@ class Persona < ActiveRecord::Base
       end
       persona = persona_resultado.get_data
       
+      # ----- viendo si el vehiculo existe  ----------------------------------------------------
+
       vehiculo_resultado = self.verificar_vehiculo_movimiento(parametros, movimiento)
       unless vehiculo_resultado.status_valid
         return vehiculo_resultado
       end
       vehiculo = vehiculo_resultado.get_data
       
+      # ----- viendo si la persona tiene permiso  ----------------------------------------------
+
       permiso_resultado = self.verificar_permiso_movimiento(movimiento, persona, vehiculo)
-      puts "permiso_resultado ==> ".red + "#{permiso_resultado.to_json}"
+      
 
       unless permiso_resultado.status_valid
         return permiso_resultado
       end
-      permiso = permiso_resultado.get_data[0]
+      # permiso = permiso_resultado.get_data[0]
+      permiso = permiso_resultado.get_data
       
-      puts "permiso ==> ".red + "#{permiso.to_json}"
+      # ----- revisando si el vehiculo tiene propietario  -------------------------------------
 
       propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario})
       
@@ -173,16 +180,28 @@ class Persona < ActiveRecord::Base
         # Enviar notificacion al propietario
       end
       
+      # ----- inactivando el permiso si es unico ----------------------------------------------
+
       permiso[movimiento.tipo] = false if permiso.tipo == Permisos.unico
       permiso.activo = false if !permiso.es_entrada && !permiso.es_salida 
 
+      puts "permiso==> ".yellow + "#{permiso.to_json}"
+
       unless permiso.save!
+        puts "ERROR GUARDANDO PERMISO".red
         res.set_status(HTTP_STATUS_CODE[:conflict])
         res.add_msg("Error registrando el permiso de: #{parametros["tipo"]}.")
         return res
       end
       
-      # aqui genero el movimiento 
+      # ----- registrar el movimiento en la tabla de movimiento_vehiculo ----------------------
+      
+      
+      movimiento_resultado = self.registrar_movimiento_vehiculo(movimiento, permiso)
+
+      unless movimiento_resultado.status_valid
+        return movimiento_resultado
+      end
       
       res.set_data(persona)
       msg = movimiento.is_entrada? ? "Bienvenido" : "Vuelva pronto"
@@ -267,6 +286,7 @@ class Persona < ActiveRecord::Base
         return res
       end
       
+      puts "------ CREANDO PERMISO ------".red
       permiso = PermisoVehicular.new
       
       permiso["valor"] = "#{DateTime.now.to_i}^#{persona["id"]}^#{vehiculo["id"]}"
@@ -279,8 +299,27 @@ class Persona < ActiveRecord::Base
       
     end
     res.set_status(HTTP_STATUS_CODE[:ok])
+    puts "permiso ==> ".blue + "#{permiso.to_json}"
     res.set_data(permiso)
     return res
   end
   
+  def self.registrar_movimiento_vehiculo(movimiento, permiso)
+    puts "-------- registrando el movimiento -------- ".red
+    res = Response.new(HTTP_STATUS_CODE[:conflict])
+    
+    result_movimiento = MovimientoVehiculo.crear_movimiento({ "permiso_vehicular_id" => permiso["id"], "tipo" => movimiento.get_tipo }, true)
+    
+    unless result_movimiento.status_valid
+      raise ActiveRecord::Rollback
+    end
+    
+    return result_movimiento unless result_movimiento.status_valid
+
+    movimiento = result_movimiento.get_data
+    
+    res.set_status(HTTP_STATUS_CODE[:ok])
+    res.set_data(movimiento)
+    return res
+  end
 end

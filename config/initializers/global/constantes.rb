@@ -94,13 +94,29 @@ class Movimiento
 		return @tipo == "entrada"
 	end
 
+	def get_tipo
+		return @tipo == "entrada" ? MovimientoV.entrada : MovimientoV.salida
+	end
 	def tipo
 		return @tipo == "entrada" ? "es_entrada" : "es_salida"
 	end
-
-
-
 end
+
+module MovimientoV
+	
+	ENTRADA = 'e'
+	SALIDA = 's'
+
+	def self.entrada
+		return ENTRADA
+	end
+
+	def self.salida
+		return SALIDA
+	end
+end
+
+MOVIMIENTOS_VEHICULO_VALIDOS = [MovimientoV.entrada, MovimientoV.salida]
 
 
 MARCAS_MODELOS = [

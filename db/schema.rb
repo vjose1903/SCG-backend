@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_27_142653) do
+ActiveRecord::Schema.define(version: 2021_05_13_140644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,15 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
     t.datetime "updated_at", null: false
     t.index ["descripcion", "marca_id"], name: "index_modelos_on_descripcion_and_marca_id", unique: true
     t.index ["marca_id"], name: "index_modelos_on_marca_id"
+  end
+
+  create_table "movimiento_vehiculos", force: :cascade do |t|
+    t.bigint "permiso_vehicular_id"
+    t.string "tipo"
+    t.datetime "fecha_hora"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permiso_vehicular_id"], name: "index_movimiento_vehiculos_on_permiso_vehicular_id"
   end
 
   create_table "permisos_vehiculares", force: :cascade do |t|
@@ -124,6 +133,7 @@ ActiveRecord::Schema.define(version: 2021_04_27_142653) do
 
   add_foreign_key "documentos_de_identidad", "personas"
   add_foreign_key "modelos", "marcas"
+  add_foreign_key "movimiento_vehiculos", "permisos_vehiculares"
   add_foreign_key "permisos_vehiculares", "personas"
   add_foreign_key "permisos_vehiculares", "vehiculos"
   add_foreign_key "tandas", "dias"

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  permiso_vehicular: one
+  tipo: MyString
+  Hora_fecha: 2021-05-13 10:06:44
+
+two:
+  permiso_vehicular: two
+  tipo: MyString
+  Hora_fecha: 2021-05-13 10:06:44
