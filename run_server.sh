@@ -66,7 +66,7 @@ while getopts $OPTIONS opt; do
     ;;
   s)
     echo "la opcion -s"
-    rails s -b 0.0.0.0 --port $PORT_TESIS
+    rails s -b 0.0.0.0 --port $PORT_TESIS -d
     # rails s -b 0.0.0.0
 
     ;;

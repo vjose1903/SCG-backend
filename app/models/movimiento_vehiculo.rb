@@ -41,11 +41,11 @@ class MovimientoVehiculo < ApplicationRecord
     desde = params["desde"]
     hasta = params["hasta"]
 
-    query_join['id'] = params["persona_id"]
-
-    query['fecha_equivalente'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
-
-    temp = MovimientoVehiculo.where(query).select("movimiento_vehiculos.*").joins(:personas).where(personas: query_join).order('movimiento_vehiculos.id ASC')
+    query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
+    temp = MovimientoVehiculo.where(query).select("movimiento_vehiculos.*, personas.id as persona_id").joins(:permisos_vehiculares).joins("inner join personas on permisos_vehiculares.persona_id = #{params["persona_id"]}").order('movimiento_vehiculos.id ASC')
+    # temp = MovimientoVehiculo.where(query).order('movimiento_vehiculos.id ASC')
+    res.set_data(temp)
+    return res
   end
 
 end
