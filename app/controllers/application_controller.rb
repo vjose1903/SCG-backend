@@ -3,8 +3,14 @@ class ApplicationController < ActionController::API
 
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :validatePersonaIsLogging!, unless: :devise_controller?
+    before_action :select_idioma
 
     protected
+
+    def select_idioma
+        I18n.locale = I18n.default_locale
+        Rails.application.reloaders
+    end
 
     def validatePersonaIsLogging!
         unless persona_signed_in?

@@ -33,7 +33,8 @@ class PersonasController < ApplicationController
     parametros["persona_id"] = current_persona["id"]
     puts "current_persona ==> ".red + "#{current_persona.to_json}"
     puts "parametros ==> ".green + "#{parametros.to_json}"
-    resultado = MovimientoVehiculo.get_historial(parametros)
+    # resultado = MovimientoVehiculo.get_historial(parametros)
+    resultado = current_persona.get_historial(parametros)
     puts "resultado ==> ".red + "#{resultado.to_json}"
     resultado.send_response self
 

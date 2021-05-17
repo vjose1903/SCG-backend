@@ -6,6 +6,7 @@ class PermisoVehicular < ApplicationRecord
   validates :valor, presence: { :message => "El permiso vehicular no se registro de manera adecuada." }, uniqueness: { case_sensitive: false, :message => "Este permiso vehicular ya esta registrado." }
 
   before_validation :init
+  has_many :movimiento_vehiculos
 
   def init
     self.estado = true if self.id.nil? 

@@ -30,4 +30,58 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  ya_existe: &ya_existe "ya existe"
+  ya_existe_descripcion_un: &ya_existe_descripcion_un "%{entidad} registrado con el campo, %{campo} = %{valor}"
+  ya_existe_descripcion_una: &ya_existe_descripcion_una "%{entidad} registrada con el campo, %{campo} = %{valor}"
+
+  no_existe: "%{entidad} no existe."
+
+  borrar_un: "%{entidad} borrado correctamente."
+  borrar_una: "%{entidad} borrada correctamente."
+
+  ya_existe_un:
+    - *ya_existe
+    - "un"
+    - *ya_existe_descripcion_un
+
+  ya_existe_una:
+    - *ya_existe
+    - "una"
+    - *ya_existe_descripcion_una
+
+  modelo:
+    permiso_vehicular: "Permiso vehicular"
+    permiso_vehicular_p: "Permisos vehiculares"
+    vehiculo: "Vehiculo"
+    vehiculo_p: "Vehiculos"
+    modelo: "Modelo"
+    modelo_p: "Modelos"
+    marca: "Marca"
+    marca_p: "Marcas"
+    documento_de_identidad: "Documento de identidad"
+    documento_de_identidad_p: "Documentos de identidad"
+    tanda: "Tanda"
+    tanda_p: "Tandas"
+    dia: "Dia"
+    dia_p: "Dias"
+    persona: "Persona"
+    persona_p: "Personas"
+
+  errors:
+    format: "%{message}"
+    messages:
+      required: "%{attribute} debe existir"
+      blank: "" #"it cant be empty"
+      taken: "" #"it cant be empty"
+
+  activerecord:
+    errors:
+      models:
+        modelo:
+          attributes:
+            marca:
+              required: "Debe de especificar una marca."
+
+  usuario: "usuario"
+  email: "email"
+  descripcion: "descripcion"
