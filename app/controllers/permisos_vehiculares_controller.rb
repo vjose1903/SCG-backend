@@ -1,7 +1,6 @@
 class PermisosVehicularesController < ApplicationController
   before_action :set_permiso_vehicular, only: [:show, :update, :destroy, :activar_desactivar_permiso]
 
-
   def crear_actualizar_permiso
     parametros = permiso_vehicular_params
     parametros["id"] = params["id"] if params["id"]

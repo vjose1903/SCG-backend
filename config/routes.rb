@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         collection do
           post "verificar_movimiento/:tipo", :to => "personas#verificar_movimiento"
           get "get_historial", :to => "personas#get_historial"
+          get "get_vehiculos", :to => "personas#get_vehiculos"
         end
 
       end

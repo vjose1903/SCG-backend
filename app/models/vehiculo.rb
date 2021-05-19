@@ -15,25 +15,35 @@ class Vehiculo < ApplicationRecord
     end
   end
   
+  def verificar_propietario(current_persona, action)
+    permiso_propietario = self.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
+
+    vehiculo_has_propietario = permiso_propietario.length > 0
+    current_persona_is_propietario = permiso_propietario[0].persona_id == current_persona.id if vehiculo_has_propietario
+
+    if vehiculo_has_propietario
+      if action == "create" && !current_persona_is_propietario
+        @errors.add(:base, "La placa del vehiculo introducida ya está acosiada a otra persona.")
+      end
+      if action == "update" && !current_persona_is_propietario
+        @errors.add(:base, "El vehiculo que intenta modificar no le pertenece.")
+      end
+    end
+  end
+  
   def init
     self.estado = true if self.id.nil?  
   end
 
-  def self.crear_actualizar_vehiculo(params, is_save=false)
+  def self.crear_actualizar_vehiculo(params, is_save=false, action="create", current_persona)
     res = Response.new
-
-    puts "params ==> ".red + "#{params.to_json}"
 
     unless params["id"]
       vehiculo = Vehiculo.find_by_placa(params["placa"])
-      puts "vehiculo ==> ".blue + "#{vehiculo}"
       vehiculo = Vehiculo.new if vehiculo.nil?
-      puts "vehiculo ==> ".yellow + "#{vehiculo.to_json}"
     else
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
-    
-    puts "params[placa].to_s.upcase ==> ".green + "#{params["placa"].upcase}"
     
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.placa = params["placa"].to_s.upcase
@@ -41,11 +51,11 @@ class Vehiculo < ApplicationRecord
     vehiculo.anio = params["anio"]
     vehiculo.color = params["color"]
     vehiculo.estado = params["estado"]
-
-
+    
     vehiculo.valid?
-
-
+    
+    vehiculo.verificar_propietario(current_persona, action)
+    
     if vehiculo.errors.to_a.empty? && (!is_save || (is_save && vehiculo.save!))
       res.set_data(vehiculo)
     else

@@ -32,20 +32,4 @@ class MovimientoVehiculo < ApplicationRecord
     return res
   end
 
-  def self.get_historial(params)
-    res = Response.new
-    historial = []
-    query={}
-    query_join={}
-
-    desde = params["desde"]
-    hasta = params["hasta"]
-
-    query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
-    temp = MovimientoVehiculo.where(query).select("movimiento_vehiculos.*, personas.id as persona_id").joins(:permisos_vehiculares).joins("inner join personas on permisos_vehiculares.persona_id = #{params["persona_id"]}").order('movimiento_vehiculos.id ASC')
-    # temp = MovimientoVehiculo.where(query).order('movimiento_vehiculos.id ASC')
-    res.set_data(temp)
-    return res
-  end
-
 end

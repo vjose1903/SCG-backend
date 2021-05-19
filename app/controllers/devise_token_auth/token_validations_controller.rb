@@ -44,7 +44,8 @@ module DeviseTokenAuth
     end
 
     def render_validate_token_error
-      render_error(401, I18n.t('devise_token_auth.token_validations.invalid'))
+      return Response.new(HTTP_STATUS_CODE[:unauthorized], [], ['Tiempo limite de sesión agotado.']).send_response self
+      # render_error(401, I18n.t('devise_token_auth.token_validations.invalid'))
       # render json: { msg: "Token invalido!" }, status: 200
     end
   end

@@ -8,6 +8,8 @@ class Persona < ActiveRecord::Base
 
   has_many :permisos_vehiculares
   has_many :movimiento_vehiculos, through: :permisos_vehiculares
+  has_and_belongs_to_many :vehiculos, :join_table => :permisos_vehiculares
+
 
   has_many :tandas, dependent: :destroy
   accepts_nested_attributes_for :tandas, :allow_destroy => true
@@ -175,7 +177,7 @@ class Persona < ActiveRecord::Base
       
       # ----- revisando si el vehiculo tiene propietario  -------------------------------------
 
-      propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario})
+      propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
       
       if propietario.length > 0 && propietario[0].id != persona.id
         # Enviar notificacion al propietario
@@ -349,6 +351,21 @@ class Persona < ActiveRecord::Base
 
     query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
     res.set_data(self.movimiento_vehiculos.where(query))
+    return res
+  end
+
+  # ============================================================================================
+  # BUSCAR VEHICULOS
+  # ============================================================================================
+  def get_vehiculos(params)
+    res = Response.new
+    page = params["page"]
+    per_page = params["per_page"]
+    paginado = params["paginado"]
+
+    res.set_data(self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: true}))
+    
+
     return res
   end
   

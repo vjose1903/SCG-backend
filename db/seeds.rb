@@ -10,7 +10,7 @@ personas = [
     "apellido": "",
     "telefono": "(809)879-0161",
     "email": "vjose1903@outlook.es",
-    "fecha_nacimiento": "1998-19-03",
+    "fecha_nacimiento": "1998-03-19",
     "password": "1234567",
     "password_confirmation": "1234567",
     "estado": true,
