@@ -1,6 +1,7 @@
 class Vehiculo < ApplicationRecord
   belongs_to :modelo, optional: true
-
+  
+  validates :tipo_vehiculo, inclusion: { in: TIPOS_VEHICULOS, message: "Tipo de vehiculo no es permitido." }, :allow_nil => true
   validates :placa, presence: { :message => "Debe de especificar una placa para este vehiculo." }, uniqueness: { case_sensitive: false, :message => "Este vehiculo le pertenece a otro usuario." }
 
   before_validation :init
@@ -47,16 +48,18 @@ class Vehiculo < ApplicationRecord
     
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.placa = params["placa"].to_s.upcase
+    vehiculo.tipo_vehiculo = params["tipo_vehiculo"]
     vehiculo.comentario = params["comentario"]
     vehiculo.anio = params["anio"]
     vehiculo.color = params["color"]
-    vehiculo.estado = params["estado"]
+    vehiculo.estado = true
     
     vehiculo.valid?
     
     vehiculo.verificar_propietario(current_persona, action)
     
     if vehiculo.errors.to_a.empty? && (!is_save || (is_save && vehiculo.save!))
+      res.add_msg("vehiculo editado correctamente.")
       res.set_data(vehiculo)
     else
       res.add_msgs(vehiculo.errors.to_a)

@@ -4,6 +4,7 @@ class CreateVehiculos < ActiveRecord::Migration[5.2]
     create_table :vehiculos do |t|
       t.references :modelo, foreign_key: true, null: true
       t.string :placa
+      t.string :tipo_vehiculo
       t.string :comentario
       t.integer :anio
       t.string :color

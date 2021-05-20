@@ -34,10 +34,10 @@ class VehiculosController < ApplicationController
 
   private
   def set_vehiculo
-
     params[:id] = params[:vehiculo_id] if params[:vehiculo_id] 
+    key = params[:placa] ? "placa" : "id"
 
-    respuesta = set_entidad(Vehiculo, params, "placa")
+    respuesta = set_entidad(Vehiculo, params, key)
     @vehiculo = respuesta.get_data
 
     return respuesta.send_response self if @vehiculo.nil? && params["action"] != "verificar_placa"
@@ -52,6 +52,6 @@ class VehiculosController < ApplicationController
   end
 
   def vehiculo_params 
-    params.require(:vehiculo).permit(:modelo_id, :modelo, :placa, :comentario, :anio, :color, :estado)
+    params.require(:vehiculo).permit(:modelo_id, :modelo, :placa, :tipo_vehiculo, :comentario, :anio, :color, :estado)
   end
 end

@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2021_05_13_140644) do
   create_table "vehiculos", force: :cascade do |t|
     t.bigint "modelo_id"
     t.string "placa"
+    t.string "tipo_vehiculo"
     t.string "comentario"
     t.integer "anio"
     t.string "color"
