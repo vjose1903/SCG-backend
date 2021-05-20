@@ -20,8 +20,10 @@ class VehiculosController < ApplicationController
   def crear_actualizar_vehiculo
     parametros = vehiculo_params
     parametros["id"] = params["id"] if params["id"] 
+    parametros["id"] = params["id"] if params["id"]
+    crear_permiso = params["id"] ? false : true
     puts "params ==> ".red + "#{params}"
-    resultado = Vehiculo.crear_actualizar_vehiculo(parametros, true, params["action"], current_persona)
+    resultado = Vehiculo.crear_actualizar_vehiculo(parametros, true, crear_permiso, current_persona)
     resultado.send_response(self)
   end
 

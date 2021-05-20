@@ -20,8 +20,9 @@ class PermisoVehicular < ApplicationRecord
 
 
   def otras_validaciones(propietario_id)
-    if !self.vehiculo.nil? && self.vehiculo.persona_id != propietario_id
-      puts "self.vehiculo ==> ".red + "#{self.vehiculo.to_json}"
+    propietario = self.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
+
+    if propietario.length > 0 && propietario[0]["persona_id"] != propietario_id
       @errors.add(:base, "No puede prestar el vehiculo especificado, porque no le pertenece.")
     end
   end
@@ -51,17 +52,22 @@ class PermisoVehicular < ApplicationRecord
     else
       permiso = PermisoVehicular.find_by_id(params["id"])
     end
-
+    puts "params ==> ".yellow + "#{params["persona_id"]}"
+    permiso.valor = params["valor"] if params["valor"]
     permiso.persona_id = params["persona_id"]
     permiso.vehiculo_id = params["vehiculo_id"]
     permiso.es_entrada = params["es_entrada"]
     permiso.es_salida = params["es_salida"]
     permiso.tipo = params["tipo"]
-    permiso.activo = params["activo"]
-    permiso.estado = params["estado"]
+    permiso.activo = true
+    permiso.estado = true
+
+    # permiso.activo = params["activo"]
+    # permiso.estado = params["estado"]
     
     if permiso.valid?
       permiso.otras_validaciones(params["current_persona"].id)
+      puts "--------- PASO ---------".red
     end
 
     if permiso.errors.to_a.empty? && (!is_save || (is_save && permiso.save!))

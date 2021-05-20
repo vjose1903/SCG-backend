@@ -179,7 +179,7 @@ class Persona < ActiveRecord::Base
 
       propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
       
-      if propietario.length > 0 && propietario[0].id != persona.id
+      if propietario.length > 0 && propietario[0]['persona_id'] != persona.id
         # Enviar notificacion al propietario
       end
       
@@ -363,8 +363,9 @@ class Persona < ActiveRecord::Base
     per_page = params["per_page"]
     paginado = params["paginado"]
 
-    res.set_data(self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: true}))
-    
+    vehiculos = self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: true})
+
+    res.set_data(vehiculos, {})
 
     return res
   end

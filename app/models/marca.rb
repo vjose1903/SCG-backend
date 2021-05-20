@@ -22,14 +22,14 @@ class Marca < ApplicationRecord
 
     marca.descripcion = params["descripcion"]
 
-		res_modelos = Modelo.validar_y_inicializar(params["modelos"] || [], marca["id"])
-		if res_modelos.status_valid
-			marca.modelos = res_modelos.get_data
-		else
-			res = res_modelos
-		end
+	res_modelos = Modelo.validar_y_inicializar(params["modelos"] || [], marca["id"])
+	if res_modelos.status_valid
+		marca.modelos = res_modelos.get_data
+	else
+		res = res_modelos
+	end
 
-		marca_is_valid = marca.errors.to_a.empty? && marca.valid?
+	marca_is_valid = marca.errors.to_a.empty? && marca.valid?
     
     if marca_is_valid
 
