@@ -66,7 +66,8 @@ class PersonasController < ApplicationController
     return {
       tandas: params['tandas'] || false,
       documentos_de_identidad: params['documentos_de_identidad'] || false,
-      vehiculos: params['vehiculos'] || false
+      vehiculos: params['vehiculos'] || false,
+      all: true
     }
   end
 

@@ -14,6 +14,8 @@ class Response
   end
   
   def set_data(data, parametros_opcionales=nil)
+    puts " ------------ set_data ------------".yellow
+    puts "parametros_opcionales ==> ".red + "#{parametros_opcionales.to_json}"
     data = ActiveModelSerializers::SerializableResource.new(data, parametros_opcionales) unless parametros_opcionales.nil?
     @res[:data] = data
   end
@@ -43,6 +45,13 @@ class Response
 end
 
 # ---------------------------------------------------------------------------------------------------------
+
+def get_data_polimorfyc(type , id)
+  entidad = "#{type}".constantize
+  entidad.find_by_id(id)
+end
+
+# ---------------------------------------------------------------------------------------------------------
 class Array
   def my_paginate(page, per_page)
     items = self
@@ -56,9 +65,9 @@ class Array
   
     total_pag = (items.length.to_f / per_page.to_f).ceil
   
-    return { data: itemsPaginated, total_registros: items.length, total_paginas: total_pag }
+    return { items: itemsPaginated, total_registros: items.length, total_paginas: total_pag }
   end
-  end
+end
 
 # ---------------------------------------------------------------------------------------------------------
 

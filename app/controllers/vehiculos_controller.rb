@@ -1,5 +1,5 @@
 class VehiculosController < ApplicationController
-  before_action :set_vehiculo, only: [:update, :show, :verificar_placa]
+  before_action :set_vehiculo, only: [:update, :show, :get_permisos]
 
   def index
     return Response.new(nil, Vehiculo.all, nil, get_parametros_opcionales).send_response self
@@ -27,11 +27,10 @@ class VehiculosController < ApplicationController
     resultado.send_response(self)
   end
 
-  def verificar_placa
-
-    puts "@vehiculo ==> ".red + "#{@vehiculo.to_json}"
-    # resultado = Vehiculo.crear_actualizar_vehiculo(parametros, true)
-    # resultado.send_response(self)
+  def get_permisos
+    parametros = params
+    resultado = @vehiculo.get_permisos(parametros)
+    resultado.send_response self
   end
 
   private
@@ -45,12 +44,9 @@ class VehiculosController < ApplicationController
     return respuesta.send_response self if @vehiculo.nil? && params["action"] != "verificar_placa"
   end
 
+
   def get_parametros_opcionales 
-    return {
-      tandas: params['tandas'] || false,
-      documentos_de_identidad: params['documentos_de_identidad'] || false,
-      vehiculos: params['vehiculos'] || false
-    }
+    return { all:true }
   end
 
   def vehiculo_params 

@@ -6,9 +6,10 @@ class CreatePermisosVehiculares < ActiveRecord::Migration[5.2]
       t.string :valor
       t.boolean :es_entrada
       t.boolean :es_salida
+      t.boolean :salio
+      t.boolean :entro
       t.string :tipo
-      t.boolean :activo
-      t.boolean :estado
+      t.string :estado, default: 'A', null: false, limit: 1
 
       t.timestamps
     end

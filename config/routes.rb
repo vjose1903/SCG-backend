@@ -3,7 +3,9 @@ Rails.application.routes.draw do
     scope :v1 do
       resources :marcas
       resources :modelos
-      resources :vehiculos
+      resources :vehiculos do 
+        get "get_permisos", :to => "vehiculos#get_permisos"
+      end
 
       resources :permisos_vehiculares do 
         post ":accion", :to => "permisos_vehiculares#activar_desactivar_permiso"

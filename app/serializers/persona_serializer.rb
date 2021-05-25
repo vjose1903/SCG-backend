@@ -1,5 +1,19 @@
 class PersonaSerializer < ActiveModel::Serializer
-	attributes :id, :nombre, :apellido, :nombre_completo, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :estado 
+
+	attribute :id,                if: Proc.new {self.personalizar_parametros('id') || self.personalizar_parametros('all') }
+	attribute :nombre,            if: Proc.new {self.personalizar_parametros('nombre') || self.personalizar_parametros('all') }
+	attribute :apellido,          if: Proc.new {self.personalizar_parametros('apellido') || self.personalizar_parametros('all') }
+	attribute :nombre_completo,   if: Proc.new {self.personalizar_parametros('nombre_completo') || self.personalizar_parametros('all') }
+	attribute :fecha_nacimiento,  if: Proc.new {self.personalizar_parametros('fecha_nacimiento') || self.personalizar_parametros('all') }
+	attribute :usuario,           if: Proc.new {self.personalizar_parametros('usuario') || self.personalizar_parametros('all') }
+	attribute :telefono,          if: Proc.new {self.personalizar_parametros('telefono') || self.personalizar_parametros('all') }
+	attribute :email,             if: Proc.new {self.personalizar_parametros('email') || self.personalizar_parametros('all') }
+	attribute :direccion,         if: Proc.new {self.personalizar_parametros('direccion') || self.personalizar_parametros('all') }
+	attribute :estado,            if: Proc.new {self.personalizar_parametros('estado') || self.personalizar_parametros('all') }
+	attribute :es_estudiante,     if: Proc.new {self.personalizar_parametros('es_estudiante') || self.personalizar_parametros('all') }
+	attribute :es_invitado,       if: Proc.new {self.personalizar_parametros('es_invitado') || self.personalizar_parametros('all') }
+	attribute :es_empleado,       if: Proc.new {self.personalizar_parametros('es_empleado') || self.personalizar_parametros('all') }
+	attribute :estado,            if: Proc.new {self.personalizar_parametros('estado') || self.personalizar_parametros('all') }
 
 	# attribute :es_invitado, if: Proc.new { object.es_invitado }
 	# attribute :es_empleado, if: Proc.new { object.es_empleado }

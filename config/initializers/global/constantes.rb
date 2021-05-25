@@ -4,6 +4,7 @@ DIAS = ['Lunes', 'Martes', 'Miercoles', 'Jueves',  'Viernes', 'Sabado', 'Domingo
 
 TIPOS_VEHICULOS = [ 'pasola', 'motor', 'carro', 'jepeta', 'jeep', 'camioneta', 'camion', ]
 
+
 module Activo
 	def self.activar
 		return true
@@ -12,6 +13,7 @@ module Activo
 	def self.desactivar
 		return false
 	end
+
 	def self.get_accion(accion)
 		case accion
 		when "activar" 
@@ -34,6 +36,30 @@ module Documentos
 		return MATRICULA
 	end
 end
+
+module Estados
+	ACTIVO = 'A'
+	INACTIVO = 'I'
+	ELIMINADO = 'E'
+	USADO = 'U'
+
+	def self.usado
+		return USADO
+	end
+
+	def self.activo
+		return ACTIVO
+	end
+
+	def self.inactivo
+		return INACTIVO
+	end
+
+	def self.eliminado
+		return ELIMINADO
+	end
+end
+
 DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula]
 
 module Permisos
@@ -99,9 +125,11 @@ class Movimiento
 	def get_tipo
 		return @tipo == "entrada" ? MovimientoV.entrada : MovimientoV.salida
 	end
+
 	def tipo
 		return @tipo == "entrada" ? "es_entrada" : "es_salida"
 	end
+
 end
 
 module MovimientoV

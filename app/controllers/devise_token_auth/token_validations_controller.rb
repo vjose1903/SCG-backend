@@ -34,13 +34,15 @@ module DeviseTokenAuth
     protected
 
     def render_validate_token_success
-      datos = {
-        success: true,
-        data: resource_data(resource_json: @resource.token_validation_response),
-      }
+      puts "----------- render_validate_token_success ------------- ".red
+      res = Response.new
+      data = resource_data(resource_json: @resource.token_validation_response)
+
+      res.set_data(Persona.new(data), {documentos_de_identidad: true, tandas: true, all:true})
       # datos[:data][:configuration] = Configuracion.all.limit(1)[0]
       # datos[:data][:permisos] = User.getPermisos(datos[:data]['id'])
-      render json: datos
+      # render json: datos
+      res.send_response self
     end
 
     def render_validate_token_error

@@ -172,6 +172,7 @@ class Persona < ActiveRecord::Base
       unless permiso_resultado.status_valid
         return permiso_resultado
       end
+      
       # permiso = permiso_resultado.get_data[0]
       permiso = permiso_resultado.get_data
       
@@ -185,8 +186,7 @@ class Persona < ActiveRecord::Base
       
       # ----- inactivando el permiso si es unico ----------------------------------------------
 
-      permiso[movimiento.tipo] = false if permiso.tipo == Permisos.unico
-      permiso.activo = false if !permiso.es_entrada && !permiso.es_salida 
+      permiso.usar(movimiento)
 
       puts "permiso==> ".yellow + "#{permiso.to_json}"
 
@@ -289,7 +289,6 @@ class Persona < ActiveRecord::Base
     res = Response.new(HTTP_STATUS_CODE[:conflict])
     
     permiso = PermisoVehicular.where({ vehiculo_id: vehiculo["id"], persona_id: persona["id"], activo: true , "#{movimiento.tipo}": true})
-    puts "permiso ==> ".yellow + "#{permiso.to_json}"
     
     if permiso.length == 0
       if movimiento.is_salida?
@@ -299,7 +298,6 @@ class Persona < ActiveRecord::Base
         return res
       end
       
-      puts "------ CREANDO PERMISO ------".red
       permiso = PermisoVehicular.new
       
       permiso["valor"] = "#{DateTime.now.to_i}^#{persona["id"]}^#{vehiculo["id"]}"
@@ -311,8 +309,8 @@ class Persona < ActiveRecord::Base
       permiso.valid?
       
     end
+
     res.set_status(HTTP_STATUS_CODE[:ok])
-    puts "permiso ==> ".blue + "#{permiso.to_json}"
     res.set_data(permiso)
     return res
   end
@@ -363,10 +361,12 @@ class Persona < ActiveRecord::Base
     per_page = params["per_page"]
     paginado = params["paginado"]
 
-    vehiculos = self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: true})
+    vehiculos_temp = self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: true})
+    vehiculos = vehiculos_temp.to_a.my_paginate(page, per_page)
 
-    res.set_data(vehiculos, {})
+    vehiculos[:items] = ActiveModelSerializers::SerializableResource.new(vehiculos[:items], {all:true})
 
+    res.set_data(vehiculos)
     return res
   end
   

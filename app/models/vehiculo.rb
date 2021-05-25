@@ -117,5 +117,24 @@ class Vehiculo < ApplicationRecord
 
     return res_valid
   end
+  # ============================================================================================
+  # BUSCAR PERMISOS
+  # ============================================================================================
+  def get_permisos(params)
 
+    puts "vehiculo ==> ".red + "#{self.to_json}"
+    res = Response.new
+    page = params["page"]
+    per_page = params["per_page"]
+    paginado = params["paginado"]
+    
+    permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' and estado = true")
+    puts "permisos_temp ==> ".green + "#{permisos_temp.to_json}"
+
+    permisos = permisos_temp.to_a.my_paginate(page, per_page)
+    permisos[:items] = ActiveModelSerializers::SerializableResource.new(permisos[:items], {})
+
+    res.set_data(permisos)
+    return res
+  end
 end

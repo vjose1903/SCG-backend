@@ -33,7 +33,6 @@ module DeviseTokenAuth
       # @resource = nil
       if field
         q_value = get_case_insensitive_field_from_resource_params(field)
-        puts "q_value ==> ".red + "#{q_value}"
       end
 
       if !@resource.nil? and @resource[:estado] == "I"
@@ -121,7 +120,8 @@ module DeviseTokenAuth
     end
 
     def render_create_success
-      @res.set_data(resource_data(resource_json: @resource.token_validation_response))
+      data = resource_data(resource_json: @resource.token_validation_response)
+      @res.set_data(Persona.new(data), {documentos_de_identidad:true, tandas:true, all:true})
       @res.add_msg("Te damos la bienvenida #{@resource.nombre} #{@resource.apellido}")
 
       @res.send_response self
