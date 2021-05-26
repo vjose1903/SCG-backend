@@ -1,5 +1,5 @@
 class PermisoVehicularSerializer < ActiveModel::Serializer
-  attributes :valor, :es_entrada, :es_salida, :salio, :entro, :tipo, :activo, :estado, :persona, :vehiculo, :tipo_parsed
+  attributes :valor, :es_entrada, :es_salida, :tipo, :estado, :persona, :vehiculo, :tipo_parsed
   
 
   def tipo_parsed
@@ -17,4 +17,5 @@ class PermisoVehicularSerializer < ActiveModel::Serializer
   def vehiculo
 		ActiveModelSerializers::SerializableResource.new(object.vehiculo, {id:true})
 	end
+
 end

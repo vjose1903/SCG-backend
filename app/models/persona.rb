@@ -140,6 +140,26 @@ class Persona < ActiveRecord::Base
     return Response.new
   end  
 
+  # ============================================================================================
+  # HANDLE FILTER
+  # ============================================================================================
+  def self.handleFilter(parametros)
+    filter_key = parametros["filter_key"]
+    filter_value = parametros["filter_value"]
+
+    if filter_key == 'nombre'
+      return Persona.all.where("lower(nombre || ' ' || apellido) like lower('%#{filter_value}%')")
+    elsif filter_key == 'matricula'
+      return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.matricula , valor: filter_value})
+    elsif filter_key == 'cedula'
+      return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.cedula , valor: filter_value})
+    end
+
+  end  
+  
+  # ============================================================================================
+  # VERIFICAR MOVIMIENTO VEHICULAR
+  # ============================================================================================
 
   def self.verificar_movimiento(parametros)
     Persona.transaction do
@@ -178,7 +198,7 @@ class Persona < ActiveRecord::Base
       
       # ----- revisando si el vehiculo tiene propietario  -------------------------------------
 
-      propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
+      propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
       
       if propietario.length > 0 && propietario[0]['persona_id'] != persona.id
         # Enviar notificacion al propietario
@@ -361,7 +381,7 @@ class Persona < ActiveRecord::Base
     per_page = params["per_page"]
     paginado = params["paginado"]
 
-    vehiculos_temp = self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: true})
+    vehiculos_temp = self.vehiculos.where(permisos_vehiculares: {tipo: Permisos.propietario, estado: Estados.activo})
     vehiculos = vehiculos_temp.to_a.my_paginate(page, per_page)
 
     vehiculos[:items] = ActiveModelSerializers::SerializableResource.new(vehiculos[:items], {all:true})

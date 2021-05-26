@@ -62,9 +62,10 @@ ActiveRecord::Schema.define(version: 2021_05_13_140644) do
     t.string "valor"
     t.boolean "es_entrada"
     t.boolean "es_salida"
+    t.boolean "salio"
+    t.boolean "entro"
     t.string "tipo"
-    t.boolean "activo"
-    t.boolean "estado"
+    t.string "estado", limit: 1, default: "A", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["persona_id"], name: "index_permisos_vehiculares_on_persona_id"

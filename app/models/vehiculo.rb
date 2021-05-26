@@ -17,7 +17,7 @@ class Vehiculo < ApplicationRecord
   end
   
   def verificar_propietario(current_persona)
-    permiso_propietario = self.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
+    permiso_propietario = self.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
     puts "permiso_propietario==> ".yellow + "#{permiso_propietario.to_json}"
     vehiculo_has_propietario = permiso_propietario.length > 0
     puts "vehiculo_has_propietario==> ".green + "#{vehiculo_has_propietario}"
@@ -87,13 +87,16 @@ class Vehiculo < ApplicationRecord
   
   def self.crear_permiso(current_persona, vehiculo)
     params_permiso = {}
+
     params_permiso["valor"] = "#{DateTime.now.to_i}^#{current_persona["id"]}^#{vehiculo["id"]}"
     params_permiso["persona_id"] = current_persona["id"]
     params_permiso["vehiculo_id"] = vehiculo["id"]
     params_permiso["es_entrada"] = true
     params_permiso["es_salida"] = true
     params_permiso["tipo"] = Permisos.propietario
+    params_permiso["estado"] = Estados.activo
     params_permiso["current_persona"] = current_persona
+    
     res = PermisoVehicular.crear_actualizar_permiso(params_permiso, true)
 
     return res
@@ -124,11 +127,13 @@ class Vehiculo < ApplicationRecord
 
     puts "vehiculo ==> ".red + "#{self.to_json}"
     res = Response.new
+    estado = params["estado"] ? params["estado"] : Estados.activo
+
     page = params["page"]
     per_page = params["per_page"]
     paginado = params["paginado"]
     
-    permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' and estado = true")
+    permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' and estado = '#{estado}'")
     puts "permisos_temp ==> ".green + "#{permisos_temp.to_json}"
 
     permisos = permisos_temp.to_a.my_paginate(page, per_page)

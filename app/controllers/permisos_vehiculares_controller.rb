@@ -13,8 +13,9 @@ class PermisosVehicularesController < ApplicationController
   def activar_desactivar_permiso
     parametros = permiso_vehicular_params
     parametros["accion"] = params["accion"] if params["accion"]
-    
-    parametros["valor"] = Activo.get_accion(parametros["accion"]) if parametros["accion"]
+
+    parametros["estado"] = params["accion"] == "activar" ? Estados.activo : Estados.inactivo
+
     resultado = @permiso_vehicular.activar_desactivar_permiso(parametros)
     resultado.send_response self
   end

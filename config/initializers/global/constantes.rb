@@ -36,6 +36,7 @@ module Documentos
 		return MATRICULA
 	end
 end
+DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula]
 
 module Estados
 	ACTIVO = 'A'
@@ -60,12 +61,12 @@ module Estados
 	end
 end
 
-DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula]
+EstadosVehiculos = [ Estados.usado, Estados.activo, Estados.inactivo, Estados.eliminado, ]
 
 module Permisos
-	UNICO = 'u'
-	ILIMITADO = 'l'
-	PROPIETARIO = 'p'
+	UNICO = 'U'
+	ILIMITADO = 'L'
+	PROPIETARIO = 'P'
 
 	def self.unico
 		return UNICO
@@ -134,8 +135,8 @@ end
 
 module MovimientoV
 	
-	ENTRADA = 'e'
-	SALIDA = 's'
+	ENTRADA = 'E'
+	SALIDA = 'S'
 
 	def self.entrada
 		return ENTRADA

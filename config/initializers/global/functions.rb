@@ -14,8 +14,6 @@ class Response
   end
   
   def set_data(data, parametros_opcionales=nil)
-    puts " ------------ set_data ------------".yellow
-    puts "parametros_opcionales ==> ".red + "#{parametros_opcionales.to_json}"
     data = ActiveModelSerializers::SerializableResource.new(data, parametros_opcionales) unless parametros_opcionales.nil?
     @res[:data] = data
   end

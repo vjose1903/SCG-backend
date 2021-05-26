@@ -4,6 +4,7 @@ class PermisoVehicular < ApplicationRecord
 
   validates :tipo, presence: { :message => "Debe de especificar un tipo de permiso." }, inclusion: { in: PERMISOS_VALIDOS, message: "Tipo de permiso vehicular no es permitido." }
   validates :valor, presence: { :message => "El permiso vehicular no se registro de manera adecuada." }, uniqueness: { case_sensitive: false, :message => "Este permiso vehicular ya esta registrado." }
+  validates :estado, inclusion: { in: EstadosVehiculos, message: "Estado del permiso vehicular no es permitido." }
 
   has_many :movimiento_vehiculos
   
@@ -26,7 +27,7 @@ class PermisoVehicular < ApplicationRecord
 
 
   def otras_validaciones(propietario_id)
-    propietario = self.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: true})
+    propietario = self.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
 
     if propietario.length > 0 && propietario[0]["persona_id"] != propietario_id
       @errors.add(:base, "No puede prestar el vehiculo especificado, porque no le pertenece.")
@@ -67,9 +68,6 @@ class PermisoVehicular < ApplicationRecord
     permiso.es_salida = params["es_salida"]
     permiso.tipo = params["tipo"]
     permiso.estado = params["estado"]
-
-    # permiso.activo = params["activo"]
-    # permiso.estado = params["estado"]
     
     if permiso.valid?
       permiso.otras_validaciones(params["current_persona"].id)
@@ -106,9 +104,12 @@ class PermisoVehicular < ApplicationRecord
   end
 
 
-  def validate_activo(params)
-    self.errors.add(:base, "Este permiso ya se encuentra activo.") if self.is_activo? && params["valor"]
-    self.errors.add(:base, "Este permiso ya se encuentra inactivo.") if self.is_inactivo? && !params["valor"]
+  def validate_activo(params, action)
+    
+    self.errors.add(:base, "Este permiso ya se encuentra usado, no puede reactivarse.") if self.estado == Estados.usado
+    
+    self.errors.add(:base, "Este permiso ya se encuentra #{action}.") if self.estado == params["estado"]
+    
   end
 
   
@@ -122,9 +123,9 @@ class PermisoVehicular < ApplicationRecord
       res.set_status(HTTP_STATUS_CODE[:conflict])
     else
       
-      self.validate_activo(params)
+      self.validate_activo(params, action)
 
-      self.estado = params["valor"] ? Estados.activo : Estados.inactivo
+      self.estado = params["estado"]
       
       if self.errors.to_a.empty? && self.save!
         res.add_msg("Permiso #{action} correctamente.")

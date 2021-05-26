@@ -3,7 +3,16 @@ class PersonasController < ApplicationController
 
   
   def index
-    return Response.new(nil, Persona.all, nil, get_parametros_opcionales).send_response self
+    filter_key = params["filter_key"]
+    filter_value = params["filter_value"]
+
+    if filter_key && filter_value
+      personas = handleFilter
+      return Response.new(nil, personas, nil, get_parametros_opcionales).send_response self
+    else
+      return Response.new(nil, Persona.all, nil, get_parametros_opcionales).send_response self
+    end
+
   end
   
   def show
@@ -16,6 +25,10 @@ class PersonasController < ApplicationController
   
   def update
     crear_actualizar_persona
+  end
+  
+  def handleFilter
+    return Persona.handleFilter(params)
   end
   
   

@@ -22,7 +22,9 @@ class VehiculosController < ApplicationController
     parametros["id"] = params["id"] if params["id"] 
     parametros["id"] = params["id"] if params["id"]
     crear_permiso = params["id"] ? false : true
+
     puts "params ==> ".red + "#{params}"
+    
     resultado = Vehiculo.crear_actualizar_vehiculo(parametros, true, crear_permiso, current_persona)
     resultado.send_response(self)
   end
