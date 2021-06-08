@@ -14,10 +14,10 @@ personas = [
     "password": "1234567",
     "password_confirmation": "1234567",
     "estado": true,
-    "direccion": "Las carolinas calle #1 Edificio Airyn 1",
-    "es_estudiante": true,
+    "direccion": "Jeremias Res. Don Damian Edificio #3 Apto No.2",
+    "es_estudiante": false,
     "es_invitado": false,
-    "es_empleado": false,
+    "es_empleado": true,
   },
 ]
 

@@ -122,7 +122,7 @@ module DeviseTokenAuth
     def render_create_success
       data = resource_data(resource_json: @resource.token_validation_response)
       @res.set_data(Persona.new(data), {documentos_de_identidad:true, tandas:true, all:true})
-      @res.add_msg("Te damos la bienvenida #{@resource.nombre} #{@resource.apellido}")
+      # @res.add_msg("Te damos la bienvenida #{@resource.nombre} #{@resource.apellido}")
 
       @res.send_response self
     end
