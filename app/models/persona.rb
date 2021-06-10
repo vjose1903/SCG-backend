@@ -180,7 +180,6 @@ class Persona < ActiveRecord::Base
 
       vehiculo_resultado = self.verificar_vehiculo_movimiento(parametros, movimiento)
       unless vehiculo_resultado.status_valid
-        puts "verificar_vehiculo_movimiento ==> ".yellow + "#{verificar_vehiculo_movimiento}"
         return vehiculo_resultado
       end
       vehiculo = vehiculo_resultado.get_data
