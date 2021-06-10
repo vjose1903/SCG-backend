@@ -49,9 +49,12 @@ class Vehiculo < ApplicationRecord
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
     
+    
+    puts "vehiculo ==> ".red + "#{vehiculo.to_json}"
+    
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.placa = params["placa"].to_s.upcase
-    vehiculo.tipo_vehiculo = params["tipo_vehiculo"]
+    # vehiculo.tipo_vehiculo = params["tipo_vehiculo"]
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.comentario = params["comentario"]
     vehiculo.anio = params["anio"]
