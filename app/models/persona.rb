@@ -308,7 +308,7 @@ class Persona < ActiveRecord::Base
   def self.verificar_permiso_movimiento(movimiento, persona, vehiculo)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
     
-    permiso = PermisoVehicular.where({ vehiculo_id: vehiculo["id"], persona_id: persona["id"], activo: true , "#{movimiento.tipo}": true})
+    permiso = PermisoVehicular.where({ vehiculo_id: vehiculo["id"], persona_id: persona["id"], estado: Estados.activo, "#{movimiento.tipo}": true})
     
     if permiso.length == 0
       if movimiento.is_salida?
@@ -323,8 +323,7 @@ class Persona < ActiveRecord::Base
       permiso["valor"] = "#{DateTime.now.to_i}^#{persona["id"]}^#{vehiculo["id"]}"
       permiso.persona_id = persona["id"]
       permiso.vehiculo_id = vehiculo["id"]
-      permiso.activo = true
-      permiso.estado = true
+      permiso.estado = Estados.activo
       
       permiso.valid?
       
