@@ -180,9 +180,11 @@ class Persona < ActiveRecord::Base
 
       vehiculo_resultado = self.verificar_vehiculo_movimiento(parametros, movimiento)
       unless vehiculo_resultado.status_valid
+        puts "verificar_vehiculo_movimiento ==> ".yellow + "#{verificar_vehiculo_movimiento}"
         return vehiculo_resultado
       end
       vehiculo = vehiculo_resultado.get_data
+      puts "vehiculo==> ".red + "#{vehiculo.to_json}"
       
       # ----- viendo si la persona tiene permiso  ----------------------------------------------
 
@@ -279,6 +281,7 @@ class Persona < ActiveRecord::Base
   
   def self.verificar_vehiculo_movimiento(parametros, movimiento)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
+    puts "parametros ==> ".yellow + "#{parametros}"
     vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
     vehiculo = vehiculo_find.get_data
     
