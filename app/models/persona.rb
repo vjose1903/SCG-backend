@@ -184,7 +184,7 @@ class Persona < ActiveRecord::Base
         return vehiculo_resultado
       end
       vehiculo = vehiculo_resultado.get_data
-      puts "vehiculo==> ".red + "#{vehiculo.to_json}"
+      
       
       # ----- viendo si la persona tiene permiso  ----------------------------------------------
 

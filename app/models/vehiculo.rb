@@ -38,7 +38,7 @@ class Vehiculo < ApplicationRecord
     self.estado = true if self.id.nil?  
   end
 
-  def self.crear_actualizar_vehiculo(params, is_save=false, is_crear_permiso = false, current_persona)
+  def self.crear_actualizar_vehiculo(params, is_save=false, is_crear_permiso = false, current_persona=nil)
     res = Response.new
 
     unless params["id"]
@@ -50,11 +50,10 @@ class Vehiculo < ApplicationRecord
     end
     
     
-    puts "vehiculo ==> ".red + "#{vehiculo.to_json}"
     
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.placa = params["placa"].to_s.upcase
-    # vehiculo.tipo_vehiculo = params["tipo_vehiculo"]
+    vehiculo.tipo_vehiculo = params["tipo_vehiculo"]
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.comentario = params["comentario"]
     vehiculo.anio = params["anio"]
@@ -65,17 +64,21 @@ class Vehiculo < ApplicationRecord
     
     vehiculo.verificar_propietario(current_persona)
     
+    puts "vehiculo ==> ".red + "#{vehiculo.to_json}"
+    puts "params ----------> ".green + " #{params}"
+    puts "is_save ----------> ".yellow + " #{is_save}"
     if vehiculo.errors.to_a.empty? && (!is_save || (is_save && vehiculo.save!))
 
       if is_crear_permiso
         res_permiso = crear_permiso(current_persona, vehiculo) 
         puts "---------- LLEGOOOOO ----------".yellow
-
+        
         unless res_permiso.status_valid
           return res_permiso
         end
       end
-
+      
+      puts "---------- CREADO ----------".yellow
       action = params["id"] ? 'actualizado' : 'creado'
       res.add_msg("vehiculo #{action} correctamente.")
       res.set_data(vehiculo)
