@@ -196,6 +196,7 @@ class Persona < ActiveRecord::Base
       end
       
       permiso = permiso_resultado.get_data
+      puts "permiso==> ".blue + "#{permiso.to_json}"
       permiso = permiso.kind_of?(Array)? permiso[0] : permiso
 
       puts "permiso==> ".red + "#{permiso.to_json}"
@@ -212,8 +213,6 @@ class Persona < ActiveRecord::Base
       # ----- inactivando el permiso si es unico ----------------------------------------------
 
       permiso.usar(movimiento)
-
-      puts "permiso==> ".yellow + "#{permiso.to_json}"
 
       unless permiso.save!
         puts "ERROR GUARDANDO PERMISO".red
