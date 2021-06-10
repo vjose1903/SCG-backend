@@ -195,8 +195,10 @@ class Persona < ActiveRecord::Base
       
       # permiso = permiso_resultado.get_data[0]
       permiso = permiso_resultado.get_data
+      puts "permiso==> ".red + "#{permiso.to_json}"
       
       # ----- revisando si el vehiculo tiene propietario  -------------------------------------
+
 
       propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
       
