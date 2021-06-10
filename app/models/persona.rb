@@ -196,7 +196,9 @@ class Persona < ActiveRecord::Base
       end
       
       permiso = permiso_resultado.get_data
+
       puts "permiso==> ".blue + "#{permiso.to_json}"
+
       permiso = permiso.kind_of?(Array)? permiso[0] : permiso
 
       puts "permiso==> ".red + "#{permiso.to_json}"
@@ -314,6 +316,7 @@ class Persona < ActiveRecord::Base
     res = Response.new(HTTP_STATUS_CODE[:conflict])
     
     permiso = PermisoVehicular.where({ vehiculo_id: vehiculo["id"], persona_id: persona["id"], estado: Estados.activo, "#{movimiento.tipo}": true})
+    permiso = permiso.to_a
     
     if permiso.length == 0
       if movimiento.is_salida?
