@@ -195,8 +195,9 @@ class Persona < ActiveRecord::Base
         return permiso_resultado
       end
       
-      # permiso = permiso_resultado.get_data[0]
       permiso = permiso_resultado.get_data
+      permiso = permiso.kind_of?(Array)? permiso[0] : permiso
+
       puts "permiso==> ".red + "#{permiso.to_json}"
       
       # ----- revisando si el vehiculo tiene propietario  -------------------------------------
