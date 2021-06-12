@@ -49,10 +49,10 @@ class Vehiculo < ApplicationRecord
     puts " . "
     puts "-------- NO HAY ID -------- ".red unless params["id"]
     unless params["id"]
-      
+
       puts "params[placa] ==> ".red + "#{params["placa"]}"
 
-      vehiculo = Vehiculo.find_by_placa(params["placa"])
+      vehiculo = Vehiculo.find_by_placa(params["placa"].upcase)
       puts " ------ CARRO YA EXISTE ------".red unless vehiculo.nil?
       vehiculo = Vehiculo.new if vehiculo.nil?
     else
