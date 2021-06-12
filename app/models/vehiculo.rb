@@ -40,7 +40,13 @@ class Vehiculo < ApplicationRecord
 
   def self.crear_actualizar_vehiculo(params, is_save=false, is_crear_permiso = false, current_persona=nil)
     res = Response.new
-
+    puts " . "
+    puts " . "
+    puts " . "
+    puts "params ==> ".red + "#{params}"
+    puts " . "
+    puts " . "
+    puts " . "
     unless params["id"]
       vehiculo = Vehiculo.find_by_placa(params["placa"])
       puts " ------ CARRO YA EXISTE ------".red unless vehiculo.nil?
@@ -49,6 +55,7 @@ class Vehiculo < ApplicationRecord
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
     
+    puts "vehiculo ==> ".yellow + "#{vehiculo}"
     
     
     vehiculo.modelo_id = params["modelo_id"]
