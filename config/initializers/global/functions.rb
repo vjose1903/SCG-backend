@@ -3,6 +3,7 @@ class Response
   def initialize(status_=HTTP_STATUS_CODE[:ok], data=nil,  msg_=[], parametros_opcionales=nil)
     @res = {status:status_, data: data,  msg: msg_}
     set_data(data, parametros_opcionales) if data && parametros_opcionales
+    send_status(false)
   end
   
   def set_status(status)
@@ -22,6 +23,10 @@ class Response
     !@res[:data].nil?
   end
 
+  def send_status(bool)
+    @sendStatus = bool
+  end
+
   def get_data()
     @res[:data]
   end
@@ -38,7 +43,10 @@ class Response
   
   def send_response(controller, parametros_opcionales=nil)
     set_data(@res[:data], parametros_opcionales) if @res[:data] && parametros_opcionales
-    controller.render json: @res.except(:status) , status: @res[:status]
+
+    body = @sendStatus ? @res : @res.except(:status)
+    controller.render json: body, status: @res[:status] 
+    
   end
 end
 
