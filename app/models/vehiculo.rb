@@ -92,10 +92,12 @@ class Vehiculo < ApplicationRecord
       puts "---------- CREADO ----------".yellow
       action = params["id"] ? 'actualizado' : 'creado'
       res.add_msg("vehiculo #{action} correctamente.")
+      vehiculo["status"] = HTTP_STATUS_CODE[:ok]
       res.set_data(vehiculo)
     else
       res.add_msgs(vehiculo.errors.to_a)
       res.set_status(HTTP_STATUS_CODE[:conflict])
+      res.set_data({status:HTTP_STATUS_CODE[:conflict]})
     end
 
     return res
