@@ -164,7 +164,7 @@ class Persona < ActiveRecord::Base
   def self.verificar_movimiento(parametros)
     Persona.transaction do
       res = Response.new
-      
+      res.send_status(true)
       movimiento = Movimiento.new(parametros["tipo"])
       
       
@@ -244,12 +244,14 @@ class Persona < ActiveRecord::Base
   
   def self.verificar_persona_movimiento(parametros, movimiento)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
+    res.send_status(true)
     no_existe_id_persona = parametros["id"].nil? || parametros["id"].to_i == 0
     
     puts "no_existe_id_persona ==> ".yellow + "#{no_existe_id_persona}"
     
     if movimiento.is_salida? && no_existe_id_persona
       res.set_data({codigo: Codigo.persona_no_identificada})
+      res.send_status(true)
       res.add_msg("No tiene permiso para salir en este vehiculo.")
       # Enviar notificacion al propietario
       return res
@@ -273,6 +275,7 @@ class Persona < ActiveRecord::Base
       end
     end
     res.set_status(HTTP_STATUS_CODE[:ok])
+    
     res.set_data(persona)
     return res
   end
@@ -282,6 +285,7 @@ class Persona < ActiveRecord::Base
   
   def self.verificar_vehiculo_movimiento(parametros, movimiento)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
+    res.send_status(true)
     puts "parametros ==> ".yellow + "#{parametros}"
     vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
     vehiculo = vehiculo_find.get_data
@@ -304,6 +308,7 @@ class Persona < ActiveRecord::Base
     end
     res.set_status(HTTP_STATUS_CODE[:ok])
     res.set_data(vehiculo)
+    
     return res
   end
 
@@ -313,7 +318,7 @@ class Persona < ActiveRecord::Base
   
   def self.verificar_permiso_movimiento(movimiento, persona, vehiculo)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
-    
+    res.send_status(true)
     permiso = PermisoVehicular.where({ vehiculo_id: vehiculo["id"], persona_id: persona["id"], estado: Estados.activo, "#{movimiento.tipo}": true})
     permiso = permiso.to_a
     
@@ -348,7 +353,7 @@ class Persona < ActiveRecord::Base
   def self.registrar_movimiento_vehiculo(movimiento, permiso)
     puts "-------- registrando el movimiento -------- ".red
     res = Response.new(HTTP_STATUS_CODE[:conflict])
-    
+    res.send_status(true)
     result_movimiento = MovimientoVehiculo.crear_movimiento({ "permiso_vehicular_id" => permiso["id"], "tipo" => movimiento.get_tipo }, true)
     
     unless result_movimiento.status_valid
