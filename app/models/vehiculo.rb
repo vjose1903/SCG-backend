@@ -55,7 +55,7 @@ class Vehiculo < ApplicationRecord
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
     
-    puts "vehiculo ==> ".yellow + "#{vehiculo}"
+    puts "vehiculo ==> ".yellow + "#{vehiculo.to_json}"
     
     
     vehiculo.modelo_id = params["modelo_id"]
@@ -74,11 +74,11 @@ class Vehiculo < ApplicationRecord
     puts "vehiculo ==> ".red + "#{vehiculo.to_json}"
     puts "params ----------> ".green + " #{params}"
     puts "is_save ----------> ".yellow + " #{is_save}"
+    puts "vehiculo.errors.to_a ----------> ".yellow + " #{vehiculo.errors.to_a}"
     if vehiculo.errors.to_a.empty? && (!is_save || (is_save && vehiculo.save!))
 
       if is_crear_permiso
-        res_permiso = crear_permiso(current_persona, vehiculo) 
-        puts "---------- LLEGOOOOO ----------".yellow
+        res_permiso = crear_permiso(current_persona, vehiculo)
         
         unless res_permiso.status_valid
           return res_permiso
