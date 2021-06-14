@@ -51,9 +51,9 @@ class Vehiculo < ApplicationRecord
     unless params["id"]
 
       puts "params[placa] ==> ".red + "#{params["placa"]}"
-
-      vehiculo = Vehiculo.find_by_placa(params["placa"].upcase)
-      puts " ------ CARRO YA EXISTE ------".red unless vehiculo.nil?
+      if params["placa"]
+        vehiculo = Vehiculo.find_by_placa(params["placa"].upcase)
+      end
       vehiculo = Vehiculo.new if vehiculo.nil?
     else
       vehiculo = Vehiculo.find_by_id(params["id"])
@@ -152,7 +152,6 @@ class Vehiculo < ApplicationRecord
     paginado = params["paginado"]
     
     permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' and estado = '#{estado}'")
-    puts "permisos_temp ==> ".green + "#{permisos_temp.to_json}"
 
     permisos = permisos_temp.to_a.my_paginate(page, per_page)
     permisos[:items] = ActiveModelSerializers::SerializableResource.new(permisos[:items], {})

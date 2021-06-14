@@ -1,12 +1,14 @@
 class PermisoVehicularSerializer < ActiveModel::Serializer
-  attributes :valor, :es_entrada, :es_salida, :tipo, :estado, :persona, :vehiculo, :tipo_parsed
+  attributes :id, :valor, :es_entrada, :es_salida, :tipo, :estado, :persona, :vehiculo, :tipo_parsed
   
 
   def tipo_parsed
-		tipo = '' 
-    tipo += 'Entrada' if object.es_entrada 
-    tipo += ' / ' if tipo.length > 0
-    tipo += 'Salida' if object.es_salida 
+    tipo_ = []
+    [{'bool'=> object.es_entrada, 'key'=> 'Entrada'}, {'bool'=> object.es_salida, 'key'=> 'Salida'}].each do |tipo|
+      tipo_.push(tipo['key']) if tipo['bool']
+    end
+
+		tipo = tipo_.join(" / ")
     return tipo
 	end
 

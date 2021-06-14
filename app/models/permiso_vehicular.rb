@@ -31,6 +31,11 @@ class PermisoVehicular < ApplicationRecord
 
     if propietario.length > 0 && propietario[0]["persona_id"] != propietario_id
       @errors.add(:base, "No puede prestar el vehiculo especificado, porque no le pertenece.")
+      return 
+    end
+
+    if self.movimiento_vehiculos.length > 0
+      @errors.add(:base, "No se puede actulizar, El permiso ya há sido utilizado!!!.")
     end
   end
 
@@ -61,7 +66,7 @@ class PermisoVehicular < ApplicationRecord
       permiso = PermisoVehicular.find_by_id(params["id"])
     end
 
-    permiso.valor = params["valor"] if params["valor"]
+    permiso.valor = permiso.formarValorPermiso(params)
     permiso.persona_id = params["persona_id"]
     permiso.vehiculo_id = params["vehiculo_id"]
     permiso.es_entrada = params["es_entrada"]
@@ -71,10 +76,11 @@ class PermisoVehicular < ApplicationRecord
     
     if permiso.valid?
       permiso.otras_validaciones(params["current_persona"].id)
-      puts "--------- PASO ---------".red
     end
 
     if permiso.errors.to_a.empty? && (!is_save || (is_save && permiso.save!))
+      action = params["id"] ? 'actualizado' : 'creado'
+      res.add_msg("Permiso #{action} correctamente.")
       res.set_data(permiso)
     else
       res.add_msgs(permiso.errors.to_a)
@@ -82,6 +88,16 @@ class PermisoVehicular < ApplicationRecord
     end
 
     return res
+  end
+
+  def formarValorPermiso(params )
+
+    if params["valor"]
+      return params["valor"] 
+    end
+
+    valor_ = self.persona_id != params["persona_id"] ?  "#{DateTime.now.to_i}^#{params["persona_id"]}^#{params["vehiculo_id"]}" : self.valor
+    return valor_
   end
 
 

@@ -45,8 +45,6 @@ class Response
     set_data(@res[:data], parametros_opcionales) if @res[:data] && parametros_opcionales
 
     body = @sendStatus ? @res : @res.except(:status)
-
-    puts "body ==> ".green + "#{body}"
     controller.render json: body, status: @res[:status] 
     
   end
