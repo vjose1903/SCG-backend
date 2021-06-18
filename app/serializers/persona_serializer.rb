@@ -13,6 +13,7 @@ class PersonaSerializer < ActiveModel::Serializer
 	attribute :es_estudiante,     if: Proc.new {self.personalizar_parametros('es_estudiante') || self.personalizar_parametros('all') }
 	attribute :es_invitado,       if: Proc.new {self.personalizar_parametros('es_invitado') || self.personalizar_parametros('all') }
 	attribute :es_empleado,       if: Proc.new {self.personalizar_parametros('es_empleado') || self.personalizar_parametros('all') }
+	attribute :tipo_empleado,     if: Proc.new {self.personalizar_parametros('tipo_empleado') || self.personalizar_parametros('all') }
 	attribute :estado,            if: Proc.new {self.personalizar_parametros('estado') || self.personalizar_parametros('all') }
 
 	# attribute :es_invitado, if: Proc.new { object.es_invitado }

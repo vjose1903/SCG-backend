@@ -62,8 +62,6 @@ ActiveRecord::Schema.define(version: 2021_05_13_140644) do
     t.string "valor"
     t.boolean "es_entrada"
     t.boolean "es_salida"
-    t.boolean "salio"
-    t.boolean "entro"
     t.string "tipo"
     t.string "estado", limit: 1, default: "A", null: false
     t.datetime "created_at", null: false
@@ -100,6 +98,7 @@ ActiveRecord::Schema.define(version: 2021_05_13_140644) do
     t.boolean "es_estudiante"
     t.boolean "es_invitado"
     t.boolean "es_empleado"
+    t.string "tipo_empleado"
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

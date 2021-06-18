@@ -31,7 +31,8 @@ class Tanda < ApplicationRecord
 
     tanda.errors.delete(:persona) if !is_save
 
-    if tanda.errors.to_a.empty? && (!is_save || (is_save && tanda.save!))
+    # if tanda.errors.to_a.empty? && (!is_save || (is_save && tanda.save!))
+    if tanda.errors.to_a.empty? 
       res.set_data(tanda)
     else
       res.add_msgs(tanda.errors.to_a)

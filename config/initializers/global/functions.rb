@@ -30,6 +30,10 @@ class Response
   def get_data()
     @res[:data]
   end
+
+  def get_res()
+    @res
+  end
   
   def add_msg(msg)
     @res[:msg].push(msg) if msg.length > 0 

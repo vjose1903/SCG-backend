@@ -60,6 +60,7 @@ class PersonasController < ApplicationController
     parametros = agregar_dependencias(parametros, more_params)
 
     resultado = Persona.crear_actualizar_persona(parametros)
+    puts " ==========> " + "#{resultado.get_res()}"
     resultado.send_response(self)
   end
 
@@ -85,7 +86,7 @@ class PersonasController < ApplicationController
   end
 
   def persona_params 
-    params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password,
+    params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password, :tipo_empleado,
                                     :tandas, :documentos_de_identidad, :vehiculos )
   end
 end

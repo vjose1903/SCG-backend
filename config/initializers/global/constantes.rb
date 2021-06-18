@@ -65,7 +65,7 @@ EstadosVehiculos = [ Estados.usado, Estados.activo, Estados.inactivo, Estados.el
 
 module Permisos
 	UNICO = 'U'
-	ILIMITADO = 'L'
+	ILIMITADO = 'I'
 	PROPIETARIO = 'P'
 
 	def self.unico

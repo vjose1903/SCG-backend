@@ -66,55 +66,74 @@ class Persona < ActiveRecord::Base
   end
 
   def self.crear_actualizar_persona(params)
-    res = Response.new
+    Persona.transaction do
+      res = Response.new
 
-    unless params["id"]
-      persona = Persona.new
-    else
-      persona = Persona.find_by_id(params["id"])
-    end
-
-    persona.nombre = params["nombre"]
-    persona.apellido = params["apellido"]
-    persona.fecha_nacimiento = params["fecha_nacimiento"]
-    persona.usuario = params["usuario"]
-    persona.uid = params["usuario"]
-    persona.telefono = params["telefono"]
-    persona.email = params["email"]
-    persona.direccion = params["direccion"]
-    persona.estado = params["estado"]
-    persona.es_estudiante = params["es_estudiante"]
-    persona.es_invitado = params["es_invitado"]
-    persona.es_empleado = params["es_empleado"]
-    persona.password = params["password"]
-    persona.password_confirmation = params["password"]
-    
-    persona.validate_password(params["password"])
-    
-    
-    persona_is_valid = persona.errors.to_a.empty? && persona.valid?
-    
-    if persona_is_valid
-      res = self.agregar_dependencias(params, persona) { |key_object, dependencia_data| 
-        
-        persona.tandas = dependencia_data if key_object == 'tandas'
-        persona.documentos_de_identidad = dependencia_data if key_object == 'documentos_de_identidad'
-      } 
-      
-      if res.status_valid && persona.save!
-        res.set_data(persona)
-
-        action = params["id"] ? 'actualizada' : 'creada'
-        res.add_msg("Persona #{action} correctamente.")
+      unless params["id"]
+        persona = Persona.new
+      else
+        persona = Persona.find_by_id(params["id"])
       end
-    end
-    
-    unless persona.errors.to_a.empty?
-      res.add_msgs(persona.errors.to_a)
-      res.set_status(HTTP_STATUS_CODE[:conflict])
-    end
 
-    return res
+      persona.nombre = params["nombre"]
+      persona.apellido = params["apellido"]
+      persona.fecha_nacimiento = params["fecha_nacimiento"]
+      persona.usuario = params["usuario"]
+      persona.uid = params["usuario"]
+      persona.telefono = params["telefono"]
+      persona.email = params["email"]
+      persona.tipo_empleado = params["tipo_empleado"]
+      persona.direccion = params["direccion"]
+      persona.estado = params["estado"]
+      persona.es_estudiante = params["es_estudiante"]
+      persona.es_invitado = params["es_invitado"]
+      persona.es_empleado = params["es_empleado"]
+      persona.password = params["password"]
+      persona.password_confirmation = params["password"]
+      
+      persona.validate_password(params["password"])
+      
+      
+      persona_is_valid = persona.errors.to_a.empty? && persona.valid?
+      
+      if persona_is_valid
+        res = self.agregar_dependencias(params, persona) { |key_object, dependencia_data| 
+          
+          persona.tandas = dependencia_data if key_object == 'tandas'
+          persona.documentos_de_identidad = dependencia_data if key_object == 'documentos_de_identidad'
+        } 
+
+        puts "res ==> ".red + "#{res.to_json}"
+        
+        if res.status_valid && persona.save!
+          res.set_data(persona)
+
+          action = params["id"] ? 'actualizada' : 'creada'
+          res.add_msg("Persona #{action} correctamente.")
+        elsif persona.errors.to_a.empty?
+          
+          # res.get_res()[:msg].each do |single|
+          #   persona.errors.add(:base, single)
+          # end
+
+        end
+      end
+      
+      puts "persona.errors.to_a ==>  ".red  + "#{persona.errors.to_a}"
+      unless persona.errors.to_a.empty?
+        puts "ENTRO ".yellow
+        res.add_msgs(persona.errors.to_a)
+        res.set_status(HTTP_STATUS_CODE[:conflict])
+
+        begin
+          persona.valid?
+        rescue => exception
+          raise ActiveRecord::Rollback
+        end
+      end
+      
+      return res
+    end
   end
 
 
@@ -153,6 +172,8 @@ class Persona < ActiveRecord::Base
       return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.matricula , valor: filter_value})
     elsif filter_key == 'cedula'
       return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.cedula , valor: filter_value})
+    else
+      return Persona.all.where("#{filter_key} = #{filter_value}")
     end
 
   end  
