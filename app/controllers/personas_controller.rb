@@ -24,6 +24,7 @@ class PersonasController < ApplicationController
   end
   
   def update
+    puts " =============== UPDATE =============== ".yellow 
     crear_actualizar_persona
   end
   
@@ -72,6 +73,7 @@ class PersonasController < ApplicationController
 
   private
   def set_persona
+    puts " =============== SET_PERSONA =============== ".yellow 
 
     params[:id] = params[:persona_id] if params[:persona_id] 
     
