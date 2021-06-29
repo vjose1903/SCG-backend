@@ -81,7 +81,7 @@ class PersonasController < ApplicationController
     respuesta = set_entidad(Persona, params)
     @persona = respuesta.get_data
 
-    puts "@persona ==> ".red + "#{@persona}"
+    puts "@persona ==> ".red + "#{@persona.to_json}"
 
     return respuesta.send_response self if @persona.nil?
   end
