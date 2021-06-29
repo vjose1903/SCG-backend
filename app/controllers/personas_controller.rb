@@ -74,9 +74,12 @@ class PersonasController < ApplicationController
   def set_persona
 
     params[:id] = params[:persona_id] if params[:persona_id] 
-
+    
+    puts "params ==> ".green + "#{params}"
     respuesta = set_entidad(Persona, params)
     @persona = respuesta.get_data
+
+    puts "@persona ==> ".red + "#{@persona}"
 
     return respuesta.send_response self if @persona.nil?
   end
