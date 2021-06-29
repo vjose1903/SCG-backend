@@ -56,6 +56,63 @@ end
 
 # ---------------------------------------------------------------------------------------------------------
 
+def parse_image_data(filedata)
+  decoded_data = Base64.decode64(filedata[:base64])
+  tempfile = Tempfile.new('task-image')
+  tempfile.binmode
+  tempfile.write decoded_data
+  tempfile.rewind   
+  return ActionDispatch::Http::UploadedFile.new(
+    :tempfile => tempfile,
+    :content_type => filedata[:type],
+    :filename => filedata[:name]
+  )
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
+def validar_imagen(imagen)
+  return (!imagen.nil? && imagen != [] && valida_key(imagen, [:name, :type, :base64])[:validos])
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
+def valida_key(json, aKeys)
+  msg = 'Campos Validos'
+  campos_vacios = []
+  lOk = aKeys.kind_of?(Array) and !aKeys.empty?
+  if lOk
+      puts "===".blue*30
+      puts " P A R A M E T R O S    P A R A    V A L I D A R".yellow
+      puts "---".blue*30
+      puts " #{aKeys.to_json}".blue
+      # puts " #{json.to_json}".green
+      puts "===".blue*30
+      aKeys.each do |cKey|
+      lOk = !json[cKey].nil?
+      if json[cKey] == ""
+          lOk = false
+      end
+      # if lOk
+      #     # puts "cKey ==> #{lOk} => #{cKey} = #{json[cKey]}".yellow
+      # else
+      #     puts "cKey ==> #{lOk} => #{cKey} = #{json[cKey]}".red
+      # end
+      unless lOk
+          campos_vacios.push(cKey)
+          msg = "Existe algún campo incompleto! Campos Invalidos: "
+          campos_vacios.each do |campo|
+          msg += campo
+          end
+      end
+      break unless lOk
+      end
+  end
+  return { validos: lOk, campos_vacios: campos_vacios, msg: msg }
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
 def get_data_polimorfyc(type , id)
   entidad = "#{type}".constantize
   entidad.find_by_id(id)

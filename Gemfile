@@ -47,5 +47,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'active_model_serializers'
 gem 'devise_token_auth'
 gem 'rack-cors'
+# ------ para imagenes ------------------
+gem 'mini_magick'
+gem 'carrierwave'
+# ---------------------------------------
 
 gem 'colorize'

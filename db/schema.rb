@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_140644) do
+ActiveRecord::Schema.define(version: 2021_06_25_183417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(version: 2021_05_13_140644) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["persona_id"], name: "index_documentos_de_identidad_on_persona_id"
+  end
+
+  create_table "imagens", force: :cascade do |t|
+    t.string "file"
+    t.string "img_origen_type"
+    t.bigint "img_origen_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["img_origen_type", "img_origen_id"], name: "index_imagens_on_img_origen_type_and_img_origen_id"
   end
 
   create_table "marcas", force: :cascade do |t|

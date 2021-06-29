@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :imagens
   scope :api, defaults: {format: :json} do
     scope :v1 do
       resources :marcas
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
       
       resources :personas do
         collection do
+          post "get_next_invitado/:tipo", :to => "personas#get_next_invitado"
           post "verificar_movimiento/:tipo", :to => "personas#verificar_movimiento"
           get "get_historial", :to => "personas#get_historial"
           get "get_vehiculos", :to => "personas#get_vehiculos"

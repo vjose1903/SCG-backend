@@ -27,6 +27,7 @@ end
 module Documentos
 	CEDULA = 'C'
 	MATRICULA = 'M'
+	CODIGO_EMPLEADO = 'CE'
 
 	def self.cedula
 		return CEDULA
@@ -35,8 +36,13 @@ module Documentos
 	def self.matricula
 		return MATRICULA
 	end
+
+	def self.codigo_empleado
+		return CODIGO_EMPLEADO
+	end
 end
-DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula]
+
+DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula, Documentos.codigo_empleado ]
 
 module Estados
 	ACTIVO = 'A'

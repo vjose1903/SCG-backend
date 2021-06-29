@@ -15,6 +15,8 @@ class PersonaSerializer < ActiveModel::Serializer
 	attribute :es_empleado,       if: Proc.new {self.personalizar_parametros('es_empleado') || self.personalizar_parametros('all') }
 	attribute :tipo_empleado,     if: Proc.new {self.personalizar_parametros('tipo_empleado') || self.personalizar_parametros('all') }
 	attribute :estado,            if: Proc.new {self.personalizar_parametros('estado') || self.personalizar_parametros('all') }
+	attribute :password,          if: Proc.new {self.personalizar_parametros('password') }
+	attribute :imagen,            if: Proc.new {self.personalizar_parametros('imagen') }
 
 	# attribute :es_invitado, if: Proc.new { object.es_invitado }
 	# attribute :es_empleado, if: Proc.new { object.es_empleado }
@@ -23,6 +25,8 @@ class PersonaSerializer < ActiveModel::Serializer
 	has_many :tandas, if: Proc.new { self.personalizar_parametros('tandas') }
 	has_many :documentos_de_identidad, if: Proc.new { self.personalizar_parametros('documentos_de_identidad') }
 	has_many :vehiculos, if: Proc.new { self.personalizar_parametros('vehiculos') }
+
+	has_one :imagen, if: Proc.new { self.personalizar_parametros('imagen') }
 
 	def personalizar_parametros(col)
 		return @instance_options[:"#{col}"]

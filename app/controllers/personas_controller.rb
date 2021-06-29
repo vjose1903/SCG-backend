@@ -36,7 +36,12 @@ class PersonasController < ApplicationController
     parametros = params
     resultado = Persona.verificar_movimiento(parametros)
     resultado.send_response self
+  end
 
+  def get_next_invitado
+    parametros = params
+    resultado = Persona.get_next_invitado(parametros)
+    resultado.send_response self
   end
 
   def get_historial
@@ -55,12 +60,12 @@ class PersonasController < ApplicationController
   def crear_actualizar_persona
     parametros = persona_params
     parametros["id"] = params["id"] if params["id"] 
+    parametros["imagen"] = params["imagen"] 
 
     more_params=["password", "tandas", "documentos_de_identidad", "vehiculos"]
     parametros = agregar_dependencias(parametros, more_params)
 
     resultado = Persona.crear_actualizar_persona(parametros)
-    puts " ==========> " + "#{resultado.get_res()}"
     resultado.send_response(self)
   end
 
@@ -81,12 +86,13 @@ class PersonasController < ApplicationController
       tandas: params['tandas'] || false,
       documentos_de_identidad: params['documentos_de_identidad'] || false,
       vehiculos: params['vehiculos'] || false,
+      imagen: params['imagen'] || false,
       all: true
     }
   end
 
   def persona_params 
     params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password, :tipo_empleado,
-                                    :tandas, :documentos_de_identidad, :vehiculos )
+                                    :tandas, :documentos_de_identidad, :vehiculos, :imagen )
   end
 end

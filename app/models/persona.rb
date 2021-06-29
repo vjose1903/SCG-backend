@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Persona < ActiveRecord::Base
+class Persona < ApplicationRecord
   extend Devise::Models
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
@@ -9,7 +9,9 @@ class Persona < ActiveRecord::Base
   has_many :permisos_vehiculares
   has_many :movimiento_vehiculos, through: :permisos_vehiculares
   has_and_belongs_to_many :vehiculos, :join_table => :permisos_vehiculares
-
+  
+  has_one :imagen, :as => :img_origen, dependent: :destroy
+  accepts_nested_attributes_for :imagen, :allow_destroy => true
 
   has_many :tandas, dependent: :destroy
   accepts_nested_attributes_for :tandas, :allow_destroy => true
@@ -17,13 +19,12 @@ class Persona < ActiveRecord::Base
   has_many :documentos_de_identidad, dependent: :destroy
   accepts_nested_attributes_for :documentos_de_identidad, :allow_destroy => true
 
-  validates :nombre, presence: { :message => "Debe de especificar el nombre de la persona." }
+  validates :nombre,  presence: { :message => "Debe de especificar el nombre de la persona." }
   validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :usuario, valor: "%{value}")} }
-  validates :email, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :email, valor: "%{value}")} }
+  validates :email, allow_blank: true, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :email, valor: "%{value}")} }
 
   
   before_validation :init
-  before_validation :otras_validaciones
 
   def initialize(arg)
     siguiente_id = my_query("SELECT nextval('personas_id_seq')")[0]["nextval"]
@@ -45,11 +46,6 @@ class Persona < ActiveRecord::Base
 
 	end
 
-  def otras_validaciones
-    if !self.es_estudiante && !self.es_invitado && !self.es_empleado
-      @errors.add(:base, "Debe de especificar un tipo de persona.")
-    end
-  end
 
   def validate_password(password)
     if self.id.nil? && (password.nil? || password.length == 0)
@@ -92,6 +88,8 @@ class Persona < ActiveRecord::Base
       persona.password_confirmation = params["password"]
       
       persona.validate_password(params["password"])
+
+      persona.establecer_imagen(params["imagen"])
       
       
       persona_is_valid = persona.errors.to_a.empty? && persona.valid?
@@ -167,17 +165,53 @@ class Persona < ActiveRecord::Base
     filter_value = parametros["filter_value"]
 
     if filter_key == 'nombre'
-      return Persona.all.where("lower(nombre || ' ' || apellido) like lower('%#{filter_value}%')")
+      return Persona.all.where("lower(nombre || ' ' || apellido) like lower('%#{filter_value}%') and estado = true")
     elsif filter_key == 'matricula'
-      return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.matricula , valor: filter_value})
+      return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.matricula , valor: filter_value }, estado: true)
     elsif filter_key == 'cedula'
-      return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.cedula , valor: filter_value})
+      return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.cedula , valor: filter_value}, estado: true)
     else
-      return Persona.all.where("#{filter_key} = #{filter_value}")
+      return Persona.all.where("#{filter_key} = #{filter_value} and estado = true")
     end
 
   end  
   
+  # ============================================================================================
+  # REGISTRAR SIGUIENTE INVITADO
+  # ============================================================================================
+
+  def self.get_next_invitado(parametros)
+    res = Response.new(HTTP_STATUS_CODE[:ok])
+    res.send_status(true)
+
+    movimiento = Movimiento.new(parametros["tipo"])
+
+    if movimiento.is_salida?
+      res.set_data({codigo: Codigo.persona_no_identificada})
+      res.send_status(true)
+      res.add_msg("No tiene permiso para salir en este vehiculo.")
+      # Enviar notificacion al propietario
+      return res
+    end
+    
+    persona = Persona.new
+    # persona["id"] = parametros["id"] unless no_existe_id_persona
+    puts "persona --> ".green + "#{persona.to_json}"
+    
+    persona_is_valid = persona.errors.to_a.empty? && persona.valid?
+    res.add_msgs(persona.errors.to_a) unless persona_is_valid
+    
+    
+    unless !persona_is_valid || persona.save!
+      res.add_msg("Error registrando el invitado.")
+      res.set_status(HTTP_STATUS_CODE[:conflict])
+      return res
+    end
+
+    res.set_data(persona,{password: true, all: true})
+
+    return res
+  end
   # ============================================================================================
   # VERIFICAR MOVIMIENTO VEHICULAR
   # ============================================================================================
