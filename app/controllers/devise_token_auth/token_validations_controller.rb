@@ -38,7 +38,7 @@ module DeviseTokenAuth
       res = Response.new
       data = resource_data(resource_json: @resource.token_validation_response)
 
-      res.set_data(Persona.new(data), {documentos_de_identidad: true, tandas: true, all:true})
+      res.set_data(Persona.new(data), {documentos_de_identidad: true, tandas: true, all:true, imagen:true})
       # datos[:data][:configuration] = Configuracion.all.limit(1)[0]
       # datos[:data][:permisos] = User.getPermisos(datos[:data]['id'])
       # render json: datos
