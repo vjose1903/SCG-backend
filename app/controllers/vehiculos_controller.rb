@@ -48,7 +48,10 @@ class VehiculosController < ApplicationController
 
 
   def get_parametros_opcionales 
-    return { all:true }
+    return { 
+      propietario: params['propietario'] || false,
+      all: true 
+    }
   end
 
   def vehiculo_params 

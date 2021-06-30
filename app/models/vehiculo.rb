@@ -18,11 +18,8 @@ class Vehiculo < ApplicationRecord
   
   def verificar_propietario(current_persona)
     permiso_propietario = self.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
-    puts "permiso_propietario==> ".yellow + "#{permiso_propietario.to_json}"
     vehiculo_has_propietario = permiso_propietario.length > 0
-    puts "vehiculo_has_propietario==> ".green + "#{vehiculo_has_propietario}"
     current_persona_is_propietario = permiso_propietario[0].persona_id == current_persona.id if vehiculo_has_propietario
-    puts "current_persona_is_propietario==> ".blue + "#{current_persona_is_propietario}"
 
     if vehiculo_has_propietario
       if !self.id && !current_persona_is_propietario
@@ -40,17 +37,9 @@ class Vehiculo < ApplicationRecord
 
   def self.crear_actualizar_vehiculo(params, is_save=false, is_crear_permiso = false, current_persona=nil)
     res = Response.new
-    puts " . "
-    puts " . "
-    puts " . "
-    puts "params ==> ".red + "#{params}"
-    puts " . "
-    puts " . "
-    puts " . "
-    puts "-------- NO HAY ID -------- ".red unless params["id"]
+    
     unless params["id"]
 
-      puts "params[placa] ==> ".red + "#{params["placa"]}"
       if params["placa"]
         vehiculo = Vehiculo.find_by_placa(params["placa"].upcase)
       end
@@ -59,7 +48,6 @@ class Vehiculo < ApplicationRecord
       vehiculo = Vehiculo.find_by_id(params["id"])
     end
     
-    puts "vehiculo ==> ".yellow + "#{vehiculo.to_json}"
     
     
     vehiculo.modelo_id = params["modelo_id"]
@@ -75,10 +63,6 @@ class Vehiculo < ApplicationRecord
     
     vehiculo.verificar_propietario(current_persona)
     
-    puts "vehiculo ==> ".red + "#{vehiculo.to_json}"
-    puts "params ----------> ".green + " #{params}"
-    puts "is_save ----------> ".yellow + " #{is_save}"
-    puts "vehiculo.errors.to_a ----------> ".yellow + " #{vehiculo.errors.to_a}"
     if vehiculo.errors.to_a.empty? && (!is_save || (is_save && vehiculo.save!))
 
       if is_crear_permiso
@@ -89,7 +73,6 @@ class Vehiculo < ApplicationRecord
         end
       end
       
-      puts "---------- CREADO ----------".yellow
       action = params["id"] ? 'actualizado' : 'creado'
       res.add_msg("vehiculo #{action} correctamente.")
       res.set_data(vehiculo)
