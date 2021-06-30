@@ -227,3 +227,12 @@ class String
     
 end
 # ---------------------------------------------------------------------------------------------------------
+def my_print_log(*args)
+  is_show = ENV.fetch("RAILS_SHOW_LOG") { false }
+  Rails.logger.info "  ->> (#{caller_locations.first})".black.on_light_black
+  if ActiveRecord::Type::Boolean.new.cast(is_show)
+    args.each do |arg|
+      Rails.logger.info arg
+    end
+  end
+end

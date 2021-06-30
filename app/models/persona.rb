@@ -433,11 +433,11 @@ class Persona < ApplicationRecord
     hasta = params["hasta"]
     query={}
 
-    puts "desde ==> ".yellow + "#{desde}"
-    puts "hasta ==> ".red + "#{hasta}"
+    my_print_log("desde ==> #{desde}")
+    my_print_log("hasta ==> #{hasta}")
     
     query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
-    puts "query ==> ".green + "#{query}"
+    my_print_log("query ==> #{query}")
     
     res.set_data(self.movimiento_vehiculos.where(query), {all: true })
     return res

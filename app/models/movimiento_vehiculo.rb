@@ -5,7 +5,7 @@ class MovimientoVehiculo < ApplicationRecord
   # def self.crear_actualizar_movimiento(params, is_save=false)
 
   def self.crear_movimiento(params, is_save=false)
-    puts "params ==> ".red + "#{params}"
+    my_print_log( "params ==>  #{params}")
     res = Response.new
     
     unless params["id"]
@@ -18,7 +18,7 @@ class MovimientoVehiculo < ApplicationRecord
     movimiento.tipo = params["tipo"]
     movimiento.fecha_hora = DateTime.now
     
-    puts "movimiento ==> ".red + "#{movimiento.to_json}"
+    my_print_log( "movimiento ==> #{movimiento.to_json}")
 
     if movimiento.valid? && movimiento.errors.to_a.empty? && (!is_save || (is_save && movimiento.save!))
       res.set_data(movimiento)
