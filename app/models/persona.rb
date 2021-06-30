@@ -434,7 +434,7 @@ class Persona < ApplicationRecord
     query={}
 
     query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
-    res.set_data(self.movimiento_vehiculos.where(query))
+    res.set_data(self.movimiento_vehiculos.where(query), {all:true })
     return res
   end
 
