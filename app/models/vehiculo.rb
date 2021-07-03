@@ -86,6 +86,40 @@ class Vehiculo < ApplicationRecord
   end
 
   
+  def asociar_vehiculo(current_persona)
+    res = Response.new
+    has_permiso = PermisoVehicular.where({vehiculo_id: self.id, persona_id: current_persona.id, estado: Estados.activo})
+    
+    my_print_log("has_permiso ==> #{has_permiso}")
+    my_print_log("has_permiso ==> #{has_permiso.to_json}")
+    
+    permiso = has_permiso.length > 0 ? has_permiso[0] : PermisoVehicular.new
+    permiso = permiso.attributes
+
+    
+    my_print_log("permiso ==> #{permiso.to_json}")
+    permiso['es_entrada'] = true
+    permiso['es_salida'] = true
+    permiso['tipo'] = Permisos.propietario
+    permiso['persona_id'] = current_persona.id
+    permiso['vehiculo_id'] = self.id
+    permiso['current_persona'] = current_persona
+    
+    res = PermisoVehicular.crear_actualizar_permiso(permiso, true, true)
+    my_print_log("res ==> #{res}")
+    my_print_log("res ==> #{res.to_json}")
+
+    unless res.status_valid
+      res.set_status(HTTP_STATUS_CODE[:conflict])
+    else
+      res.add_msg("vehiculo asociado correctamente.")
+      res.set_data(permiso)
+    end
+
+    return res 
+  end
+
+
   def self.crear_permiso(current_persona, vehiculo)
     params_permiso = {}
 

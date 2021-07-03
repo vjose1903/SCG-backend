@@ -1,5 +1,5 @@
 class VehiculosController < ApplicationController
-  before_action :set_vehiculo, only: [:update, :show, :get_permisos]
+  before_action :set_vehiculo, only: [:update, :show, :get_permisos, :asociar_vehiculo]
 
   def index
     return Response.new(nil, Vehiculo.all, nil, get_parametros_opcionales).send_response self
@@ -32,6 +32,11 @@ class VehiculosController < ApplicationController
   def get_permisos
     parametros = params
     resultado = @vehiculo.get_permisos(parametros)
+    resultado.send_response self
+  end
+
+  def asociar_vehiculo
+    resultado = @vehiculo.asociar_vehiculo( current_persona)
     resultado.send_response self
   end
 

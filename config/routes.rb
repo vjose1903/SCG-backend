@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :modelos
       resources :vehiculos do 
         get "get_permisos", :to => "vehiculos#get_permisos"
+        patch "asociar_vehiculo", :to => "vehiculos#asociar_vehiculo"
       end
 
       resources :permisos_vehiculares do 

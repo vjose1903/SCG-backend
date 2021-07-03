@@ -26,7 +26,7 @@ class PermisoVehicular < ApplicationRecord
   end
 
 
-  def otras_validaciones(propietario_id)
+  def otras_validaciones(propietario_id, can_update = false)
     propietario = self.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
 
     if propietario.length > 0 && propietario[0]["persona_id"] != propietario_id
@@ -34,7 +34,7 @@ class PermisoVehicular < ApplicationRecord
       return 
     end
 
-    if self.movimiento_vehiculos.length > 0
+    if !can_update && self.movimiento_vehiculos.length > 0
       @errors.add(:base, "No se puede actulizar, El permiso ya há sido utilizado!!!.")
     end
   end
@@ -57,7 +57,7 @@ class PermisoVehicular < ApplicationRecord
 	end
 
 
-  def self.crear_actualizar_permiso(params, is_save=false)
+  def self.crear_actualizar_permiso(params, is_save=false, can_update=false)
     res = Response.new
 
     unless params["id"]
@@ -75,7 +75,7 @@ class PermisoVehicular < ApplicationRecord
     permiso.estado = params["estado"]
     
     if permiso.valid?
-      permiso.otras_validaciones(params["current_persona"].id)
+      permiso.otras_validaciones(params["current_persona"].id, can_update)
     end
 
     if permiso.errors.to_a.empty? && (!is_save || (is_save && permiso.save!))

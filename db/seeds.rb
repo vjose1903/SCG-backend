@@ -53,12 +53,22 @@ DIAS.each do |dia|
   end
 end 
 
-MARCAS_MODELOS.each do |marca|
-  if Marca.find_by_descripcion(marca[:descripcion]).nil?
-    marca_creada = Marca.create({descripcion: marca[:descripcion]})
 
-    marca[:modelos].each do |modelo|
+def check_modelo(marca, marca_creada)
+  marca[:modelos].each do |modelo|
+    modelo_model = Modelo.find_by_descripcion(modelo)
+    if modelo_model.nil?
       Modelo.create({descripcion: modelo, marca_id: marca_creada[:id]})
-    end
+    end  
+  end
+end
+
+MARCAS_MODELOS.each do |marca|
+  marca_model = Marca.find_by_descripcion(marca[:descripcion])
+  if marca_model.nil?
+    marca_creada = Marca.create({descripcion: marca[:descripcion]})
+    check_modelo(marca, marca_creada)
+  else
+    check_modelo(marca, marca_model)
   end
 end 
