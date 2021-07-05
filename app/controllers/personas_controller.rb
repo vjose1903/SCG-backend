@@ -92,12 +92,13 @@ class PersonasController < ApplicationController
       documentos_de_identidad: params['documentos_de_identidad'] || false,
       vehiculos: params['vehiculos'] || false,
       imagen: params['imagen'] || false,
+      lista_de_correo: params['lista_de_correo'] || false,
       all: true
     }
   end
 
   def persona_params 
     params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password, :tipo_empleado,
-                                    :tandas, :documentos_de_identidad, :vehiculos, :imagen )
+                                    :tandas, :documentos_de_identidad, :vehiculos, :imagen, :lista_de_correo)
   end
 end

@@ -36,18 +36,19 @@ class DeviseTokenAuthCreatePersonas < ActiveRecord::Migration[5.2]
         # t.datetime :locked_at
   
         ## User Info
-        t.string :nombre
-        t.string :apellido
-        t.string :fecha_nacimiento
-        t.string :usuario
-        t.string :telefono
-        t.string :email
-        t.string :direccion
+        t.string  :nombre
+        t.string  :apellido
+        t.string  :fecha_nacimiento
+        t.string  :usuario
+        t.string  :telefono
+        t.string  :email
+        t.string  :direccion
         t.boolean :estado
         t.boolean :es_estudiante
         t.boolean :es_invitado
         t.boolean :es_empleado
-        t.string :tipo_empleado
+        t.string  :tipo_empleado
+        t.json    :lista_de_correo
   
         ## Tokens
         t.json :tokens

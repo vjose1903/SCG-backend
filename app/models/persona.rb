@@ -84,9 +84,10 @@ class Persona < ApplicationRecord
       persona.es_estudiante = params["es_estudiante"]
       persona.es_invitado = params["es_invitado"]
       persona.es_empleado = params["es_empleado"]
+      persona.lista_de_correo = params["lista_de_correo"]
       persona.password = params["password"]
       persona.password_confirmation = params["password"]
-      
+
       persona.validate_password(params["password"])
 
       persona.establecer_imagen(params["imagen"])

@@ -1,6 +1,6 @@
 rails generate scaffold imagen file:string img_origen:references{polymorphic} 
 rails generate model documento_de_identidad persona:references tipo:string valor:string ✅
-rails generate scaffold notificacion persona:references contenido:string estado:boolean activo:boolean tipo:string origen
+rails generate scaffold notificacion persona:references contenido:string estado:boolean activo:boolean tipo:string notificacion_origen:references{polymorphic} 
 
 rails generate model dia descripcion:string ✅
 rails generate model tanda persona:references dia:references hora_inicio:time hora_fin:time ✅
