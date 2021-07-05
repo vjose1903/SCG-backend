@@ -5,7 +5,6 @@ class MovimientoVehiculo < ApplicationRecord
   # def self.crear_actualizar_movimiento(params, is_save=false)
 
   def self.crear_movimiento(params, is_save=false)
-    my_print_log( "params ==>  #{params}")
     res = Response.new
     
     unless params["id"]
@@ -17,8 +16,6 @@ class MovimientoVehiculo < ApplicationRecord
     movimiento.permiso_vehicular_id = params["permiso_vehicular_id"]
     movimiento.tipo = params["tipo"]
     movimiento.fecha_hora = DateTime.now
-    
-    my_print_log( "movimiento ==> #{movimiento.to_json}")
 
     if movimiento.valid? && movimiento.errors.to_a.empty? && (!is_save || (is_save && movimiento.save!))
       res.set_data(movimiento)
@@ -29,5 +26,26 @@ class MovimientoVehiculo < ApplicationRecord
 
     return res
   end
+  
+  
+  def self.get_cantidad_movimientos()
+
+    res = Response.new
+
+    query={}
+    query['fecha_hora'] = DateTime.now.beginning_of_day..DateTime.now.end_of_day 
+    
+    data = {todos: 0 , dentro: 0 }
+
+    movimientos = MovimientoVehiculo.where(query)
+    movimientos_group = movimientos.group("tipo").count
+
+    data["todos"] = movimientos.count
+    data["dentro"] = movimientos_group['E'] || 0 - movimientos_group['S'] || 0
+
+    res.set_data(data)
+    return res
+  end
+
 
 end

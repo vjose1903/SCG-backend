@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     scope :v1 do
       resources :marcas
       resources :modelos
+
       resources :vehiculos do 
         get "get_permisos", :to => "vehiculos#get_permisos"
         patch "asociar_vehiculo", :to => "vehiculos#asociar_vehiculo"
@@ -20,7 +21,13 @@ Rails.application.routes.draw do
           get "get_historial", :to => "personas#get_historial"
           get "get_vehiculos", :to => "personas#get_vehiculos"
         end
-
+        
+      end
+      
+      resources :movimiento_vehiculos do
+        collection do
+          get "get_cantidad", :to => "movimiento_vehiculos#get_cantidad"
+        end
       end
 
       
