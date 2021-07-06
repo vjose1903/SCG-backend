@@ -1,5 +1,5 @@
 class PersonasController < ApplicationController
-  before_action :set_persona, only: [:update,:show]
+  before_action :set_persona, only: [:update, :show, :validar_existencia_correo]
 
   
   def index
@@ -24,9 +24,23 @@ class PersonasController < ApplicationController
   end
   
   def update
-    puts " =============== UPDATE =============== ".yellow 
     crear_actualizar_persona
   end
+
+  def agregar_correo
+    parametros = persona_params
+    parametros["id"] = params["id"] if params["id"] 
+    parametros["lista_de_correo"] = params["lista_de_correo"] 
+
+    resultado = Persona.crear_actualizar_persona(parametros, params["tipo"])
+    resultado.send_response(self)
+  end
+
+  def validar_existencia_correo
+    resultado = @persona.validar_existencia_correo(params["correo"])
+    resultado.send_response(self)
+  end
+
   
   def handleFilter
     return Persona.handleFilter(params)

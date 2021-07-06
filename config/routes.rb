@@ -9,12 +9,15 @@ Rails.application.routes.draw do
         get "get_permisos", :to => "vehiculos#get_permisos"
         patch "asociar_vehiculo", :to => "vehiculos#asociar_vehiculo"
       end
-
+      
       resources :permisos_vehiculares do 
         post ":accion", :to => "permisos_vehiculares#activar_desactivar_permiso"
       end
       
       resources :personas do
+        patch "agregar_correo/:tipo", :to => "personas#agregar_correo"
+        get "validar_existencia_correo", :to => "personas#validar_existencia_correo"
+
         collection do
           post "get_next_invitado/:tipo", :to => "personas#get_next_invitado"
           post "verificar_movimiento/:tipo", :to => "personas#verificar_movimiento"

@@ -61,7 +61,7 @@ class Persona < ApplicationRecord
     self.estado = true if self.id.nil? 
   end
 
-  def self.crear_actualizar_persona(params)
+  def self.crear_actualizar_persona(params, type=nil)
     Persona.transaction do
       res = Response.new
 
@@ -97,18 +97,16 @@ class Persona < ApplicationRecord
       
       if persona_is_valid
         res = self.agregar_dependencias(params, persona) { |key_object, dependencia_data| 
-          
           persona.tandas = dependencia_data if key_object == 'tandas'
           persona.documentos_de_identidad = dependencia_data if key_object == 'documentos_de_identidad'
-        } 
-
-        puts "res ==> ".red + "#{res.to_json}"
+        }
         
         if res.status_valid && persona.save!
           res.set_data(persona)
 
           action = params["id"] ? 'actualizada' : 'creada'
-          res.add_msg("Persona #{action} correctamente.")
+          msg = type == 'correo_new' ? "Correo agregado correctamente." : type == 'correo_update' ? "Correo editado correctamente": "Persona #{action} correctamente." 
+          res.add_msg(msg)
         elsif persona.errors.to_a.empty?
           
           # res.get_res()[:msg].each do |single|
@@ -135,6 +133,24 @@ class Persona < ApplicationRecord
     end
   end
 
+  
+  def validar_existencia_correo(correo_send)
+    res = Response.new
+    
+    puts "self.lista_de_correo  ==> ".red + " #{self.lista_de_correo}"
+    if self.lista_de_correo 
+      puts "self.lista_de_correo.correos  ==> ".green + " #{self.lista_de_correo['correos']}"
+
+      resultado = self.lista_de_correo['correos'].any? { |correo| correo['value'] == correo_send }
+
+      if resultado
+        res.add_msg("El correo introducido ya forma parte de su lista de correos")
+        res.set_status(HTTP_STATUS_CODE[:conflict])
+      end
+    end
+
+    return res
+  end
 
   def self.agregar_dependencias(parametros, persona)
     array_depend = [

@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 2021_06_25_183417) do
     t.boolean "es_invitado"
     t.boolean "es_empleado"
     t.string "tipo_empleado"
+    t.json "lista_de_correo"
     t.json "tokens"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
