@@ -41,7 +41,8 @@ class MovimientoVehiculo < ApplicationRecord
     movimientos_group = movimientos.group("tipo").count
 
     data["todos"] = movimientos.count
-    data["dentro"] = movimientos_group['E'] || 0 - movimientos_group['S'] || 0
+
+    data["dentro"] = (movimientos_group['E'] || 0) - (movimientos_group['S'] || 0)
 
     res.set_data(data)
     return res
