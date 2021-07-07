@@ -155,6 +155,11 @@ end
 
 # ---------------------------------------------------------------------------------------------------------
 
+def serialize_parser(modelo, params={})
+  ActiveModelSerializers::SerializableResource.new(modelo, params)
+end
+# ---------------------------------------------------------------------------------------------------------
+
 def my_query(query)
   return ActiveRecord::Base.connection.exec_query(query)
 end

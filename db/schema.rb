@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_183417) do
+ActiveRecord::Schema.define(version: 2021_07_06_192127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 2021_06_25_183417) do
     t.datetime "updated_at", null: false
     t.index ["descripcion", "marca_id"], name: "index_modelos_on_descripcion_and_marca_id", unique: true
     t.index ["marca_id"], name: "index_modelos_on_marca_id"
+  end
+
+  create_table "movimiento_no_autorizados", force: :cascade do |t|
+    t.bigint "persona_id"
+    t.bigint "vehiculo_id"
+    t.string "codigo_error"
+    t.datetime "fecha_hora"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["persona_id"], name: "index_movimiento_no_autorizados_on_persona_id"
+    t.index ["vehiculo_id"], name: "index_movimiento_no_autorizados_on_vehiculo_id"
   end
 
   create_table "movimiento_vehiculos", force: :cascade do |t|
@@ -144,6 +155,8 @@ ActiveRecord::Schema.define(version: 2021_06_25_183417) do
 
   add_foreign_key "documentos_de_identidad", "personas"
   add_foreign_key "modelos", "marcas"
+  add_foreign_key "movimiento_no_autorizados", "personas"
+  add_foreign_key "movimiento_no_autorizados", "vehiculos"
   add_foreign_key "movimiento_vehiculos", "permisos_vehiculares"
   add_foreign_key "permisos_vehiculares", "personas"
   add_foreign_key "permisos_vehiculares", "vehiculos"

@@ -1,4 +1,4 @@
-rails generate scaffold imagen file:string img_origen:references{polymorphic} 
+rails generate scaffold imagen file:string img_origen:references{polymorphic} ✅
 rails generate model documento_de_identidad persona:references tipo:string valor:string ✅
 rails generate scaffold notificacion persona:references contenido:string estado:boolean activo:boolean tipo:string notificacion_origen:references{polymorphic} 
 
@@ -11,6 +11,8 @@ rails generate model modelo marca:references descripcion:string ✅
 rails generate model vehiculo persona:references marca:references modelo:references placa:string comentario:string anio:integer color:string estado:boolean  ✅
 rails generate scaffold permiso_vehicular persona:references vehiculo:references valor:string descripcion:string tipo:string activo:boolean estado:boolean ✅
 rails generate model movimiento_vehiculo permiso_vehicular:references tipo:string fecha_hora:datetime ✅
+
+rails generate model movimiento_no_autorizado persona:references vehiculo:references codigo_error:string fecha_hora:datetime ✅
 
 rails generate serializer permiso_vehicular ✅
 rails generate serializer vehiculo ✅

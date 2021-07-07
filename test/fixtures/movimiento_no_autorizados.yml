@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  persona: one
+  vehiculo: one
+  codigo_error: MyString
+  fecha_hora: 2021-07-06 15:21:27
+
+two:
+  persona: two
+  vehiculo: two
+  codigo_error: MyString
+  fecha_hora: 2021-07-06 15:21:27
