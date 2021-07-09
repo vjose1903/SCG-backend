@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
   resources :imagens
+  
   scope :api, defaults: {format: :json} do
     scope :v1 do
       resources :marcas
       resources :modelos
+      resources :notificacions do 
+        patch "cambiar_estado", :to => "notificacions#cambiar_estado"
+      end
 
       resources :vehiculos do 
         get "get_permisos", :to => "vehiculos#get_permisos"
         patch "asociar_vehiculo", :to => "vehiculos#asociar_vehiculo"
+        # patch "desasociar_vehiculo", :to => "vehiculos#desasociar_vehiculo"
       end
       
       resources :permisos_vehiculares do 
@@ -15,6 +20,7 @@ Rails.application.routes.draw do
       end
       
       resources :personas do
+        get "get_notificaciones", :to => "personas#get_notificaciones"
         patch "agregar_correo/:tipo", :to => "personas#agregar_correo"
         get "validar_existencia_correo", :to => "personas#validar_existencia_correo"
 

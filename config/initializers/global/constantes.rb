@@ -44,6 +44,19 @@ end
 
 DOCUMENTOS_DE_IDENTIDAD_VALIDOS = [Documentos.cedula, Documentos.matricula, Documentos.codigo_empleado ]
 
+module Estados_noti
+	ENVIADO = 'E'
+	LEIDO = 'L'
+
+	def self.leido
+		return LEIDO
+	end
+
+	def self.enviado
+		return ENVIADO
+	end
+end
+
 module Estados
 	ACTIVO = 'A'
 	INACTIVO = 'I'
@@ -92,9 +105,14 @@ PERMISOS_VALIDOS = [Permisos.unico, Permisos.ilimitado, Permisos.propietario]
 
 module Codigo
 	CORRECTO = 'C00001'
+
 	PERSONA_SIN_PERMISO = 'E00001'
 	PERSONA_NO_IDENTIFICADA = 'E00002'
 	VEHICULO_NO_IDENTIFICADO = 'E00003'
+
+	PERSONA_CON_PERMISO = 'P00001'
+	PERSONA_ENTRO = 'P00002'
+
 
 	def self.correcto
 		return CORRECTO
@@ -110,6 +128,14 @@ module Codigo
 
 	def self.persona_sin_permiso
 		return PERSONA_SIN_PERMISO
+	end
+
+	def self.persona_con_permiso
+		return PERSONA_CON_PERMISO
+	end
+
+	def self.persona_entro
+		return PERSONA_ENTRO
 	end
 
 end
@@ -129,8 +155,20 @@ class Movimiento
 		return @tipo == "entrada"
 	end
 
+	def get_min
+		return @tipo == "entrada" ? "E" : "S"
+	end
+
 	def get_tipo
 		return @tipo == "entrada" ? MovimientoV.entrada : MovimientoV.salida
+	end
+
+	def is_contrario(tipo)
+		return self.get_min != tipo
+	end
+
+	def is_igual(tipo)
+		return self.get_min == tipo
 	end
 
 	def tipo

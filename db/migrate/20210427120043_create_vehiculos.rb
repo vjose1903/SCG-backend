@@ -9,6 +9,7 @@ class CreateVehiculos < ActiveRecord::Migration[5.2]
       t.integer :anio
       t.string :color
       t.boolean :estado
+      t.boolean :provisional, default: false
 
       t.timestamps
     end

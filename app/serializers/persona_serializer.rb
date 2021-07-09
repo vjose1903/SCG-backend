@@ -18,11 +18,12 @@ class PersonaSerializer < ActiveModel::Serializer
 	attribute :password,           if: Proc.new {self.personalizar_parametros('password') }
 	attribute :imagen,             if: Proc.new {self.personalizar_parametros('imagen') }
 	attribute :lista_de_correo,    if: Proc.new {self.personalizar_parametros('lista_de_correo') }
-
+	
 	# attribute :es_invitado, if: Proc.new { object.es_invitado }
 	# attribute :es_empleado, if: Proc.new { object.es_empleado }
 	# attribute :es_estudiante, if: Proc.new { object.es_estudiante }
 	
+	has_many :notificaciones,     if: Proc.new {self.personalizar_parametros('notificacions') }
 	has_many :tandas, if: Proc.new { self.personalizar_parametros('tandas') }
 	has_many :documentos_de_identidad, if: Proc.new { self.personalizar_parametros('documentos_de_identidad') }
 	has_many :vehiculos, if: Proc.new { self.personalizar_parametros('vehiculos') }
