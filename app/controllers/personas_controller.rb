@@ -1,5 +1,5 @@
 class PersonasController < ApplicationController
-  before_action :set_persona, only: [:update, :show, :validar_existencia_correo]
+  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos]
 
   
   def index
@@ -53,21 +53,26 @@ class PersonasController < ApplicationController
     resultado.send_response self
   end
 
+  def get_notificaciones
+    resultado = @persona.get_notificaciones(params)
+    resultado.send_response self
+  end
+
   def get_next_invitado
     parametros = params
     resultado = Persona.get_next_invitado(parametros)
     resultado.send_response self
   end
 
-  def get_historial
+  def get_historial 
     parametros = params
-    resultado = current_persona.get_historial(parametros)
+    resultado = @persona.get_historial(parametros)
     resultado.send_response self
   end
 
   def get_vehiculos
     parametros = params
-    resultado = current_persona.get_vehiculos(parametros)
+    resultado = @persona.get_vehiculos(parametros)
     resultado.send_response self
   end
 
@@ -87,15 +92,11 @@ class PersonasController < ApplicationController
 
   private
   def set_persona
-    puts " =============== SET_PERSONA =============== ".yellow 
 
     params[:id] = params[:persona_id] if params[:persona_id] 
-    
-    puts "params ==> ".green + "#{params}"
+
     respuesta = set_entidad(Persona, params)
     @persona = respuesta.get_data
-
-    puts "@persona ==> ".red + "#{@persona.to_json}"
 
     return respuesta.send_response self if @persona.nil?
   end
@@ -107,6 +108,7 @@ class PersonasController < ApplicationController
       vehiculos: params['vehiculos'] || false,
       imagen: params['imagen'] || false,
       lista_de_correo: params['lista_de_correo'] || false,
+      notificacions: params['notificaciones'] || false,
       all: true
     }
   end

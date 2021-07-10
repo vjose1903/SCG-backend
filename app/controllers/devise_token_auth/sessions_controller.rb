@@ -48,7 +48,7 @@ module DeviseTokenAuth
         @token = @resource.create_token
         @resource.save
 
-        sign_in(:user, @resource, store: false, bypass: false)
+        sign_in(:user, @resource, store: true, bypass: false)
         # sign_in(@resource)
         yield @resource if block_given?
 

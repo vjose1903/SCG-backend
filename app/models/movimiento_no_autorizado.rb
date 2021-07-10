@@ -11,9 +11,6 @@ class MovimientoNoAutorizado < ApplicationRecord
       movimiento_no_autorizado = MovimientoNoAutorizado.find_by_id(params["id"])
     end
 
-    my_print_log("params ==> ".red + "#{params}")
-    my_print_log("params[persona_id] ==> ".green + "#{params["persona_id"]}")
-
     movimiento_no_autorizado.persona_id      = params["persona_id"]
     movimiento_no_autorizado.vehiculo_id     = params["vehiculo_id"]
     movimiento_no_autorizado.codigo_error    = params["codigo_error"]
@@ -22,7 +19,7 @@ class MovimientoNoAutorizado < ApplicationRecord
     movimiento_no_autorizado.valid?
 
     if movimiento_no_autorizado.errors.to_a.empty? && (!is_save || (is_save && movimiento_no_autorizado.save!))
-      # res.set_data(movimiento_no_autorizado)
+      res.set_data(movimiento_no_autorizado)
     else
       res.add_msgs(movimiento_no_autorizado.errors.to_a)
       res.set_status(HTTP_STATUS_CODE[:conflict])

@@ -19,9 +19,9 @@ class PermisoVehicular < ApplicationRecord
   def usar(movimiento)
     if self.tipo == Permisos.unico
       entro = self.movimiento_vehiculos.where({tipo: MovimientoV.entrada})
-      salio =  self.movimiento_vehiculos.where({tipo: MovimientoV.salida})
+      salio = self.movimiento_vehiculos.where({tipo: MovimientoV.salida})
       
-      self.estado = Estados.usado if entro.length > 0 && salio.length > 0
+      self.estado = Estados.usado if entro.length > 0 && (salio.length > 0 || movimiento.is_salida?)
     end
   end
 

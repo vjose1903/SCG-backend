@@ -8,6 +8,7 @@ class Vehiculo < ApplicationRecord
   before_validation :otras_validaciones
 
   has_many :permisos_vehiculares
+  has_many :movimiento_vehiculos, through: :permisos_vehiculares
 
   
   def otras_validaciones
@@ -34,13 +35,21 @@ class Vehiculo < ApplicationRecord
   def init
     self.estado = true if self.id.nil?  
   end
+  
+  def self.get_placa(params)
+    placa = params["placa"].to_s.upcase
+    unless params["provisional"].nil?
+      siguiente_id_placa = my_query("SELECT nextval('vehiculos_id_seq')")[0]["nextval"]
+      placa = "P#{siguiente_id_placa}"
+    end
+    return placa
+  end
 
-  def self.crear_actualizar_vehiculo(params, is_save=false, is_crear_permiso = false, current_persona=nil)
+  def self.crear_actualizar_vehiculo(params, is_save=false, is_crear_permiso = false, current_persona=nil, buscar_vehiculo=true)
     res = Response.new
     
     unless params["id"]
-
-      if params["placa"]
+      if params["placa"] && buscar_vehiculo
         vehiculo = Vehiculo.find_by_placa(params["placa"].upcase)
       end
       vehiculo = Vehiculo.new if vehiculo.nil?
@@ -49,16 +58,16 @@ class Vehiculo < ApplicationRecord
     end
     
     
-    
+    vehiculo.placa = get_placa(params)
     vehiculo.modelo_id = params["modelo_id"]
-    vehiculo.placa = params["placa"].to_s.upcase
     vehiculo.tipo_vehiculo = params["tipo_vehiculo"]
     vehiculo.modelo_id = params["modelo_id"]
     vehiculo.comentario = params["comentario"]
     vehiculo.anio = params["anio"]
     vehiculo.color = params["color"]
+    vehiculo.provisional = params["provisional"] unless params["provisional"].nil?
     vehiculo.estado = true
-    
+    puts "vehiculo ==> ".red + "#{vehiculo.to_json}"
     vehiculo.valid?
     
     vehiculo.verificar_propietario(current_persona)
@@ -90,14 +99,11 @@ class Vehiculo < ApplicationRecord
     res = Response.new
     has_permiso = PermisoVehicular.where({vehiculo_id: self.id, persona_id: current_persona.id, estado: Estados.activo})
     
-    my_print_log("has_permiso ==> #{has_permiso}")
-    my_print_log("has_permiso ==> #{has_permiso.to_json}")
     
     permiso = has_permiso.length > 0 ? has_permiso[0] : PermisoVehicular.new
     permiso = permiso.attributes
 
     
-    my_print_log("permiso ==> #{permiso.to_json}")
     permiso['es_entrada'] = true
     permiso['es_salida'] = true
     permiso['tipo'] = Permisos.propietario
@@ -106,8 +112,6 @@ class Vehiculo < ApplicationRecord
     permiso['current_persona'] = current_persona
     
     res = PermisoVehicular.crear_actualizar_permiso(permiso, true, true)
-    my_print_log("res ==> #{res}")
-    my_print_log("res ==> #{res.to_json}")
 
     unless res.status_valid
       res.set_status(HTTP_STATUS_CODE[:conflict])
@@ -160,7 +164,28 @@ class Vehiculo < ApplicationRecord
   # ============================================================================================
   def get_permisos(params)
 
-    puts "vehiculo ==> ".red + "#{self.to_json}"
+    res = Response.new
+    estado = params["estado"] ? params["estado"] : Estados.activo
+
+    page = params["page"]
+    per_page = params["per_page"]
+    paginado = params["paginado"]
+    
+    permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' and estado = '#{estado}'")
+
+    permisos = permisos_temp.to_a.my_paginate(page, per_page)
+    permisos[:items] = ActiveModelSerializers::SerializableResource.new(permisos[:items], {})
+
+    res.set_data(permisos)
+    return res
+  end
+
+
+  # ============================================================================================
+  # BUSCAR ULTIMO MOVIMIENTO
+  # ============================================================================================
+  def get_last_movimiento(params)
+
     res = Response.new
     estado = params["estado"] ? params["estado"] : Estados.activo
 

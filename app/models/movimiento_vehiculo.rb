@@ -1,8 +1,11 @@
 class MovimientoVehiculo < ApplicationRecord
   belongs_to :permiso_vehicular
-
+  
   validates :tipo, presence: { :message => "Debe de especificar un tipo de movimiento." }, inclusion: { in: MOVIMIENTOS_VEHICULO_VALIDOS, message: "Tipo de movimiento vehicular no es permitido." }
   # def self.crear_actualizar_movimiento(params, is_save=false)
+
+  has_one :vehiculo, :through => :permiso_vehicular
+  has_one :persona, :through => :permiso_vehicular
 
   def self.crear_movimiento(params, is_save=false)
     res = Response.new

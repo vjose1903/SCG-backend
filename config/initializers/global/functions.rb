@@ -155,9 +155,16 @@ end
 
 # ---------------------------------------------------------------------------------------------------------
 
+def get_modelo_polimorfico(str)
+  return str.constantize
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
 def serialize_parser(modelo, params={})
   ActiveModelSerializers::SerializableResource.new(modelo, params)
 end
+
 # ---------------------------------------------------------------------------------------------------------
 
 def my_query(query)

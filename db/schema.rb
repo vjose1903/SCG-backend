@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_06_192127) do
+ActiveRecord::Schema.define(version: 2021_07_07_161344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,22 @@ ActiveRecord::Schema.define(version: 2021_07_06_192127) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["permiso_vehicular_id"], name: "index_movimiento_vehiculos_on_permiso_vehicular_id"
+  end
+
+  create_table "notificacions", force: :cascade do |t|
+    t.bigint "persona_id"
+    t.string "contenido"
+    t.string "estado", default: "E"
+    t.boolean "activo", default: true
+    t.string "tipo"
+    t.string "codigo"
+    t.string "noti_origen_type"
+    t.bigint "noti_origen_id"
+    t.datetime "fecha_hora"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["noti_origen_type", "noti_origen_id"], name: "index_notificacions_on_noti_origen_type_and_noti_origen_id"
+    t.index ["persona_id"], name: "index_notificacions_on_persona_id"
   end
 
   create_table "permisos_vehiculares", force: :cascade do |t|
@@ -148,6 +164,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192127) do
     t.integer "anio"
     t.string "color"
     t.boolean "estado"
+    t.boolean "provisional", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["modelo_id"], name: "index_vehiculos_on_modelo_id"
@@ -158,6 +175,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_192127) do
   add_foreign_key "movimiento_no_autorizados", "personas"
   add_foreign_key "movimiento_no_autorizados", "vehiculos"
   add_foreign_key "movimiento_vehiculos", "permisos_vehiculares"
+  add_foreign_key "notificacions", "personas"
   add_foreign_key "permisos_vehiculares", "personas"
   add_foreign_key "permisos_vehiculares", "vehiculos"
   add_foreign_key "tandas", "dias"

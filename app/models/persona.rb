@@ -6,6 +6,8 @@ class Persona < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
+  has_many :notificacions
+
   has_many :permisos_vehiculares
   has_many :movimiento_vehiculos, through: :permisos_vehiculares
   has_and_belongs_to_many :vehiculos, :join_table => :permisos_vehiculares
@@ -46,6 +48,10 @@ class Persona < ApplicationRecord
 
 	end
 
+
+  def nombre_completo()
+    return "#{self.nombre}" + " #{self.apellido ? self.apellido : ""}"
+  end
 
   def validate_password(password)
     if self.id.nil? && (password.nil? || password.length == 0)
@@ -232,6 +238,7 @@ class Persona < ApplicationRecord
 
   def self.verificar_movimiento(parametros)
     Persona.transaction do
+      @new_persona = false
       @notificacion = nil
       res = Response.new
       res.send_status(true)
@@ -252,12 +259,8 @@ class Persona < ApplicationRecord
 
       # ----- buscando al propietario del vehiculo  -----------------------------------------------------
       permiso_propietario = vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
-
-      propietario = permiso_propietario.length > 0 ? permiso_propietario[0].persona : nil
-
-      puts "propietario --> ".red + "#{propietario.to_json}"
-
-
+      propietario = permiso_propietario.length > 0 ? permiso_propietario[0].persona : vehiculo.movimiento_vehiculos.last.permiso_vehicular.persona
+      
 
       # ----- viendo si la persona existe  -----------------------------------------------------
       persona_resultado = self.verificar_persona_movimiento(parametros, movimiento, vehiculo, propietario)
@@ -285,28 +288,10 @@ class Persona < ApplicationRecord
       end
       
       permiso = permiso_resultado.get_data
-
-      puts "permiso==> ".blue + "#{permiso.to_json}"
-
-      permiso = permiso.kind_of?(Array)? permiso[0] : permiso
-
-      puts "permiso==> ".red + "#{permiso.to_json}"
-      
-      # ----- revisando si el vehiculo tiene propietario  -------------------------------------
-
-      # propietario = permiso.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
-      
-      if propietario.length > 0 && propietario[0]['persona_id'] != persona.id
-        # Enviar notificacion al propietario
-        # movimiento.is_entrada?
-        # # notificacion
-        # end
-      end
       
       # ----- inactivando el permiso si es unico ----------------------------------------------
-
       permiso.usar(movimiento)
-
+      
       unless permiso.save!
         res.set_status(HTTP_STATUS_CODE[:conflict])
         res.add_msg("Error registrando el permiso de: #{parametros["tipo"]}.")
@@ -314,17 +299,34 @@ class Persona < ApplicationRecord
       end
       
       # ----- registrar el movimiento en la tabla de movimiento_vehiculo ----------------------
-      
-      
       movimiento_resultado = self.registrar_movimiento_vehiculo(movimiento, permiso)
       
       unless movimiento_resultado.status_valid
         return movimiento_resultado
       end
+
+      # ----- revisando si el vehiculo tiene propietario  -------------------------------------
+      if propietario && propietario['id'] != persona.id
+        codigo = movimiento.is_salida? ? Codigo.persona_con_permiso : Codigo.persona_entro
+        res = self.registrar_notificacion(res, codigo, movimiento_resultado.get_data, persona, vehiculo, propietario, "movimiento_vehicular")
+      end
       
-      res.set_data(persona)
+      params_persona = {id: true, nombre_completo: true}
+      params_persona["usuario"] = true if @new_persona
+      params_persona["password"] = true if @new_persona
+
+      params_vehiculo = {id: true, placa: true}
+      params_vehiculo['provisional'] = true if movimiento.is_entrada?
+
+      data ={ 
+        persona: serialize_parser(persona, params_persona),
+        vehiculo: serialize_parser(vehiculo, params_vehiculo)
+      }
+
+      res.set_data(data)
       msg = movimiento.is_entrada? ? "Bienvenido" : "Vuelva pronto"
       res.add_msg("#{msg}: #{persona.nombre.split("_").join(" ")} #{persona.apellido}.")
+
       return res
       
     end  
@@ -343,7 +345,7 @@ class Persona < ApplicationRecord
     if movimiento.is_salida? && no_existe_id_persona
       params = { "persona_id" => nil, "vehiculo_id" => vehiculo["id"], "codigo_error" => Codigo.persona_no_identificada}
       msg_error = "Persona no registrada, no tiene permiso para salir en este vehiculo."
-      res = self.registrar_movimiento_no_autorizado(res, params, msg_error, vehiculo, nil, propietario)
+      res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_no_identificada, params, msg_error, vehiculo, nil, propietario)
       
       return res
     end
@@ -351,6 +353,7 @@ class Persona < ApplicationRecord
     persona = Persona.find_by_id(parametros["id"]) unless no_existe_id_persona
     
     if no_existe_id_persona || persona.nil?
+      @new_persona = true
       persona = Persona.new
       persona["id"] = parametros["id"] unless no_existe_id_persona
       
@@ -367,6 +370,44 @@ class Persona < ApplicationRecord
     res.set_data(persona)
     return res
   end
+
+
+  #   # ============================================================================================
+  # # VERIFICAR VEHICULO
+  # # ============================================================================================
+  # def self.verificar_vehiculo(parametros, movimiento)
+  #   if movimiento.is_entrada?
+
+  #     ultimos_movimientos_vehiculo = MovimientoVehiculo.joins("inner join permisos_vehiculares on permisos_vehiculares.id = movimiento_vehiculos.permiso_vehicular_id inner join vehiculos on vehiculos.id = permiso_vehicular.vehiculos_id")
+  #     .select("vehiculo.id as vehiculo_id, max(movimiento_vehiculos.id) as movimiento_id, movimiento_vehiculos.tipo").where("vehiculos.placa = #{parametros["placa"]}").group("vehiculos.id")
+    
+  #     have_problem = ultimos_movimientos_vehiculo.any? { |movimiento| movimiento['tipo'] == movimiento.get_min }
+
+
+
+  #   else
+
+  #     persona Persona.find_by_id(parametros["id"])
+  #     if persona.nil?
+  #       return {"can_continue" => false "vehiculo" => nil}
+  #     else
+  #       vehiculos = PermisoVehicular.joins("inner join vehiculos on vehiculos.id = permiso_vehicular.vehiculos_id")
+  #       .select("vehiculos.id as vehiculo_id").where("permiso_vehicular.persona_id = #{parametros["id"]}")
+
+  #       unless vehiculos.length == 0 
+  #         vehiculo = nil
+  #       else
+  #         vehiculo = Vehiculo.find_by_id(vehiculos[0]["vehiculo_id"])
+  #       end
+        
+  #       return {"can_continue" => false "vehiculo" => vehiculo}
+  #     end
+
+  #   end
+  # end
+
+
+
   # ============================================================================================
   # VERIFICAR VEHICULO
   # ============================================================================================
@@ -374,9 +415,14 @@ class Persona < ApplicationRecord
   def self.verificar_vehiculo_movimiento(parametros, movimiento)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
     res.send_status(true)
+    crear_vehiculo = false
+    is_provisional = false
     puts "parametros ==> ".yellow + "#{parametros}"
+    
     vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
     vehiculo = vehiculo_find.get_data
+
+
     
     if vehiculo.nil?
       if movimiento.is_salida?
@@ -395,7 +441,26 @@ class Persona < ApplicationRecord
         return res
         return res
       end
-      result_vehiculo = Vehiculo.crear_actualizar_vehiculo({ "placa" => parametros["placa"] }, true)
+      crear_vehiculo = true
+    end
+    
+    ultimo_movimiento = vehiculo.movimiento_vehiculos.last
+    
+    puts "ultimo_movimiento ==> ".red + "#{ultimo_movimiento.to_json}"
+    
+    unless ultimo_movimiento.nil? 
+      if movimiento.is_entrada? && movimiento.is_igual(ultimo_movimiento.tipo)
+        crear_vehiculo = true
+        is_provisional = true
+      end
+    end
+    
+    puts "crear_vehiculo ==> ".green + "#{crear_vehiculo}"
+
+    if crear_vehiculo
+      new_vehiculo = { "placa" => parametros["placa"] }
+      new_vehiculo["provisional"] = true if is_provisional
+      result_vehiculo = Vehiculo.crear_actualizar_vehiculo(new_vehiculo, true, false, nil, false)
       
       unless result_vehiculo.status_valid
         raise ActiveRecord::Rollback
@@ -405,6 +470,9 @@ class Persona < ApplicationRecord
       
       vehiculo = result_vehiculo.get_data
     end
+
+
+
     res.set_status(HTTP_STATUS_CODE[:ok])
     res.set_data(vehiculo)
     
@@ -426,43 +494,74 @@ class Persona < ApplicationRecord
         
         params = { "persona_id" => persona['id'], "vehiculo_id" => vehiculo["id"], "codigo_error" => Codigo.persona_sin_permiso}
         msg_error = "#{persona.nombre.split("_").join(" ")} #{persona.apellido} no tiene permiso de salir en este vehiculo."
-        res = self.registrar_movimiento_no_autorizado(res, params, msg_error, vehiculo, persona, propietario)
+        res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_sin_permiso, params, msg_error, vehiculo, persona, propietario)
 
         return res
       end
       
       permiso = PermisoVehicular.new
       
-      permiso["valor"] = "#{DateTime.now.to_i}^#{persona_["id"]}^#{vehiculo["id"]}"
-      permiso.persona_id = persona_["id"]
+      permiso["valor"] = "#{DateTime.now.to_i}^#{persona["id"]}^#{vehiculo["id"]}"
+      permiso.persona_id = persona["id"]
       permiso.vehiculo_id = vehiculo["id"]
       permiso.estado = Estados.activo
       
       permiso.valid?
-      
+      permiso = [permiso]
     end
 
+    puts "permiso = = => ".blue + "#{permiso.to_json}"
+
     res.set_status(HTTP_STATUS_CODE[:ok])
-    res.set_data(permiso)
+    res.set_data(permiso[0])
     return res
   end
   
   # ============================================================================================
+  # REGISTRAR NOTIFICACION
+  # ============================================================================================
+  def self.registrar_notificacion(res, codigo, origen, persona, vehiculo, propietario, tipo)
+    unless propietario.nil?
+      mensaje = Notificacion.notificacion_mensaje_parser(codigo, persona, vehiculo)
+      
+      noti_params = { 
+        "persona_id" => propietario["id"] ,
+        "contenido" => mensaje,
+        "codigo" => codigo,
+        "tipo" => tipo,
+        "noti_origen" =>  origen
+      }
+      
+      res_noti = Notificacion.crear_actualizar_notificacion(noti_params, true)
+      if res_noti.status_valid
+        @notificacion = {codigo: codigo, propietario: serialize_parser(propietario, {id: true, nombre_completo: true}), data: res_noti.get_data}
+      else
+        res = res_noti
+      end
+
+      return res
+    end
+  end
+
+  # ============================================================================================
   # REGISTRAR MOVIMIENTO NO AUTORIZADO
   # ============================================================================================
 
-  def self.registrar_movimiento_no_autorizado(res, params, msg_error, vehiculo_, persona_, propietario_)
+  def self.registrar_movimiento_no_autorizado(res, codigo_error, params, msg_error, vehiculo_, persona_, propietario_)
 
     res_movimiento = MovimientoNoAutorizado.crear_actualizar_movimiento_no_autorizado(params, true)
     if res_movimiento.status_valid
-      res.set_data({codigo: Codigo.persona_sin_permiso})
+      res.set_data({codigo: codigo_error})
       res.add_msg(msg_error)
+      
+      res = self.registrar_notificacion(res, codigo_error, res_movimiento.get_data, persona_, vehiculo_, propietario_, "movimiento_no_autorizado")
+
     else
       res = res_movimiento
     end
 
-    @notificacion = {codigo: Codigo.persona_sin_permiso, msg: msg_error, propietario: serialize_parser(propietario_, {id: true, nombre_completo: true}), vehiculo: serialize_parser(vehiculo_, {id: true, modelo: true}), persona: serialize_parser(persona_, {id: true, nombre_completo: true})}
-
+    puts "res ===> ".red  + "#{res.to_json}"
+    puts "@notificacion ===> ".red  + "#{@notificacion.to_json}"
     return res
   end
 
@@ -473,18 +572,54 @@ class Persona < ApplicationRecord
   def self.registrar_movimiento_vehiculo(movimiento, permiso)
     res = Response.new(HTTP_STATUS_CODE[:conflict])
     res.send_status(true)
-    result_movimiento = MovimientoVehiculo.crear_movimiento({ "permiso_vehicular_id" => permiso["id"], "tipo" => movimiento.get_tipo }, true)
     
-    unless result_movimiento.status_valid
-      raise ActiveRecord::Rollback
+    ultimo_movimiento = permiso.vehiculo.movimiento_vehiculos.last
+    
+    if ultimo_movimiento.nil? || movimiento.is_entrada? || (movimiento.is_salida? && movimiento.is_contrario(ultimo_movimiento.tipo))
+
+      result_movimiento = MovimientoVehiculo.crear_movimiento({ "permiso_vehicular_id" => permiso["id"], "tipo" => movimiento.get_tipo }, true)
+      
+      unless result_movimiento.status_valid
+        raise ActiveRecord::Rollback
+      end
+      
+      return result_movimiento unless result_movimiento.status_valid
+      
+      movimiento = result_movimiento.get_data
+      
+      res.set_status(HTTP_STATUS_CODE[:ok])
+      res.set_data(movimiento)
+
+    else 
+      msg = "El vehículo no puede #{movimiento.is_entrada? ? "entrar": "salir"} por que ya se encuentra #{movimiento.is_entrada? ? "dentro": "afuera"} del campus."
+      res.add_msg(msg)
+    end
+
+    return res
+  end
+
+  # ============================================================================================
+  # BUSCAR NOTIFICACIONES
+  # ============================================================================================
+  def get_notificaciones(params)
+    res = Response.new
+    estado = params["estado"] ? params["estado"] : nil
+    desde = params["desde"] ? params["desde"] : nil
+    hasta = params["hasta"] ? params["hasta"] : nil
+
+    query = {}
+    query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day if desde && hasta
+
+    puts "query ==> ".red + "#{query}"
+
+    if estado
+      notificaciones = self.notificacions.where(query).where("estado = #{estado}, activo = true").order('id DESC')
+    else
+      notificaciones = self.notificacions.where(query).where("activo = true").order('id DESC')
     end
     
-    return result_movimiento unless result_movimiento.status_valid
-    
-    movimiento = result_movimiento.get_data
-    
-    res.set_status(HTTP_STATUS_CODE[:ok])
-    res.set_data(movimiento)
+
+    res.set_data(serialize_parser(notificaciones, {}))
     return res
   end
 
@@ -496,12 +631,9 @@ class Persona < ApplicationRecord
     desde = params["desde"]
     hasta = params["hasta"]
     query={}
-
-    my_print_log("desde ==> #{desde}")
-    my_print_log("hasta ==> #{hasta}")
     
     query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
-    my_print_log("query ==> #{query}")
+    # my_print_log("query ==> #{query}")
     
     res.set_data(self.movimiento_vehiculos.where(query), {all: true })
     return res
