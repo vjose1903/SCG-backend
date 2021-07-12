@@ -170,8 +170,10 @@ class Vehiculo < ApplicationRecord
     page = params["page"]
     per_page = params["per_page"]
     paginado = params["paginado"]
+
+    estadoFilter = "and estado = '#{estado}'" if estado != 'T'
     
-    permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' and estado = '#{estado}'")
+    permisos_temp = self.permisos_vehiculares.where("tipo != '#{Permisos.propietario}' #{estadoFilter}")
 
     permisos = permisos_temp.to_a.my_paginate(page, per_page)
     permisos[:items] = ActiveModelSerializers::SerializableResource.new(permisos[:items], {})
