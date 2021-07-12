@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     scope :v1 do
       resources :marcas
       resources :modelos
+      resources :movimiento_no_autorizados
+
       resources :notificacions do 
         patch "cambiar_estado", :to => "notificacions#cambiar_estado"
         patch "borrar_notificacion", :to => "notificacions#borrar_notificacion"
