@@ -13,8 +13,6 @@ class Notificacion < ApplicationRecord
       notificacion = Notificacion.find_by_id(params["id"])
     end
 
-    puts "params ==> ".yellow + "#{params.to_json}"
-
     notificacion.persona_id      = params["persona_id"]
     notificacion.contenido       = params["contenido"]
     notificacion.estado          = params["estado"] if params["estado"]

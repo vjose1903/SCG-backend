@@ -258,9 +258,13 @@ class Persona < ApplicationRecord
 
 
       # ----- buscando al propietario del vehiculo  -----------------------------------------------------
+
       permiso_propietario = vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
-      propietario = permiso_propietario.length > 0 ? permiso_propietario[0].persona : vehiculo.movimiento_vehiculos.last.permiso_vehicular.persona
-      
+      propietario = permiso_propietario.length > 0 ? permiso_propietario[0].persona : nil 
+
+      if propietario.nil?
+        propietario = vehiculo.movimiento_vehiculos.last.permiso_vehicular.persona if vehiculo.movimiento_vehiculos.last
+      end
 
       # ----- viendo si la persona existe  -----------------------------------------------------
       persona_resultado = self.verificar_persona_movimiento(parametros, movimiento, vehiculo, propietario)
@@ -417,12 +421,12 @@ class Persona < ApplicationRecord
     res.send_status(true)
     crear_vehiculo = false
     is_provisional = false
-    puts "parametros ==> ".yellow + "#{parametros}"
+
     
     vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
     vehiculo = vehiculo_find.get_data
-
-
+    
+    
     
     if vehiculo.nil?
       if movimiento.is_salida?
@@ -444,9 +448,8 @@ class Persona < ApplicationRecord
       crear_vehiculo = true
     end
     
-    ultimo_movimiento = vehiculo.movimiento_vehiculos.last
+    ultimo_movimiento = vehiculo.movimiento_vehiculos.last if vehiculo
     
-    puts "ultimo_movimiento ==> ".red + "#{ultimo_movimiento.to_json}"
     
     unless ultimo_movimiento.nil? 
       if movimiento.is_entrada? && movimiento.is_igual(ultimo_movimiento.tipo)
@@ -619,7 +622,7 @@ class Persona < ApplicationRecord
     end
     
 
-    res.set_data(serialize_parser(notificaciones, {}))
+    res.set_data(serialize_parser(notificaciones, {all:true}))
     return res
   end
 

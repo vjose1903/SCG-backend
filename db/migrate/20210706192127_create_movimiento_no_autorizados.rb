@@ -5,6 +5,8 @@ class CreateMovimientoNoAutorizados < ActiveRecord::Migration[5.2]
       t.references :vehiculo, foreign_key: true
       t.string :codigo_error
       t.datetime :fecha_hora
+      t.boolean :resuelto, default: false
+      t.string :comentario
 
       t.timestamps
     end

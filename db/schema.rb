@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(version: 2021_07_07_161344) do
     t.bigint "vehiculo_id"
     t.string "codigo_error"
     t.datetime "fecha_hora"
+    t.boolean "resuelto", default: false
+    t.string "comentario"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["persona_id"], name: "index_movimiento_no_autorizados_on_persona_id"

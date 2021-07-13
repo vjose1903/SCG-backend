@@ -17,13 +17,31 @@ class VehiculoSerializer < ActiveModel::Serializer
 		return ActiveModelSerializers::SerializableResource.new(object.modelo, { marca_descripcion: true, marca_id: true })
 	end
 
-	def propietario 
+	def propietario
 		has_propietario = object.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
 		propietario = {}
 
 		if has_propietario.length > 0
-			propietario = ActiveModelSerializers::SerializableResource.new(has_propietario[0].persona, { nombre_completo: true, id: true })
+			propietario = {
+				telefono: has_propietario[0].persona.telefono,
+				nombre_completo: has_propietario[0].persona.nombre_completo,
+				id:	has_propietario[0].persona.id,
+				is_propietario: true}
+
+			propietario["imagen"] = has_propietario[0].persona.imagen if self.personalizar_parametros('img_propietario')
+			propietario["documentos_de_identidad"] = has_propietario[0].persona.documentos_de_identidad
+		else
+			temp_propietario = object.movimiento_vehiculos.last.permiso_vehicular.persona
+			propietario = {
+				telefono: temp_propietario.telefono,
+				nombre_completo: temp_propietario.nombre_completo,
+				id:	temp_propietario.id,
+				is_propietario: false}
+
+			propietario["imagen"] = temp_propietario.imagen if self.personalizar_parametros('img_propietario')
+			propietario["documentos_de_identidad"] = has_propietario[0].persona.documentos_de_identidad
 		end
+		
 
 		return propietario
 	end

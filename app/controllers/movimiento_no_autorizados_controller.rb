@@ -1,12 +1,22 @@
 class MovimientoNoAutorizadosController < ApplicationController
   before_action :set_movimiento_no_autorizado, only: [:show, :update, :destroy]
+
   
   def index
-      return Response.new(nil, MovimientoNoAutorizado.all, nil, {}).send_response self
+      resultado = MovimientoNoAutorizado.get_last_movimientos()
+      resultado.send_response(self)
   end
   
   def show
     return Response.new(nil, @movimiento_no_autorizado, nil, {}).send_response self
+  end
+
+  def crear_actualizar_movimiento
+    parametros = movieminto_vehiculo_params
+    parametros["id"] = params["id"] if params["id"]
+
+    resultado = MovimientoNoAutorizado.crear_actualizar_movimiento_no_autorizado(parametros)
+    resultado.send_response(self)
   end
 
   # POST /movimiento_no_autorizados
@@ -42,6 +52,6 @@ class MovimientoNoAutorizadosController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def movieminto_vehiculo_params
-      params.require(:movimiento_no_autorizado).permit( :persona_id, :vehiculo_id, :codigo_error, :fecha_hora )
+      params.require(:movimiento_no_autorizado).permit( :persona_id, :vehiculo_id, :codigo_error, :fecha_hora, :resuelto, :comentario )
     end
 end

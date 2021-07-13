@@ -131,8 +131,8 @@ class PermisoVehicular < ApplicationRecord
   
   def activar_desactivar_permiso(params)
     res = Response.new
-
-    action = params["valor"] ? 'activado': 'desactivado'
+    puts "params ==> ".red + "#{params}"
+    action = params["estado"] == "A" ? 'activado': 'desactivado'
 
     unless params["accion"]
       res.add_msg("No se pudo completar la accion requerida.")

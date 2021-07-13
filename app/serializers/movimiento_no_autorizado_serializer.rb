@@ -1,12 +1,33 @@
 class MovimientoNoAutorizadoSerializer < ActiveModel::Serializer
-  attributes :persona, :vehiculo, :codigo_error, :fecha_hora
+  attributes :id, :persona, :vehiculo, :codigo_error, :fecha_hora, :resuelto, :notificacion, :comentario
+
+  def notificacion
+    return ActiveModelSerializers::SerializableResource.new(object.notificacion, {contenido: true })
+  end
 
   def persona
-    return ActiveModelSerializers::SerializableResource.new(object.persona, {id: true, nombre_completo: true, image:true })
+    return  {
+        id: object.persona.id,
+        nombre_completo: object.persona.nombre_completo,
+        image: object.persona.imagen,
+        telefono: object.persona.telefono,
+        documentos_de_identidad: object.persona.documentos_de_identidad}
   end
 
   def vehiculo
-    return ActiveModelSerializers::SerializableResource.new(object.vehiculo, { id: true, placa: true, modelo_id: true, color: true, tipo_vehiculo: true, provisional: true, modelo: true, propietario: true })
+    return ActiveModelSerializers::SerializableResource.new(object.vehiculo, { 
+        id: true,
+        placa: true,
+        modelo_id: true,
+        color: true,
+        tipo_vehiculo: true,
+        provisional: true,
+        modelo: true,
+
+        propietario: true,
+        img_propietario:true
+
+      })
   end
 
 end
