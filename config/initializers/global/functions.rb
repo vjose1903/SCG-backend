@@ -268,3 +268,42 @@ def my_print_log(*args)
     end
   end
 end
+
+# ---------------------------------------------------------------------------------------------------------
+def sendEmail(msg, asunto, lista_de_correo)
+	email     = "scgssytem@gmail.com"
+	password  = "scgsystem1234"
+	listEmail = lista_de_correo
+
+	style = 'style="font-weight: normal;"'
+	
+message = <<MESSAGE_END
+From: ScgSystem<#{email}>
+To: <#{listEmail}>
+Content-type: text/html
+Subject: #{asunto}
+
+<div class="" style="display: flex; justify-content: space-between">
+  <img src="#{LOGO_NEGRO}" style="width: 7rem" />
+  <div style="display: flex; align-items: center">
+    <div>
+      <span style="display: block; width: 100%; font-size: 1.5rem; font-weight: 700; text-align: center"> SCG System </span>
+      <span style="display: block; width: 100%; font-size: 1.3rem; font-weight: 200; text-align: center"> Security Car Guard </span>
+    </div>
+  </div>
+  <div></div>
+</div>
+<hr />
+
+<h3><span #{style}>#{msg.encode(Encoding::ISO_8859_1)}</span></h3>
+
+MESSAGE_END
+
+
+	smtp = Net::SMTP.new 'smtp.gmail.com', 587
+	smtp.enable_starttls
+	smtp.start('gmail.com', email, password, :login) do
+		smtp.send_message(message, email, listEmail)
+	end
+
+end

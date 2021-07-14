@@ -23,6 +23,7 @@ class Persona < ApplicationRecord
   accepts_nested_attributes_for :documentos_de_identidad, :allow_destroy => true
 
   validates :nombre,  presence: { :message => "Debe de especificar el nombre de la persona." }
+  validates :telefono, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :telefono, valor: "%{value}")} }
   validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :usuario, valor: "%{value}")} }
   validates :email, allow_blank: true, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :email, valor: "%{value}")} }
 
@@ -64,20 +65,17 @@ class Persona < ApplicationRecord
   end
 
   def verificar_role(roles)
-    puts "roles ==> ".red + "#{roles}"
     if roles.empty? || roles.nil? || roles.blank?
-      self.add_role "invitado"
+      self.add_role "Invitado"
       return
     end
     
     roles_faltantes = self.roles.pluck(:name).difference(roles)
-    puts "roles_faltantes ==> ".yellow + "#{roles_faltantes}"
     
     roles_faltantes.each do |rol|
       self.remove_role rol
     end
     
-    puts "roles ==> ".green + "#{roles}"
     roles.each do |rol|
       self.add_role rol unless self.has_role? rol
     end
@@ -231,16 +229,16 @@ class Persona < ApplicationRecord
   def self.get_next_invitado(parametros)
     res = Response.new(HTTP_STATUS_CODE[:ok])
     res.send_status(true)
+    # movimiento = Movimiento.new(parametros["tipo"])
 
-    movimiento = Movimiento.new(parametros["tipo"])
+    # if movimiento.is_salida?
 
-    if movimiento.is_salida?
-      res.set_data({codigo: Codigo.persona_no_identificada})
-      res.send_status(true)
-      res.add_msg("No tiene permiso para salir en este vehiculo.")
-      # Enviar notificacion al propietario
-      return res
-    end
+    #   params = { "persona_id" => nil, "vehiculo_id" => vehiculo["id"], "codigo_error" => Codigo.persona_no_identificada}
+    #   msg_error = "Persona no registrada, no tiene permiso para salir en este vehiculo."
+    #   res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_no_identificada, params, msg_error, vehiculo, nil, propietario)
+    #   # Enviar notificacion al propietario
+    #   return res
+    # end
     
     persona = Persona.new
     # persona["id"] = parametros["id"] unless no_existe_id_persona
@@ -375,7 +373,7 @@ class Persona < ApplicationRecord
       params = { "persona_id" => nil, "vehiculo_id" => vehiculo["id"], "codigo_error" => Codigo.persona_no_identificada}
       msg_error = "Persona no registrada, no tiene permiso para salir en este vehiculo."
       res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_no_identificada, params, msg_error, vehiculo, nil, propietario)
-      
+
       return res
     end
     
@@ -447,10 +445,12 @@ class Persona < ApplicationRecord
     crear_vehiculo = false
     is_provisional = false
 
-    
-    vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
-    vehiculo = vehiculo_find.get_data
-    
+    if parametros["placa"] !== "SIN_PLACA"
+      vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
+      vehiculo = vehiculo_find.get_data
+    else
+      is_provisional = true
+    end
     
     
     if vehiculo.nil?
@@ -563,6 +563,14 @@ class Persona < ApplicationRecord
       res_noti = Notificacion.crear_actualizar_notificacion(noti_params, true)
       if res_noti.status_valid
         @notificacion = {codigo: codigo, propietario: serialize_parser(propietario, {id: true, nombre_completo: true}), data: res_noti.get_data}
+
+        if propietario
+          lista = []
+          lista.concat(propietario["lista_de_correo"]["correos"].pluck("value")) if propietario.lista_de_correo && propietario["lista_de_correo"]["correos"].length > 0
+          lista.concat([propietario.email]) if propietario.email
+          sendEmail(mensaje, "Accion requerida", lista)
+        end
+  
       else
         res = res_noti
       end
@@ -587,9 +595,6 @@ class Persona < ApplicationRecord
     else
       res = res_movimiento
     end
-
-    puts "res ===> ".red  + "#{res.to_json}"
-    puts "@notificacion ===> ".red  + "#{@notificacion.to_json}"
     return res
   end
 

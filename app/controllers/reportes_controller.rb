@@ -4,7 +4,6 @@ class ReportesController < ApplicationController
         tipo_reporte = params["tipo_reporte"]
         tipo = tipo_reporte
         muestra_sub_titulo = ['mov_persona', 'persona']
-
         if tipo_reporte==='mov_dia'
             # ------------------- REPORTE DE VENTAS --------------------------------
             resultado = Reporte.get_mov('normal' ,params)

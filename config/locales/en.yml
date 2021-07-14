@@ -65,6 +65,7 @@ en:
     dia: "Dia"
     dia_p: "Dias"
     persona: "Persona"
+    telefono: "telefono"
     persona_p: "Personas"
 
   errors:

@@ -1,5 +1,5 @@
 class PersonasController < ApplicationController
-  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos, :get_roles]
+  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos, :get_roles, :agregar_correo]
 
   
   def index
@@ -31,6 +31,7 @@ class PersonasController < ApplicationController
     parametros = persona_params
     parametros["id"] = params["id"] if params["id"] 
     parametros["lista_de_correo"] = params["lista_de_correo"] 
+    parametros["roles"] = @persona.roles.pluck(:name)
 
     resultado = Persona.crear_actualizar_persona(parametros, params["tipo"])
     resultado.send_response(self)
