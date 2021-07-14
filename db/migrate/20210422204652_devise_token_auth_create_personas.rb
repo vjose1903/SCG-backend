@@ -55,7 +55,6 @@ class DeviseTokenAuthCreatePersonas < ActiveRecord::Migration[5.2]
       end
   
       add_index :personas, :usuario, unique: true
-      add_index :telefono, unique: true
       add_index :personas, [:uid, :provider], unique: true
       add_index :personas, :reset_password_token, unique: true
       add_index :personas, :confirmation_token, unique: true
