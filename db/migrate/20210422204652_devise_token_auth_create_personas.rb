@@ -47,7 +47,6 @@ class DeviseTokenAuthCreatePersonas < ActiveRecord::Migration[5.2]
         t.boolean :es_estudiante
         t.boolean :es_invitado
         t.boolean :es_empleado
-        t.string  :tipo_empleado
         t.json    :lista_de_correo
   
         ## Tokens

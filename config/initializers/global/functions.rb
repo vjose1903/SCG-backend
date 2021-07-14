@@ -161,6 +161,26 @@ end
 
 # ---------------------------------------------------------------------------------------------------------
 
+def hora_12(fecha)
+  hora =("%02d" % (((DateTime.parse(fecha).hour + 11) % 12) + 1))
+  minuto =("%02d" % DateTime.parse(fecha).minute)
+  return "#{hora}:#{minuto}"
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
+def formatearFecha(fecha, tipo)
+  fecha_ = ''
+  if tipo == 1
+    fecha_ = Date.parse(fecha).strftime("%d/%m/%Y")
+  else 
+    fecha_ = "#{Date.parse(fecha).strftime("%d/%m/%Y")} - #{hora_12(fecha)}"
+  end
+  return fecha_
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
 def serialize_parser(modelo, params={})
   ActiveModelSerializers::SerializableResource.new(modelo, params)
 end

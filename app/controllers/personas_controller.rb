@@ -1,5 +1,5 @@
 class PersonasController < ApplicationController
-  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos]
+  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos, :get_roles]
 
   
   def index
@@ -76,13 +76,19 @@ class PersonasController < ApplicationController
     resultado.send_response self
   end
 
+  def get_roles
+    parametros = params
+    resultado = @persona.get_roles(parametros)
+    resultado.send_response self
+  end
+
 
   def crear_actualizar_persona
     parametros = persona_params
     parametros["id"] = params["id"] if params["id"] 
     parametros["imagen"] = params["imagen"] 
 
-    more_params=["password", "tandas", "documentos_de_identidad", "vehiculos"]
+    more_params=["password", "tandas", "documentos_de_identidad", "vehiculos", "roles"]
     parametros = agregar_dependencias(parametros, more_params)
 
     resultado = Persona.crear_actualizar_persona(parametros)
@@ -97,7 +103,7 @@ class PersonasController < ApplicationController
 
     respuesta = set_entidad(Persona, params)
     @persona = respuesta.get_data
-
+    
     return respuesta.send_response self if @persona.nil?
   end
 
@@ -109,12 +115,13 @@ class PersonasController < ApplicationController
       imagen: params['imagen'] || false,
       lista_de_correo: params['lista_de_correo'] || false,
       notificacions: params['notificaciones'] || false,
+      roles: params['roles'] || false,
       all: true
     }
   end
 
   def persona_params 
-    params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password, :tipo_empleado,
-                                    :tandas, :documentos_de_identidad, :vehiculos, :imagen, :lista_de_correo)
+    params.require(:persona).permit(:nombre, :apellido, :fecha_nacimiento, :usuario, :telefono, :email, :direccion, :estado, :es_estudiante, :es_invitado, :es_empleado, :password,
+                                    :tandas, :documentos_de_identidad, :vehiculos, :imagen, :lista_de_correo, :roles)
   end
 end

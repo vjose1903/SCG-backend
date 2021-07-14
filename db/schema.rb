@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_161344) do
+ActiveRecord::Schema.define(version: 2021_07_13_173438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accions", force: :cascade do |t|
+    t.string "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "dias", force: :cascade do |t|
     t.string "descripcion"
@@ -94,6 +100,21 @@ ActiveRecord::Schema.define(version: 2021_07_07_161344) do
     t.index ["persona_id"], name: "index_notificacions_on_persona_id"
   end
 
+  create_table "permiso_accions", force: :cascade do |t|
+    t.bigint "permiso_id"
+    t.bigint "accion_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accion_id"], name: "index_permiso_accions_on_accion_id"
+    t.index ["permiso_id"], name: "index_permiso_accions_on_permiso_id"
+  end
+
+  create_table "permisos", force: :cascade do |t|
+    t.string "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "permisos_vehiculares", force: :cascade do |t|
     t.bigint "persona_id"
     t.bigint "vehiculo_id"
@@ -136,7 +157,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_161344) do
     t.boolean "es_estudiante"
     t.boolean "es_invitado"
     t.boolean "es_empleado"
-    t.string "tipo_empleado"
     t.json "lista_de_correo"
     t.json "tokens"
     t.datetime "created_at", null: false
@@ -145,6 +165,34 @@ ActiveRecord::Schema.define(version: 2021_07_07_161344) do
     t.index ["reset_password_token"], name: "index_personas_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_personas_on_uid_and_provider", unique: true
     t.index ["usuario"], name: "index_personas_on_usuario", unique: true
+  end
+
+  create_table "personas_roles", id: false, force: :cascade do |t|
+    t.bigint "persona_id"
+    t.bigint "role_id"
+    t.index ["persona_id", "role_id"], name: "index_personas_roles_on_persona_id_and_role_id"
+    t.index ["persona_id"], name: "index_personas_roles_on_persona_id"
+    t.index ["role_id"], name: "index_personas_roles_on_role_id"
+  end
+
+  create_table "rol_accions", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "permiso_accion_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permiso_accion_id"], name: "index_rol_accions_on_permiso_accion_id"
+    t.index ["role_id"], name: "index_rol_accions_on_role_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "tipo_persona"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
   create_table "tandas", force: :cascade do |t|
@@ -178,8 +226,12 @@ ActiveRecord::Schema.define(version: 2021_07_07_161344) do
   add_foreign_key "movimiento_no_autorizados", "vehiculos"
   add_foreign_key "movimiento_vehiculos", "permisos_vehiculares"
   add_foreign_key "notificacions", "personas"
+  add_foreign_key "permiso_accions", "accions"
+  add_foreign_key "permiso_accions", "permisos"
   add_foreign_key "permisos_vehiculares", "personas"
   add_foreign_key "permisos_vehiculares", "vehiculos"
+  add_foreign_key "rol_accions", "permiso_accions"
+  add_foreign_key "rol_accions", "roles"
   add_foreign_key "tandas", "dias"
   add_foreign_key "tandas", "personas"
   add_foreign_key "vehiculos", "modelos"

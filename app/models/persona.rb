@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Persona < ApplicationRecord
+  rolify :before_add => :before_add_method
+
   extend Devise::Models
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
-
   has_many :notificacions
 
   has_many :permisos_vehiculares
@@ -27,6 +28,9 @@ class Persona < ApplicationRecord
 
   
   before_validation :init
+
+  def before_add_method(rol)
+  end
 
   def initialize(arg)
     siguiente_id = my_query("SELECT nextval('personas_id_seq')")[0]["nextval"]
@@ -59,6 +63,26 @@ class Persona < ApplicationRecord
     end
   end
 
+  def verificar_role(roles)
+    puts "roles ==> ".red + "#{roles}"
+    if roles.empty? || roles.nil? || roles.blank?
+      self.add_role "invitado"
+      return
+    end
+    
+    roles_faltantes = self.roles.pluck(:name).difference(roles)
+    puts "roles_faltantes ==> ".yellow + "#{roles_faltantes}"
+    
+    roles_faltantes.each do |rol|
+      self.remove_role rol
+    end
+    
+    puts "roles ==> ".green + "#{roles}"
+    roles.each do |rol|
+      self.add_role rol unless self.has_role? rol
+    end
+    
+  end
 
   def init
     self.es_estudiante = false if self.es_estudiante.nil?
@@ -84,7 +108,6 @@ class Persona < ApplicationRecord
       persona.uid = params["usuario"]
       persona.telefono = params["telefono"]
       persona.email = params["email"]
-      persona.tipo_empleado = params["tipo_empleado"]
       persona.direccion = params["direccion"]
       persona.estado = params["estado"]
       persona.es_estudiante = params["es_estudiante"]
@@ -97,6 +120,8 @@ class Persona < ApplicationRecord
       persona.validate_password(params["password"])
 
       persona.establecer_imagen(params["imagen"])
+
+      persona.verificar_role(params["roles"])
       
       
       persona_is_valid = persona.errors.to_a.empty? && persona.valid?
@@ -601,6 +626,8 @@ class Persona < ApplicationRecord
     return res
   end
 
+  # b= a.uniq { |p| p[:num] }
+
   # ============================================================================================
   # BUSCAR NOTIFICACIONES
   # ============================================================================================
@@ -657,6 +684,16 @@ class Persona < ApplicationRecord
     vehiculos[:items] = ActiveModelSerializers::SerializableResource.new(vehiculos[:items], {all:true})
 
     res.set_data(vehiculos)
+    return res
+  end
+
+  # ============================================================================================
+  # BUSCAR ROLES
+  # ============================================================================================
+  def get_roles(params)
+    res = Response.new
+    roles_temp = self.roles
+    res.set_data(serialize_parser(roles_temp, {all:true}))
     return res
   end
   

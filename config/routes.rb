@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tipo_personas
   resources :imagens
   
   scope :api, defaults: {format: :json} do
@@ -6,6 +7,18 @@ Rails.application.routes.draw do
       resources :marcas
       resources :modelos
       resources :movimiento_no_autorizados
+
+      resources :roles do 
+        collection do
+          get "buscar/get_roles" => "roles#get_roles"
+        end
+      end
+
+      resources :reportes do 
+        collection do
+          get "buscar/:tipo_reporte" => "reportes#getReportes"
+        end
+      end
 
       resources :notificacions do 
         patch "cambiar_estado", :to => "notificacions#cambiar_estado"
@@ -28,6 +41,7 @@ Rails.application.routes.draw do
         get "validar_existencia_correo", :to => "personas#validar_existencia_correo"
         get "get_historial", :to => "personas#get_historial"
         get "get_vehiculos", :to => "personas#get_vehiculos"
+        get "get_roles", :to => "personas#get_roles"
 
         collection do
           post "get_next_invitado/:tipo", :to => "personas#get_next_invitado"
