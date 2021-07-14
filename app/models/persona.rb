@@ -445,7 +445,7 @@ class Persona < ApplicationRecord
     crear_vehiculo = false
     is_provisional = false
 
-    if parametros["placa"] !== "SIN_PLACA"
+    if parametros["placa"] != "SIN_PLACA"
       vehiculo_find = set_entidad(Vehiculo, parametros, "placa")
       vehiculo = vehiculo_find.get_data
     else
