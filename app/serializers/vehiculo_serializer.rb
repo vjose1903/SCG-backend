@@ -39,7 +39,7 @@ class VehiculoSerializer < ActiveModel::Serializer
 				is_propietario: false}
 
 			propietario["imagen"] = temp_propietario.imagen if self.personalizar_parametros('img_propietario')
-			propietario["documentos_de_identidad"] = has_propietario[0].persona.documentos_de_identidad
+			propietario["documentos_de_identidad"] = temp_propietario.documentos_de_identidad
 		end
 		
 
