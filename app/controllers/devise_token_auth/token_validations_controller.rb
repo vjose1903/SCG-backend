@@ -38,7 +38,7 @@ module DeviseTokenAuth
       res = Response.new
       data = resource_data(resource_json: @resource.token_validation_response)
 
-      persona = Persona.new(data)
+      persona = Persona.find_by_id(data["id"])
       res.set_data(persona, {documentos_de_identidad: true, tandas: true, all:true, roles: true, imagen:true, lista_de_correo: true})
       
       res.send_response self

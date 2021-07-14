@@ -6,7 +6,7 @@ class MovimientoVehiculoSerializer < ActiveModel::Serializer
   end
 
   def vehiculo
-    return ActiveModelSerializers::SerializableResource.new(object.permiso_vehicular.vehiculo, {all: true, propietario: true })
+    return ActiveModelSerializers::SerializableResource.new(object.permiso_vehicular.vehiculo, {all: true, propietario: true, is_propietario: true})
   end
 
   def permiso_vehicular

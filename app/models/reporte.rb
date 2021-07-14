@@ -53,7 +53,7 @@ class Reporte < ApplicationRecord
 
         subtitulo = "Tipo de persona: #{params["tipo_persona"].nil? ? "Todos" : params["tipo_persona"]== "es_invitado" ? "Invitados": params["tipo_persona"]== "es_empleado" ? "Empleados": params["tipo_persona"]== "es_estudiante" ? "Estudiates" : ""}"
         
-        obj = { "body"=> personas, "sub_t"=> subtitulo }
+        obj = { "body"=> serialize_parser(personas,{all:true, cedula:true, tipo_persona:true}), "sub_t"=> subtitulo }
         res.set_data(obj)
         return res
     end
@@ -65,7 +65,7 @@ class Reporte < ApplicationRecord
         
         vehiculos = Vehiculo.all
     
-        obj = { "body"=> serialize_parser(vehiculos,{all:true, propietario:true}), "sub_t"=> "" }
+        obj = { "body"=> serialize_parser(vehiculos,{all:true, propietario:true, marca:true, is_reporte:true}), "sub_t"=> "" }
         res.set_data(obj)
         return res
     end

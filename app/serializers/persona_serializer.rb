@@ -18,6 +18,8 @@ class PersonaSerializer < ActiveModel::Serializer
 	attribute :imagen,             if: Proc.new { self.personalizar_parametros('imagen') }
 	attribute :lista_de_correo,    if: Proc.new { self.personalizar_parametros('lista_de_correo') }
 	attribute :roles,              if: Proc.new { self.personalizar_parametros('roles') }
+	attribute :cedula,             if: Proc.new { self.personalizar_parametros('cedula') }
+	attribute :tipo_persona,       if: Proc.new { self.personalizar_parametros('tipo_persona') }
 	
 	has_many :notificaciones,     if: Proc.new {self.personalizar_parametros('notificacions') }
 	has_many :tandas, if: Proc.new { self.personalizar_parametros('tandas') }
@@ -25,6 +27,22 @@ class PersonaSerializer < ActiveModel::Serializer
 	has_many :vehiculos, if: Proc.new { self.personalizar_parametros('vehiculos') }
 	
 	has_one :imagen, if: Proc.new { self.personalizar_parametros('imagen') }
+
+	def telefono
+		return "No especificado" if object.telefono.nil?
+		return object.telefono unless object.telefono.nil?
+	end
+
+	def tipo_persona
+		return "Varios" if object.roles.length > 1
+		return object.roles[0].tipo_persona if object.roles.length == 1
+	end
+
+	def cedula
+		cedula = object.documentos_de_identidad.where({tipo: Documentos.cedula})
+		return "No especificada" if cedula.length == 0
+		return cedula[0].valor if cedula.length > 0
+	end
 
 	def roles
 		puts "object.roles ==> ".green + "#{object.roles.to_json}"

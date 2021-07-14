@@ -121,9 +121,8 @@ module DeviseTokenAuth
 
     def render_create_success
       data = resource_data(resource_json: @resource.token_validation_response)
-      persona = Persona.new(data)
-      puts "data ==> ".yellow + "#{persona.roles.to_json}"
-      @res.set_data(Persona.new(data), {documentos_de_identidad:true, tandas:true, all:true, imagen: true, roles: true, lista_de_correo: true })
+      persona = Persona.find_by_id(data["id"])
+      @res.set_data(persona, {documentos_de_identidad:true, tandas:true, all:true, imagen: true, roles: true, lista_de_correo: true })
 
       @res.send_response self
     end

@@ -125,14 +125,32 @@ personas = [
       "es_empleado": true,
     },
     "roles":['Portero']
+  },
+  {
+    "data": {
+      "nombre": "Juan",
+      "usuario": "juan",
+      "uid": "juan",
+      "provider": "usuario",
+      "apellido": "Rodriguez",
+      "telefono": "(809)879-0161",
+      "email": "juanR@outlook.es",
+      "fecha_nacimiento": "1980-03-19",
+      "password": "1234567",
+      "password_confirmation": "1234567",
+      "estado": true,
+      "direccion": "Las carolinas calle #2 casa #35",
+      "es_estudiante": false,
+      "es_invitado": false,
+      "es_empleado": true,
+    },
+    "roles":['Administrativo']
   }
 ]
 
 personas.each do |user|
   usuario = user[:data]
   roles = user[:roles]
-  puts "usuario ==> ".red + "#{usuario}"
-  puts "roles ==> ".red + "#{roles}"
   
   if Persona.find_by_usuario(usuario[:usuario]).nil?
     persona = Persona.create(usuario)

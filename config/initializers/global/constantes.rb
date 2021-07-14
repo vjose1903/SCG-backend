@@ -288,10 +288,10 @@ MARCAS_MODELOS = [
 ]
 
 ACCIONES = ['insert', 'update', 'create', 'delete', 'read']
-PERMISOS = ['persona', 'invitado', 'estudiante', 'vehiculo', 'reconocer', 'reporte', 'auditoria']
+PERMISOS = ['persona', 'invitado', 'empleado','estudiante', 'vehiculo', 'reconocer', 'reporte', 'auditoria']
 
 ROLES = [
-	{ descripcion: 'Administrativo',                 tipo: 'empleado',   permisos: ['persona', 'invitado', 'estudiante', 'vehiculo', 'reconocer', 'reporte',  'auditoria']},
+	{ descripcion: 'Administrativo',                 tipo: 'empleado',   permisos: ['persona', 'invitado', 'estudiante', 'empleado','vehiculo', 'reconocer', 'reporte',  'auditoria']},
 	{ descripcion: 'Portero',                        tipo: 'empleado',   permisos: ['vehiculo', 'reconocer']},
 	{ descripcion: 'Limpieza',                       tipo: 'empleado',   permisos: ['vehiculo']},
 	{ descripcion: 'Docente',                        tipo: 'empleado',   permisos: ['vehiculo']},
