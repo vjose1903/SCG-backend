@@ -344,7 +344,7 @@ class Persona < ApplicationRecord
 
       params_vehiculo = {id: true, placa: true}
       params_vehiculo['provisional'] = true if movimiento.is_entrada?
-
+      my_print_log("params_vehiculo ==> #{params_vehiculo}")
       data ={ 
         persona: serialize_parser(persona, params_persona),
         vehiculo: serialize_parser(vehiculo, params_vehiculo)
