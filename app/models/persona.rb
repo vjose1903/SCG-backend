@@ -338,12 +338,13 @@ class Persona < ApplicationRecord
         res = self.registrar_notificacion(res, codigo, movimiento_resultado.get_data, persona, vehiculo, propietario, "movimiento_vehicular")
       end
       
-      params_persona = {id: true, nombre_completo: true}
-      params_persona["usuario"] = true if @new_persona
-      params_persona["password"] = true if @new_persona
+      params_persona = {id: true, nombre_completo: true, usuario: true, password: true }
+      # params_persona["usuario"] = true if @new_persona
+      # params_persona["password"] = true if @new_persona
 
-      params_vehiculo = {id: true, placa: true}
-      params_vehiculo['provisional'] = true if movimiento.is_entrada?
+      params_vehiculo = {id: true, placa: true, :provisional:true }
+
+      # params_vehiculo['provisional'] = true if movimiento.is_entrada?
       my_print_log("params_vehiculo ==> #{params_vehiculo}")
       data ={ 
         persona: serialize_parser(persona, params_persona),
