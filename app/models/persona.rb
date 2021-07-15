@@ -349,6 +349,7 @@ class Persona < ApplicationRecord
       data ={ 
         persona: serialize_parser(persona, params_persona),
         vehiculo: serialize_parser(vehiculo, params_vehiculo)
+        movimiento: movimiento
       }
 
       res.set_data(data)
