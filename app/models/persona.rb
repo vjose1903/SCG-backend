@@ -671,7 +671,7 @@ class Persona < ApplicationRecord
     query['fecha_hora'] = (Date.parse desde).beginning_of_day..(Date.parse hasta).end_of_day
     # my_print_log("query ==> #{query}")
     
-    res.set_data(self.movimiento_vehiculos.where(query), {all: true })
+    res.set_data(self.movimiento_vehiculos.where(query).order('id DESC'), {all: true })
     return res
   end
 
