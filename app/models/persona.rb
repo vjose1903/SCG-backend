@@ -342,7 +342,7 @@ class Persona < ApplicationRecord
       # params_persona["usuario"] = true if @new_persona
       # params_persona["password"] = true if @new_persona
 
-      params_vehiculo = {id: true, placa: true, :provisional:true }
+      params_vehiculo = {id: true, placa: true, provisional:true }
 
       # params_vehiculo['provisional'] = true if movimiento.is_entrada?
       my_print_log("params_vehiculo ==> #{params_vehiculo}")
