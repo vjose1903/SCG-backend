@@ -348,7 +348,7 @@ class Persona < ApplicationRecord
       my_print_log("params_vehiculo ==> #{params_vehiculo}")
       data ={ 
         persona: serialize_parser(persona, params_persona),
-        vehiculo: serialize_parser(vehiculo, params_vehiculo)
+        vehiculo: serialize_parser(vehiculo, params_vehiculo),
         movimiento: movimiento
       }
 
