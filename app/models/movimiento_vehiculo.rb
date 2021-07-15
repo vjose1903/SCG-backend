@@ -31,6 +31,7 @@ class MovimientoVehiculo < ApplicationRecord
   end
   
   
+  
   def self.get_cantidad_movimientos()
 
     res = Response.new
