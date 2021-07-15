@@ -4,7 +4,7 @@ class ApplicationRecord < ActiveRecord::Base
   def establecer_imagen(imagen)
 
     if validar_imagen(imagen)
-      puts "validar_imagen ==> ".red + "#{validar_imagen}"
+      puts "---------- validar_imagen ---------- "
 
       self.imagen = Imagen.new(
         'file'          => parse_image_data(imagen),
