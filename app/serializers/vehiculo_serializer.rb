@@ -17,9 +17,9 @@ class VehiculoSerializer < ActiveModel::Serializer
 		return "No especificado" if object.modelo_id.nil?
 
 		modelo = object.modelo
-		marca = Marca.where({modelo_id: modelo.id})
+		marca = modelo.marca
 
-		return marca[0].descripcion
+		return marca.descripcion
 	end
 
 	def modelo 
