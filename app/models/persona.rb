@@ -345,7 +345,6 @@ class Persona < ApplicationRecord
       params_vehiculo = {id: true, placa: true, provisional:true }
 
       # params_vehiculo['provisional'] = true if movimiento.is_entrada?
-      my_print_log("params_vehiculo ==> #{params_vehiculo}")
       data ={ 
         persona: serialize_parser(persona, params_persona),
         vehiculo: serialize_parser(vehiculo, params_vehiculo),
@@ -564,7 +563,7 @@ class Persona < ApplicationRecord
       
       res_noti = Notificacion.crear_actualizar_notificacion(noti_params, true)
       if res_noti.status_valid
-        @notificacion = {codigo: codigo, propietario: serialize_parser(propietario, {id: true, nombre_completo: true}), data: res_noti.get_data}
+        @notificacion = {codigo: codigo, propietario: serialize_parser(propietario, {id: true, nombre_completo: true}), data: serialize_parser(res_noti.get_data, {all:true})}
 
         if propietario
           lista = []
