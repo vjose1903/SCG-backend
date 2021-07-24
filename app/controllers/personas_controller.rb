@@ -1,5 +1,5 @@
 class PersonasController < ApplicationController
-  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos, :get_roles, :agregar_correo]
+  before_action :set_persona, only: [:update, :show, :validar_existencia_correo, :get_notificaciones, :get_historial, :get_vehiculos, :get_permisos, :agregar_correo]
 
   
   def index
@@ -77,9 +77,9 @@ class PersonasController < ApplicationController
     resultado.send_response self
   end
 
-  def get_roles
+  def get_permisos
     parametros = params
-    resultado = @persona.get_roles(parametros)
+    resultado = @persona.get_permisos(parametros)
     resultado.send_response self
   end
 
@@ -101,7 +101,6 @@ class PersonasController < ApplicationController
   def set_persona
 
     params[:id] = params[:persona_id] if params[:persona_id] 
-
     respuesta = set_entidad(Persona, params)
     @persona = respuesta.get_data
     

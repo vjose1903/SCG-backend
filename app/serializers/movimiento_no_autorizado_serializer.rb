@@ -19,7 +19,7 @@ class MovimientoNoAutorizadoSerializer < ActiveModel::Serializer
     return  {
         id: object.persona.id,
         nombre_completo: object.persona.nombre_completo || 'Persona no identificada',
-        image: object.persona.imagen,
+        imagen: object.persona.imagen,
         telefono: object.persona.telefono,
         documentos_de_identidad: object.persona.documentos_de_identidad}
   end

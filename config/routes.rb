@@ -41,7 +41,7 @@ Rails.application.routes.draw do
         get "validar_existencia_correo", :to => "personas#validar_existencia_correo"
         get "get_historial", :to => "personas#get_historial"
         get "get_vehiculos", :to => "personas#get_vehiculos"
-        get "get_roles", :to => "personas#get_roles"
+        get "get_permisos", :to => "personas#get_permisos"
 
         collection do
           post "get_next_invitado/:tipo", :to => "personas#get_next_invitado"

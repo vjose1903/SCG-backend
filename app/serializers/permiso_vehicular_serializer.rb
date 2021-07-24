@@ -1,5 +1,5 @@
 class PermisoVehicularSerializer < ActiveModel::Serializer
-  attributes :id, :valor, :es_entrada, :es_salida, :tipo, :estado, :persona, :vehiculo, :tipo_parsed
+  attributes :id, :valor, :es_entrada, :es_salida, :tipo, :estado, :persona, :vehiculo, :tipo_parsed, :propietario
   
 
   def tipo_parsed
@@ -17,7 +17,15 @@ class PermisoVehicularSerializer < ActiveModel::Serializer
 	end
 
   def vehiculo
-		ActiveModelSerializers::SerializableResource.new(object.vehiculo, {id:true})
+		ActiveModelSerializers::SerializableResource.new(object.vehiculo, {all:true})
+	end
+
+  def propietario
+    permiso_propietario = object.vehiculo.permisos_vehiculares.where({tipo: Permisos.propietario, estado: Estados.activo})
+
+    propietario = permiso_propietario.length > 0 ? permiso_propietario[0].persona : nil 
+    
+		ActiveModelSerializers::SerializableResource.new(propietario, {id:true, nombre_completo:true})
 	end
 
 end

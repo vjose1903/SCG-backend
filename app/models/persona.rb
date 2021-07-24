@@ -694,6 +694,20 @@ class Persona < ApplicationRecord
   end
 
   # ============================================================================================
+  # BUSCAR PERMISOS
+  # ============================================================================================
+  def get_permisos(params)
+    res = Response.new
+
+    permisos = self.permisos_vehiculares.where({estado: Estados.activo}).where("tipo != '#{Permisos.propietario}'")
+    
+
+    puts "PERMISOS ==> ".yellow + "#{permisos.to_json}"
+    res.set_data(permisos, {all: true})
+    return res
+  end
+
+  # ============================================================================================
   # BUSCAR ROLES
   # ============================================================================================
   def get_roles(params)
