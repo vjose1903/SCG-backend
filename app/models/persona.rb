@@ -23,7 +23,7 @@ class Persona < ApplicationRecord
   accepts_nested_attributes_for :documentos_de_identidad, :allow_destroy => true
 
   validates :nombre,  presence: { :message => "Debe de especificar el nombre de la persona." }
-  validates :telefono, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :telefono, valor: "%{value}")} }
+  validates :telefono, allow_blank: true, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :telefono, valor: "%{value}")} }
   validates :usuario, presence: { :message => "Debe de especificar el usuario de la persona." }, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :usuario, valor: "%{value}")} }
   validates :email, allow_blank: true, uniqueness: { case_sensitive: false, :message => Proc.new{traducir(:ya_existe_una, entidad: "modelo.persona", campo: :email, valor: "%{value}")} }
 
