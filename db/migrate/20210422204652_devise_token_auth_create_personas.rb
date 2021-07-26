@@ -42,7 +42,7 @@ class DeviseTokenAuthCreatePersonas < ActiveRecord::Migration[5.2]
         t.string  :telefono
         t.string  :email
         t.string  :direccion
-        t.boolean :estado
+        t.boolean :estado, default: true
         t.boolean :es_estudiante
         t.boolean :es_invitado
         t.boolean :es_empleado
