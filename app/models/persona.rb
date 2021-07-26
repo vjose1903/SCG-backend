@@ -528,6 +528,7 @@ class Persona < ApplicationRecord
         msg_error = "#{persona.nombre.split("_").join(" ")} #{persona.apellido} no tiene permiso de salir en este vehiculo."
         res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_sin_permiso, params, msg_error, vehiculo, persona, propietario)
         my_print_log("VERIFICAR PERMISO".red)
+        my_print_log("res ===> ".red + "#{res.to_json}")
         return res
       end
       
