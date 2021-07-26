@@ -376,6 +376,7 @@ class Persona < ApplicationRecord
       params = { "persona_id" => nil, "vehiculo_id" => vehiculo["id"], "codigo_error" => Codigo.persona_no_identificada}
       msg_error = "Persona no registrada, no tiene permiso para salir en este vehiculo."
       res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_no_identificada, params, msg_error, vehiculo, nil, propietario)
+      my_print_log("VERIFICAR PERSONA".red)
 
       return res
     end
@@ -526,7 +527,7 @@ class Persona < ApplicationRecord
         params = { "persona_id" => persona['id'], "vehiculo_id" => vehiculo["id"], "codigo_error" => Codigo.persona_sin_permiso}
         msg_error = "#{persona.nombre.split("_").join(" ")} #{persona.apellido} no tiene permiso de salir en este vehiculo."
         res = self.registrar_movimiento_no_autorizado(res, Codigo.persona_sin_permiso, params, msg_error, vehiculo, persona, propietario)
-
+        my_print_log("VERIFICAR PERMISO".red)
         return res
       end
       
