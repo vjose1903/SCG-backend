@@ -109,8 +109,8 @@ personas = [
   {
     "data": {
       "nombre": "Pedro",
-      "usuario": "admin",
-      "uid": "admin",
+      "usuario": "pedro",
+      "uid": "pedro",
       "provider": "usuario",
       "apellido": "Marte",
       "telefono": "(809)879-0262",
@@ -129,8 +129,8 @@ personas = [
   {
     "data": {
       "nombre": "Juan",
-      "usuario": "juan",
-      "uid": "juan",
+      "usuario": "admin",
+      "uid": "admin",
       "provider": "usuario",
       "apellido": "Rodriguez",
       "telefono": "(809)879-0363",
