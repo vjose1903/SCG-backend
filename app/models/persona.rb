@@ -305,8 +305,9 @@ class Persona < ApplicationRecord
       # ----- viendo si la persona tiene permiso  ----------------------------------------------
       
       permiso_resultado = self.verificar_permiso_movimiento(movimiento, persona, vehiculo, propietario)
-      puts "permiso_resultado ==> ".red + "#{permiso_resultado.to_json}"
-      puts "@notificacion ==> ".yellow + "#{@notificacion.to_json}"
+
+      my_print_log("@notificacion ==> ".yellow + "#{@notificacion.to_json}")
+      my_print_log("permiso_resultado ==> ".red + "#{permiso_resultado.to_json}")
       
       unless permiso_resultado.status_valid
         resultado = permiso_resultado.get_data
