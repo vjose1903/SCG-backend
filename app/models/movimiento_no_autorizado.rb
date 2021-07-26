@@ -15,10 +15,10 @@ class MovimientoNoAutorizado < ApplicationRecord
 
     my_print_log("params ==> ".blue + "#{params.to_json}")
 
-    my_print_log("persona_id ==> ".yellow + "#{persona_id.to_json}")
-    my_print_log("vehiculo_id ==> ".yellow + "#{vehiculo_id.to_json}")
-    my_print_log("codigo_error ==> ".yellow + "#{codigo_error.to_json}")
-    my_print_log("comentario ==> ".yellow + "#{comentario.to_json}")
+    my_print_log("params['persona_id'] ==> ".yellow + "#{params['persona_id'].to_json}")
+    my_print_log("params['vehiculo_id'] ==> ".yellow + "#{params['vehiculo_id'].to_json}")
+    my_print_log("params['codigo_error'] ==> ".yellow + "#{params['codigo_error'].to_json}")
+    my_print_log("params['comentario'] ==> ".yellow + "#{params['comentario'].to_json}")
 
     movimiento_no_autorizado.persona_id      = params["persona_id"]
     movimiento_no_autorizado.vehiculo_id     = params["vehiculo_id"]
