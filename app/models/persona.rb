@@ -591,10 +591,11 @@ class Persona < ApplicationRecord
   def self.registrar_movimiento_no_autorizado(res, codigo_error, params, msg_error, vehiculo_, persona_, propietario_)
 
     res_movimiento = MovimientoNoAutorizado.crear_actualizar_movimiento_no_autorizado(params, true)
+    my_print_log("res_movimiento ===> ".green + "#{res_movimiento.to_json}")
+
     if res_movimiento.status_valid
       res.set_data({codigo: codigo_error})
       res.add_msg(msg_error)
-      
       res = self.registrar_notificacion(res, codigo_error, res_movimiento.get_data, persona_, vehiculo_, propietario_, "movimiento_no_autorizado")
 
     else
