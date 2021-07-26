@@ -13,6 +13,8 @@ class MovimientoNoAutorizado < ApplicationRecord
       movimiento_no_autorizado = MovimientoNoAutorizado.find_by_id(params["id"])
     end
 
+    my_print_log("params ==> ".blue + "#{params.to_json}")
+
     movimiento_no_autorizado.persona_id      = params["persona_id"]
     movimiento_no_autorizado.vehiculo_id     = params["vehiculo_id"]
     movimiento_no_autorizado.codigo_error    = params["codigo_error"]
