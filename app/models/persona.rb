@@ -245,9 +245,10 @@ class Persona < ApplicationRecord
     
     persona_is_valid = persona.errors.to_a.empty? && persona.valid?
     res.add_msgs(persona.errors.to_a) unless persona_is_valid
+    my_print_log("persona_is_valid ==> ", persona_is_valid)
+    my_print_log("persona ==> ".red, persona.to_json)
     
-    
-    unless !persona_is_valid || persona.save!
+    unless persona.save! || !persona_is_valid
       res.set_status(HTTP_STATUS_CODE[:conflict])
       return res
     end
