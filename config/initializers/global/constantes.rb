@@ -80,7 +80,7 @@ module Estados
 	end
 end
 
-EstadosVehiculos = [ Estados.usado, Estados.activo, Estados.inactivo, Estados.eliminado, ]
+EstadosVehiculos = [ Estados.usado, Estados.activo, Estados.inactivo, Estados.eliminado ]
 
 module Permisos
 	UNICO = 'U'
