@@ -66,11 +66,12 @@ class Persona < ApplicationRecord
   end
 
   def verificar_role(roles)
-    
+
     my_print_log("roles ==> ".red +  "(#{roles})")
     my_print_log("roles ==> ".yellow +  "(#{roles.to_json})")
 
-    if roles.empty? || roles.nil? || roles.blank?
+    # if roles.empty? || roles.nil? || roles.blank?
+    if roles.nil?
       self.add_role "Invitado"
       return
     end
