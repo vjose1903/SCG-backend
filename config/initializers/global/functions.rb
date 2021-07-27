@@ -35,6 +35,10 @@ class Response
     @res
   end
   
+  def clean_msgs()
+    @res[:msg]=[]
+  end
+
   def add_msg(msg)
     @res[:msg].push(msg) if msg.length > 0 
   end
