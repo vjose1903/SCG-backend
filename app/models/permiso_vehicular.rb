@@ -4,7 +4,7 @@ class PermisoVehicular < ApplicationRecord
 
   validates :tipo, presence: { :message => "Debe de especificar un tipo de permiso." }, inclusion: { in: PERMISOS_VALIDOS, message: "Tipo de permiso vehicular no es permitido." }
   validates :valor, presence: { :message => "El permiso vehicular no se registro de manera adecuada." }, uniqueness: { case_sensitive: false, :message => "Este permiso vehicular ya esta registrado." }
-  # validates :estado, inclusion: { in: EstadosVehiculos, message: "Estado del permiso vehicular no es permitido." }
+  validates :estado, inclusion: { in: EstadosVehiculos, message: "Estado del permiso vehicular no es permitido." }
 
   has_many :movimiento_vehiculos
   
@@ -71,7 +71,6 @@ class PermisoVehicular < ApplicationRecord
       my_print_log("SI TIENE ID".red)
     end
 
-    my_print_log("permiso ==> ".green + "#{permiso.to_json}")
     
     permiso.valor = permiso.formarValorPermiso(params)
     permiso.persona_id = params["persona_id"]
@@ -79,7 +78,8 @@ class PermisoVehicular < ApplicationRecord
     permiso.es_entrada = params["es_entrada"]
     permiso.es_salida = params["es_salida"]
     permiso.tipo = params["tipo"]
-    permiso.estado = params["estado"]
+    permiso.estado = params["estado"] if params["estado"]
+    my_print_log("permiso ==> ".green + "#{permiso.to_json}")
     
     my_print_log("permiso.valid ==> ".yellow + "#{permiso.valid?}")
 
