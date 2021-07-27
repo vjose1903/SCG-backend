@@ -57,19 +57,22 @@ class PermisoVehicular < ApplicationRecord
 	end
 
 
-  def self.crear_actualizar_permiso(params, is_save=false, can_update=false)
+  def self.crear_actualizar_permiso(params, is_save=false, can_update=false, new_permiso)
     res = Response.new
 
 
     my_print_log("params['id'] ==> ".yellow + "#{params['id']}")
-    
-    unless params["id"]
-      my_print_log("NO TIENE ID".red)
-      
-      permiso = PermisoVehicular.new
+    if new_permiso
+      permiso = new_permiso
     else
-      permiso = PermisoVehicular.find_by_id(params["id"])
-      my_print_log("SI TIENE ID".red)
+      unless params["id"]
+        my_print_log("NO TIENE ID".red)
+        
+        permiso = PermisoVehicular.new
+      else
+        permiso = PermisoVehicular.find_by_id(params["id"])
+        my_print_log("SI TIENE ID".red)
+      end
     end
 
     my_print_log("permiso ==> ".green + "#{permiso.to_json}")
