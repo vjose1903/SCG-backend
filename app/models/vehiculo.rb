@@ -99,13 +99,13 @@ class Vehiculo < ApplicationRecord
     res = Response.new
     has_permiso = PermisoVehicular.where({vehiculo_id: self.id, persona_id: current_persona.id, estado: Estados.activo})
     id_ = has_permiso.length > 0 ? has_permiso[0].id : nil
-    params = { id => id_,
-        es_entrada => true,
-        es_salida => true,
-        tipo => Permisos.propietario,
-        persona_id => current_persona.id,
-        vehiculo_id => self.id,
-        current_persona => current_persona
+    params = { "id" => id_,
+        "es_entrada" => true,
+        "es_salida" => true,
+        "tipo" => Permisos.propietario,
+        "persona_id" => current_persona.id,
+        "vehiculo_id" => self.id,
+        "current_persona" => current_persona
       }
 
     my_print_log("params ==> ".red + "#{params.to_json}")
