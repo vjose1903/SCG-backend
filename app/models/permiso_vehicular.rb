@@ -62,11 +62,16 @@ class PermisoVehicular < ApplicationRecord
 
 
     my_print_log("params['id'] ==> ".yellow + "#{params['id']}")
+    
     unless params["id"]
+      my_print_log("NO TIENE ID".red)
+      
       permiso = PermisoVehicular.new
     else
       permiso = PermisoVehicular.find_by_id(params["id"])
+      my_print_log("SI TIENE ID".red)
     end
+
     my_print_log("permiso ==> ".green + "#{permiso.to_json}")
     
     permiso.valor = permiso.formarValorPermiso(params)
