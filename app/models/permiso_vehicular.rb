@@ -81,7 +81,7 @@ class PermisoVehicular < ApplicationRecord
     permiso.tipo = params["tipo"]
     permiso.estado = params["estado"]
     
-    my_print_log("permiso.valid ==> ".yellow + "#{permiso.valid}")
+    my_print_log("permiso.valid ==> ".yellow + "#{permiso.valid?}")
 
     if permiso.valid?
       permiso.otras_validaciones(params["current_persona"].id, can_update)
