@@ -60,6 +60,8 @@ class PermisoVehicular < ApplicationRecord
   def self.crear_actualizar_permiso(params, is_save=false, can_update=false)
     res = Response.new
 
+    
+
     unless params["id"]
       permiso = PermisoVehicular.new
     else

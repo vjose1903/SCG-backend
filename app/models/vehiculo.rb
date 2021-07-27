@@ -110,6 +110,8 @@ class Vehiculo < ApplicationRecord
     permiso['persona_id'] = current_persona.id
     permiso['vehiculo_id'] = self.id
     permiso['current_persona'] = current_persona
+
+    my_print_log("permiso ==> ".red + "#{permiso.to_json}")
     
     res = PermisoVehicular.crear_actualizar_permiso(permiso, true, true)
 
