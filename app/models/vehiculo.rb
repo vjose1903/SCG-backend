@@ -110,7 +110,7 @@ class Vehiculo < ApplicationRecord
 
     my_print_log("params ==> ".red + "#{params.to_json}")
     
-    res = PermisoVehicular.crear_actualizar_permiso(params true, true)
+    res = PermisoVehicular.crear_actualizar_permiso(params, true, true)
 
     unless res.status_valid
       res.set_status(HTTP_STATUS_CODE[:conflict])
