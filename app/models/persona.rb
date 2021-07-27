@@ -105,6 +105,8 @@ class Persona < ApplicationRecord
         persona = Persona.find_by_id(params["id"])
       end
 
+      puts "persona ==> ".red + "#{persona.to_json}"
+      
       persona.nombre = params["nombre"]
       persona.apellido = params["apellido"]
       persona.fecha_nacimiento = params["fecha_nacimiento"]
@@ -120,15 +122,17 @@ class Persona < ApplicationRecord
       persona.lista_de_correo = params["lista_de_correo"]
       persona.password = params["password"]
       persona.password_confirmation = params["password"]
-
+      
       persona.validate_password(params["password"])
-
+      
       persona.establecer_imagen(params["imagen"])
-
+      
       persona.verificar_role(params["roles"])
       
+      puts "persona ==> ".green + "#{persona.to_json}"
       
       persona_is_valid = persona.errors.to_a.empty? && persona.valid?
+      puts "persona_is_valid ==> ".green + "#{persona_is_valid}"
       
       if persona_is_valid
         res = self.agregar_dependencias(params, persona) { |key_object, dependencia_data| 
