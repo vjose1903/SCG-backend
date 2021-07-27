@@ -47,6 +47,7 @@ class Persona < ApplicationRecord
       obj_persona["password"] = "".random_password
       obj_persona["password_confirmation"] = obj_persona["password"]
       obj_persona["es_invitado"] = true
+      obj_persona["roles"] = []
     end
 
     super(obj_persona)
@@ -65,6 +66,10 @@ class Persona < ApplicationRecord
   end
 
   def verificar_role(roles)
+    
+    my_print_log("roles ==> ".red +  "(#{roles})")
+    my_print_log("roles ==> ".yellow +  "(#{roles.to_json})")
+
     if roles.empty? || roles.nil? || roles.blank?
       self.add_role "Invitado"
       return

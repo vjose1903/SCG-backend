@@ -60,17 +60,12 @@ class PermisoVehicular < ApplicationRecord
   def self.crear_actualizar_permiso(params, is_save=false, can_update=false)
     res = Response.new
 
-
-    my_print_log("params['id'] ==> ".yellow + "#{params['id']}")
     unless params["id"]
-      my_print_log("NO TIENE ID".red)
       
       permiso = PermisoVehicular.new
     else
       permiso = PermisoVehicular.find_by_id(params["id"])
-      my_print_log("SI TIENE ID".red)
     end
-
     
     permiso.valor = permiso.formarValorPermiso(params)
     permiso.persona_id = params["persona_id"]
@@ -79,15 +74,11 @@ class PermisoVehicular < ApplicationRecord
     permiso.es_salida = params["es_salida"]
     permiso.tipo = params["tipo"]
     permiso.estado = params["estado"] if params["estado"]
-    my_print_log("permiso ==> ".green + "#{permiso.to_json}")
     
-    my_print_log("permiso.valid ==> ".yellow + "#{permiso.valid?}")
-
     if permiso.valid?
       permiso.otras_validaciones(params["current_persona"].id, can_update)
     end
     
-    my_print_log("permiso.errors.to_a ==> ".green + "#{permiso.errors.to_a.to_json}")
     if permiso.errors.to_a.empty? && (!is_save || (is_save && permiso.save!))
       action = params["id"] ? 'actualizado' : 'creado'
       res.add_msg("Permiso #{action} correctamente.")
@@ -96,7 +87,7 @@ class PermisoVehicular < ApplicationRecord
       res.add_msgs(permiso.errors.to_a)
       res.set_status(HTTP_STATUS_CODE[:conflict])
     end
-    my_print_log("-=-=-=-=-=-=-=-PASO TODOOOO-=-=-=-=-=-=-=-".red)
+    
     return res
   end
 
