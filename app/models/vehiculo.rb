@@ -116,7 +116,7 @@ class Vehiculo < ApplicationRecord
       res.set_status(HTTP_STATUS_CODE[:conflict])
     else
       res.add_msg("vehiculo asociado correctamente.")
-      res.set_data(permiso)
+      res.set_data(res.get_data)
     end
 
     return res 
