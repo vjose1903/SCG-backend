@@ -22,6 +22,7 @@ class PersonaSerializer < ActiveModel::Serializer
 	attribute :cedula,             if: Proc.new { self.personalizar_parametros('cedula') }
 	attribute :tipo_persona,       if: Proc.new { self.personalizar_parametros('tipo_persona') }
 	
+	
 	has_many :notificaciones,     if: Proc.new {self.personalizar_parametros('notificacions') }
 	has_many :tandas, if: Proc.new { self.personalizar_parametros('tandas') }
 	has_many :documentos_de_identidad, if: Proc.new { self.personalizar_parametros('documentos_de_identidad') }
