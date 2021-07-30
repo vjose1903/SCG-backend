@@ -7,6 +7,7 @@ class PersonaSerializer < ActiveModel::Serializer
 	attribute :fecha_nacimiento,   if: Proc.new { self.personalizar_parametros('fecha_nacimiento') || self.personalizar_parametros('all') }
 	attribute :usuario,            if: Proc.new { self.personalizar_parametros('usuario') || self.personalizar_parametros('all') }
 	attribute :telefono,           if: Proc.new { self.personalizar_parametros('telefono') || self.personalizar_parametros('all') }
+	attribute :telefono_mostrar,   if: Proc.new { self.personalizar_parametros('telefono') || self.personalizar_parametros('all') }
 	attribute :email,              if: Proc.new { self.personalizar_parametros('email') || self.personalizar_parametros('all') }
 	attribute :direccion,          if: Proc.new { self.personalizar_parametros('direccion') || self.personalizar_parametros('all') }
 	attribute :estado,             if: Proc.new { self.personalizar_parametros('estado') || self.personalizar_parametros('all') }
@@ -28,7 +29,7 @@ class PersonaSerializer < ActiveModel::Serializer
 	
 	has_one :imagen, if: Proc.new { self.personalizar_parametros('imagen') }
 
-	def telefono
+	def telefono_mostrar
 		return "No especificado" if object.telefono.nil?
 		return object.telefono unless object.telefono.nil?
 	end
