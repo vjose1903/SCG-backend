@@ -127,6 +127,7 @@ class Persona < ApplicationRecord
       
       persona.validate_password(params["password"])
       
+      
       persona.establecer_imagen(params["imagen"])
       
       persona.verificar_role(params["roles"])
