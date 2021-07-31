@@ -224,7 +224,7 @@ class Persona < ApplicationRecord
     filter_value = parametros["filter_value"]
 
     if filter_key == 'nombre'
-      return Persona.all.where("lower(nombre || ' ' || apellido) like lower('%#{filter_value}%') and estado = true")
+      return Persona.all.where("lower(coalesce(nombre,'') || ' ' || coalesce(apellido,'')) like lower('%#{filter_value}%') and estado = true")
     elsif filter_key == 'matricula'
       return Persona.joins(:documentos_de_identidad).where(documentos_de_identidad: {tipo: Documentos.matricula , valor: filter_value }, estado: true)
     elsif filter_key == 'cedula'
