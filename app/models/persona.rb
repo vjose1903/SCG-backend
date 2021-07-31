@@ -101,6 +101,8 @@ class Persona < ApplicationRecord
 
       unless params["id"]
         persona = Persona.new
+        persona.password = "".random_password
+        persona.password_confirmation = persona.password
       else
         persona = Persona.find_by_id(params["id"])
       end
@@ -141,7 +143,7 @@ class Persona < ApplicationRecord
         }
         
         if res.status_valid && persona.save!
-          res.set_data(persona)
+          res.set_data(serialize_parser(persona,{all: true, password: true}))
 
           action = params["id"] ? 'actualizada' : 'creada'
           msg = type == 'correo_new' ? "Correo agregado correctamente." : type == 'correo_update' ? "Correo editado correctamente": "Persona #{action} correctamente." 
