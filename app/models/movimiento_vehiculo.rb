@@ -18,7 +18,7 @@ class MovimientoVehiculo < ApplicationRecord
     
     movimiento.permiso_vehicular_id = params["permiso_vehicular_id"]
     movimiento.tipo = params["tipo"]
-    movimiento.fecha_hora = DateTime.now
+    movimiento.fecha_hora = parsearDateTimeUTC(DateTime.now)
 
     if movimiento.valid? && movimiento.errors.to_a.empty? && (!is_save || (is_save && movimiento.save!))
       res.set_data(movimiento)

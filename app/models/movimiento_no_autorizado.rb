@@ -18,7 +18,7 @@ class MovimientoNoAutorizado < ApplicationRecord
     movimiento_no_autorizado.codigo_error    = params["codigo_error"]
     movimiento_no_autorizado.comentario      = params["comentario"]
     movimiento_no_autorizado.resuelto        = params["resuelto"] if params["resuelto"]
-    movimiento_no_autorizado.fecha_hora      = DateTime.now
+    movimiento_no_autorizado.fecha_hora      = parsearDateTimeUTC(DateTime.now)
 
     movimiento_no_autorizado.valid?
 

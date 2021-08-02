@@ -588,7 +588,8 @@ class Persona < ApplicationRecord
           lista = []
           lista.concat(propietario["lista_de_correo"]["correos"].pluck("value")) if propietario.lista_de_correo && propietario["lista_de_correo"]["correos"].length > 0
           lista.concat([propietario.email]) if propietario.email
-          sendEmail(mensaje, "Accion requerida", lista)
+
+          sendEmail(mensaje, "Accion requerida", lista) unless lista.empty?
         end
   
       else

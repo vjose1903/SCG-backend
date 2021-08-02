@@ -60,6 +60,12 @@ end
 
 # ---------------------------------------------------------------------------------------------------------
 
+def parsearDateTimeUTC(dateTime)
+  return dateTime.getlocal.strftime("%Y-%m-%d") + " " + dateTime.getlocal.strftime("%H:%M:%S")
+end
+
+# ---------------------------------------------------------------------------------------------------------
+
 def parse_image_data(filedata)
   decoded_data = Base64.decode64(filedata[:base64])
   tempfile = Tempfile.new('task-image')
