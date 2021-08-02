@@ -256,7 +256,7 @@ class Persona < ApplicationRecord
     
     persona = Persona.new
     # persona["id"] = parametros["id"] unless no_existe_id_persona
-    
+    persona.verificar_role([])
     persona_is_valid = persona.errors.to_a.empty? && persona.valid?
     res.add_msgs(persona.errors.to_a) unless persona_is_valid
     my_print_log("persona_is_valid ==> ", persona_is_valid)
